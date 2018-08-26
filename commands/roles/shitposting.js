@@ -14,10 +14,7 @@ module.exports = class ShitpostingRoleCommand extends Command {
 
     run(message) {
       var config = {};
-        var communityRole = message.guild.roles.find('name', config.CommunityRole), //Define the community role
-        modRole = message.guild.roles.find("name", config.ModRole), //Define that staff role
-        mutedRole = message.guild.roles.find('name', config.MutedRole); //Define the Muted role
-
-        return message.say('Hi, I\'m awake!');
+        var shitpostRole = message.guild.roles.find('name', "Shitpost"); //Define the community role
+        
     }
 };
