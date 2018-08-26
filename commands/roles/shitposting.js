@@ -7,7 +7,8 @@ module.exports = class ShitpostingRoleCommand extends Command {
             group: 'roles',
             memberName: 'shitposting',
             description: 'Enables shitposting access.',
-            examples: ['shitposting']
+            examples: ['shitposting'],
+            guildonly: true
         });
     }
 

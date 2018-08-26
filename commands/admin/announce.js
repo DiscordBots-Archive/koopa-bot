@@ -3,11 +3,10 @@ const { Command } = require('discord.js-commando');
 module.exports = class SayCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'say',
-            aliases: ['copycat', 'repeat', 'echo', 'parrot'],
+            name: 'announce',
             group: 'admin',
-            memberName: 'say',
-            description: 'Replies with the text you provide.',
+            memberName: 'announce',
+            description: 'Sends a message to the #announcements channel',
             examples: ['say Hi there!'],
             guildOnly: true,
             args: [
@@ -26,6 +25,6 @@ module.exports = class SayCommand extends Command {
 
     run(msg, { text }) {
         msg.delete();
-        return msg.say(text);
+        return msg.guild.channels.get("name", "announc").say(text);
     }
 };
