@@ -32,7 +32,8 @@ client.registry
         ['group1', 'Our First Command Group'],
         ["roles", "Roles"],
         ["admin", "Administration"],
-        ["owner", "Owner Only"]
+        ["owner", "Owner Only"],
+        ["audio", "Audio & Mus
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()

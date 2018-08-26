@@ -11,15 +11,21 @@ module.exports = class PlayAudioCommand extends Command {
             args: [
 				      {
 				      	key: 'link',
-				      	label: 'string',
-				      	prompt: 'If you don\'t give me a link, I\'ll be hungry and won\'t play music',
-				      	type: 'role'
+				      	prompt: 'If you don\'t give me a link, I\'ll be hungry and won\'t play music!',
+				      	type: 'string'
 				      }
 			      ]
         });
     }
 
     run(msg) {
-        return msg.say('Hi, I\'m awake!');
+      if(!msg.member.voiceChannel) return msg.reply("you are not in a voice channel, *are you?* :eyes:");
+      if(!this.client.audio.servers[msg.guild.id]) this.client.audio.servers[msg.guild.id] = {
+        queue: []
+      }
+      var server = this.client.audio.servers[msg.guild.id];
+      if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(chn => {
+        
+      });
     }
 };
