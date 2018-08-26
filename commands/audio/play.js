@@ -21,7 +21,8 @@ module.exports = class PlayAudioCommand extends Command {
     run(msg, { link }) {
       if(!msg.member.voiceChannel) return msg.reply("you are not in a voice channel, *are you?* :eyes:");
       if(!this.client.audio.servers[msg.guild.id]) this.client.audio.servers[msg.guild.id] = {
-        queue: []
+        queue: [],
+        skips: 0
       }
       var server = this.client.audio.servers[msg.guild.id];
       server.queue.push(link);

@@ -6,8 +6,8 @@ module.exports = class SkipAudioCommand extends Command {
             name: 'skip',
             group: 'audio',
             memberName: 'skip',
-            description: 'Adds a vote (out of 2) to skip the currently playing music.',
-            examples: ['play'],
+            description: 'Adds a vote (out of 2) to skip the currently playing music.', // Thanks NYoshi370
+            examples: ['skip'],
             /*args: [
 				      {
 				      	key: 'link',
@@ -18,15 +18,13 @@ module.exports = class SkipAudioCommand extends Command {
         });
     }
 
-    run(msg, { link }) {
-      if(!msg.member.voiceChannel) return msg.reply("you are not in a voice channel, *are you?* :eyes:");
-      if(!this.client.audio.servers[msg.guild.id]) this.client.audio.servers[msg.guild.id] = {
-        queue: []
-      }
+    run(msg) {
       var server = this.client.audio.servers[msg.guild.id];
-      server.queue.push(link);
-      if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(connection => {
-        this.client.audio.play(connection, msg);
-      });
+      server.skips++
+      if (server.skips == 1) {
+        
+      } else if (server.skips == 2) {
+        
+      }
     }
 };
