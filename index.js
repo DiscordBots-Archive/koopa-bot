@@ -35,4 +35,4 @@ client.on('ready', () => {
     client.user.setActivity('game');
 });
 
-client.login('Your Secret Token');
+client.login(process.env.TOKEN);
