@@ -153,19 +153,41 @@ client.on('ready', () => {
 
 client.audio = {};
 client.audio.active = new Map();
-client.audio.play = (connection, message) => {
-  var server = client.audio.servers[message.guild.id];
-  
-  server.connection = connection;
-  
-  server.dispatcher = connection.playStream(ytdl(server.queue[0], { filter: "audioonly" }));
-  
-  server.queue.shift();
-  
-  server.dispatcher.on("end", () => {
-    if (server.queue[0]) client.audio.play(connection, message)
-    else connection.disconnect();
-  });
+client.audio.play = async (client, active, data) => {
+  const playing = client.channels.get(data.queue[0].announceChannel).send(
+			`Now Playing: ${data.queue[0].songTitle} | Requested by: ${data.queue[0].requester}`
+		);
+
+		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
+							.on('error', err => {
+								console.log('Error occurred when streaming video:', err);
+								playing.then(msg => msg.edit(`:x: Couldn't play .`));
+								client.audio.finish(client, active, this);
+							});
+		data.dispatcher = await data.connection.playStream(stream)
+							.on('error', err => {
+								console.log('Error occurred in stream dispatcher:', err);
+								client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
+								client.audio.finish(client, active, this)
+							});
+		data.dispatcher.guildID = data.guildID;
+
+		data.dispatcher.once('end', function() {
+			client.audio.finish(client, active, this);
+		});
+}
+client.audio.finish = (client, active, dispatcher) => {
+  var fetched = active.get(dispatcher.guildID);
+		fetched.queue.shift();
+		if(fetched.queue.length > 0) {
+			active.set(dispatcher.guildID, fetched);
+			client.audio.play(client, active, fetched);
+		} else {
+			active.delete(dispatcher.guildID);
+
+			var vc = client.guilds.get(dispatcher.guildID).me.voiceChannel;
+			if (vc) vc.leave();
+		}
 }
 
 client.login(process.env.TOKEN);
