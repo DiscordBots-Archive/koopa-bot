@@ -1,20 +1,20 @@
 const { Command } = require('discord.js-commando');
 
-module.exports = class PlayAudioCommand extends Command {
+module.exports = class SkipAudioCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'play',
+            name: 'skip',
             group: 'audio',
-            memberName: 'play',
-            description: 'Plays the music at the given YouTube link',
-            examples: ['play https://youtube.com/someVideo12'],
-            args: [
+            memberName: 'skip',
+            description: 'Adds a vote (out of 2) to skip the currently playing music.',
+            examples: ['play'],
+            /*args: [
 				      {
 				      	key: 'link',
 				      	prompt: 'If you don\'t give me a link, I\'ll be hungry and won\'t play music!',
 				      	type: 'string'
 				      }
-			      ]
+			      ]*/
         });
     }
 
