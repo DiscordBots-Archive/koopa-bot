@@ -20,11 +20,13 @@ module.exports = class SkipAudioCommand extends Command {
 
     run(msg) {
       var server = this.client.audio.servers[msg.guild.id];
+      if (!server.queue[0]) return msg.reply("you want me to skip... **_nothing_**?");
       server.skips++
       if (server.skips == 1) {
-        
+        msg.reply("vote added, but I need 1 more vote to skip the song (y'know, to be fair)");
       } else if (server.skips == 2) {
-        
+        server.skips = 0
+        if (server.dispatcher) server.dispatcher.end();
       }
     }
 };
