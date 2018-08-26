@@ -144,4 +144,6 @@ client.on('ready', () => {
     client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
 });
 
+
+
 client.login(process.env.TOKEN);
