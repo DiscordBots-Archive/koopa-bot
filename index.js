@@ -1,6 +1,9 @@
-const { CommandoClient } = require("discord.js-commando");
+const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const { RichEmbed } = require("discord.js");
+const sqlite = require('sqlite');
 const path = require('path');
+
+sqlite.open(path.join(__dirname, 'score.sqlite'));
 
 // Stayin' alive
 const http = require('http');
