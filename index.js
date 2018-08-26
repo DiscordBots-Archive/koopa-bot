@@ -16,7 +16,7 @@ setInterval(() => {
 
 const client = new CommandoClient({
     commandPrefix: '!',
-//  unknownCommandResponse: false,
+    unknownCommandResponse: false,
     owner: '280399026749440000',
     disableEveryone: true
 });
@@ -24,7 +24,9 @@ const client = new CommandoClient({
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['group1', 'Our First Command Group']
+        ['group1', 'Our First Command Group'],
+        ["roles", "Roles"],
+        ["admin", "Administration"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
