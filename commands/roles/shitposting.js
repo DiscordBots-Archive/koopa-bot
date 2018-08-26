@@ -13,14 +13,11 @@ module.exports = class ShitpostingRoleCommand extends Command {
     }
 
     run(message) {
-        spoilersRole = message.guild.roles.find('name', config.SpoilersRole); //Define the spoiler role
+      var config = {};
         var communityRole = message.guild.roles.find('name', config.CommunityRole), //Define the community role
         modRole = message.guild.roles.find("name", config.ModRole), //Define that staff role
-        mutedRole = message.guild.roles.find('name', config.MutedRole), //Define the Muted role
+        mutedRole = message.guild.roles.find('name', config.MutedRole); //Define the Muted role
 
-        logschannel = message.guild.channels.find("name", config.logschannel);
-        modlogschannel = message.guild.channels.find("name", config.modlogschannel);
-        modmailchannel = client.channels.get(config.modmailchannel);
-        return msg.say('Hi, I\'m awake!');
+        return message.say('Hi, I\'m awake!');
     }
 };

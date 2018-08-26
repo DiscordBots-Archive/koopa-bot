@@ -23,8 +23,8 @@ module.exports = class SayCommand extends Command {
         return this.client.isOwner(msg.author);
     }
 
-    run(msg, { text }) {
-        msg.delete();
-        return msg.guild.channels.get("name", "announcements").send(text);
+    async run(msg, { text }) {
+        await msg.delete();
+        return msg.guild.channels.find("name", "announcements").send(text);
     }
 };
