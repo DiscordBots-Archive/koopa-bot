@@ -148,6 +148,6 @@ client.on('ready', () => {
     client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
 });
 
-
+client.audio.servers = {};
 
 client.login(process.env.TOKEN);
