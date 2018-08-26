@@ -52,7 +52,7 @@ client.on('guildMemberAdd', member => {
 client.on("messageReactionAdd", async (reaction, user) => {
     const message = reaction.message;
      // This is the first check where we check to see if the reaction is not the unicode star emote.
-    if (reaction.emoji.name !== '⭐') return message.send(/"not a");
+    if (reaction.emoji.name !== '⭐' || reaction.emoji.name !== "star") return message.send("not a star");
     // This is our final check, checking to see if message was sent by a bot.
     if (message.author.bot) return message.channel.send(`${user}, you cannot star bot messages.`);
     // Here we get the starboard channel from the guilds settings. 
