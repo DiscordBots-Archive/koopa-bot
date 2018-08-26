@@ -3,11 +3,11 @@ const { Command } = require('discord.js-commando');
 module.exports = class StopAudioCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'skip',
+            name: 'stop',
             group: 'audio',
-            memberName: 'skip',
-            description: 'Adds a vote (out of 2) to skip the currently playing music.', // Thanks NYoshi370
-            examples: ['skip'],
+            memberName: 'stop',
+            description: 'Stops the music.', // Thanks NYoshi370
+            examples: ['stop'],
             /*args: [
 				      {
 				      	key: 'link',
@@ -22,6 +22,7 @@ module.exports = class StopAudioCommand extends Command {
       var server = this.client.audio.servers[msg.guild.id];
       server.queue = []; // empty the queue
       if (server.dispatcher) server.dispatcher.end();
-      
+      msg.reply("music stopped");
+      server.connection.disconnect();
     }
 };

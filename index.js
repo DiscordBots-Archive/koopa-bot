@@ -155,6 +155,8 @@ client.audio.servers = {};
 client.audio.play = (connection, message) => {
   var server = client.audio.servers[message.guild.id];
   
+  server.connection = connection;
+  
   server.dispatcher = connection.playStream(ytdl(server.queue[0], { filter: "audioonly" }));
   
   server.queue.shift();
