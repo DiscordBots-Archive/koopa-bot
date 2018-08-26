@@ -18,16 +18,29 @@ module.exports = class SkipAudioCommand extends Command {
         });
     }
 
-    run(msg) {
-      var server = this.client.audio.servers[msg.guild.id];
-      if (!server.queue[0]) return msg.reply("you want me to skip... **_nothing_**?");
-      server.skips++
-      if (server.skips == 1) {
-        server.skippers.push();
-        msg.reply("vote added, but I need 1 more vote to skip the song (y'know, to be fair)");
-      } else if (server.skips == 2) {
-        server.skips = 0
-        if (server.dispatcher) server.dispatcher.end();
-      }
+    run(message) {
+      var voiceChannel = message.member.voiceChannel;
+			if (!voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
+
+			var fetched = this.client.audio.active.get(message.guild.id);
+			if(!fetched) return message.reply("there isn't any music playing in the server");
+
+			let uservcCount = message.member.voiceChannel.members.size;
+			let requiredToSkip = Math.ceil(uservcCount/2);
+
+			if(!fetched.queue[0].voteSkips) fetched.queue[0].voteSkips = [];
+
+			if (fetched.queue[0].voteSkips.includes(message.member.id))
+				return message.reply(`you already voted to skip! ${fetched.queue[0].voteSkips.length}/${requiredToSkip} required.`)
+
+			fetched.queue[0].voteSkips.push(message.member.id);
+			
+			this.client.audio.active.set(message.guild.id, fetched);
+			if(fetched.queue[0].voteSkips.length >= requiredToSkip) {
+				message.channel.send('Song skipped');
+				return fetched.dispatcher.emit('end');
+			}
+
+			message.reply(`your vote has been added. ${fetched.queue[0].voteSkips.length}/${requiredToSkip} required`);
     }
 };

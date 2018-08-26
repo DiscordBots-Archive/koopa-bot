@@ -18,11 +18,12 @@ module.exports = class StopAudioCommand extends Command {
         });
     }
 
-    run(msg) {
-      var server = this.client.audio.servers[msg.guild.id];
-      server.queue = []; // empty the queue
-      if (server.dispatcher) server.dispatcher.end();
-      msg.reply("music stopped");
-      if (msg.guild.voiceConnection) msg.guild.voiceConnection.disconnect();
+    run(message) {
+      if (!message.member.voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
+
+			if(message.guild.voiceConnection) {
+				message.guild.voiceConnection.disconnect();
+				return message.reply("I have stopped playing music");
+			}
     }
 };

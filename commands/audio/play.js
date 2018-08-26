@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const YTDL = require("ytdl-core");
 
 module.exports = class PlayAudioCommand extends Command {
     constructor(client) {
@@ -18,19 +19,38 @@ module.exports = class PlayAudioCommand extends Command {
         });
     }
 
-    run(msg, { link }) {
-      if(!msg.member.voiceChannel) return msg.reply("you are not in a voice channel, *are you?* :eyes:");
-      if(!this.client.audio.servers[msg.guild.id]) this.client.audio.servers[msg.guild.id] = {
-        queue: [],
-        np: null,
-        skips: 0,
-        skippers: []
-      }
-      var server = this.client.audio.servers[msg.guild.id];
-      server.queue.push(link);
-      msg.reply("your video has been added to the queue!");
-      if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(connection => {
-        this.client.audio.play(connection, msg);
-      });
+    async run(message, { link }) {
+      var voiceChannel = await message.member.voiceChannel;
+			if (!voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
+
+			var permissions = await voiceChannel.permissionsFor(message.client.user);
+			if (!permissions.has('CONNECT')) return message.reply("I can't join voice channels. Make sure I have the proper permissions.").catch(console.error);
+			if (!permissions.has('SPEAK'))	 return message.reply("I can't speak in this server. Make sure I have the proper permissions.").catch(console.error);
+
+      // commando logic
+			// if (!args[0])	return message.reply("Please specify a link");
+
+			let validate = await YTDL.validateURL(link);
+			if(!validate) return message.reply("please input a valid URL following the command");
+
+			let info = await YTDL.getInfo(link);
+
+			let data = this.client.audio.active.get(message.guild.id) || {};
+
+			if (!data.connection) data.connection = await message.member.voiceChannel.join();
+			if (!data.queue) data.queue = [];
+			data.guildID = message.guild.id;
+
+			data.queue.push({
+				songTitle: info.title,
+				requester: message.author.tag,
+				url: link,
+				announceChannel: message.channel.id
+			});
+
+			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
+			else					message.channel.send(`Added To Queue: ${info.title} | Requested By: ${message.author.tag}`);
+
+			this.client.audio.active.set(message.guild.id, data);
     }
 };
