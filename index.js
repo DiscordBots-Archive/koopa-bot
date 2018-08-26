@@ -35,7 +35,7 @@ client.registry
         ["roles", "Roles"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
-        ["audio", "Audio & Music"]
+        ["audio", "Audio & Music (HUGE shoutout to NightYoshi370#5597 for his help)"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()

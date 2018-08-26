@@ -5,9 +5,9 @@ module.exports = class RebootCommand extends Command {
         super(client, {
             name: 'reboot',
             group: 'owner',
-            aliases: ["restart"],
+            aliases: ["restart", "respawn"],
             memberName: 'reboot',
-            description: 'Enables shitposting access.',
+            description: 'Reboots the bot.',
             examples: ['reboot'],
             guildonly: true
         });
@@ -17,7 +17,8 @@ module.exports = class RebootCommand extends Command {
         return this.client.isOwner(msg.author);
     }
 
-    run(message) {
-        process.exit();
+    async run(message) {
+      await message.channel.send("Koopa is respawning...");
+      process.exit();
     }
 };
