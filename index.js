@@ -32,9 +32,13 @@ client.registry
     .registerDefaultCommands()
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
+client.on("guildMemberAdd", member => {
+    
+});
+
 client.on('ready', () => {
     console.log('Logged in!');
-    client.user.setActivity('game');
+    client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
 });
 
 client.login(process.env.TOKEN);

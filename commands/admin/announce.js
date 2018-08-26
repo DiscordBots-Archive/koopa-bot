@@ -25,6 +25,6 @@ module.exports = class SayCommand extends Command {
 
     run(msg, { text }) {
         msg.delete();
-        return msg.guild.channels.get("name", "announc").say(text);
+        return msg.guild.channels.get("name", "announcements").send(text);
     }
 };
