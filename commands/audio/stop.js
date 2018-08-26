@@ -23,6 +23,6 @@ module.exports = class StopAudioCommand extends Command {
       server.queue = []; // empty the queue
       if (server.dispatcher) server.dispatcher.end();
       msg.reply("music stopped");
-      server.connection.disconnect();
+      if (msg.guild.voiceConnection) msg.guild.voiceConnection.disconnect();
     }
 };
