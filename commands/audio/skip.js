@@ -38,7 +38,8 @@ module.exports = class SkipAudioCommand extends Command {
 			this.client.audio.active.set(message.guild.id, fetched);
 			if(fetched.queue[0].voteSkips.length >= requiredToSkip) {
 				message.channel.send('Song skipped');
-				return fetched.dispatcher.emit('end');
+				fetched.dispatcher.emit('end');
+        return;
 			}
 
 			message.reply(`your vote has been added. ${fetched.queue[0].voteSkips.length}/${requiredToSkip} required`);
