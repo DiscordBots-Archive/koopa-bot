@@ -2,7 +2,8 @@ const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const { RichEmbed } = require("discord.js");
 //const sqlite = require('sqlite');
 const path = require('path');
-const ytdl = require("ytdl-core");
+const YTDL = require("ytdl-core");
+var ytdl = YTDL;
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -151,7 +152,7 @@ client.on('ready', () => {
 });
 
 client.audio = {};
-client.audio.servers = {};
+client.audio.active = new Map();
 client.audio.play = (connection, message) => {
   var server = client.audio.servers[message.guild.id];
   
