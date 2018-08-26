@@ -24,8 +24,8 @@ module.exports = class PlayAudioCommand extends Command {
         queue: []
       }
       var server = this.client.audio.servers[msg.guild.id];
-      if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(chn => {
-        
+      if(!msg.guild.voiceConnection) msg.member.voiceChannel.join().then(connection => {
+        play(connection, msg);
       });
     }
 };

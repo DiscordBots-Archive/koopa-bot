@@ -2,6 +2,7 @@ const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const { RichEmbed } = require("discord.js");
 //const sqlite = require('sqlite');
 const path = require('path');
+const ytdl = require("ytdl-core");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -33,7 +34,7 @@ client.registry
         ["roles", "Roles"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
-        ["audio", "Audio & Mus
+        ["audio", "Audio & Music"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
@@ -149,6 +150,19 @@ client.on('ready', () => {
     client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
 });
 
+client.audio = {};
 client.audio.servers = {};
+client.audio.play = (connection, message) => {
+  var server = client.audio.servers[message.guild.id];
+  
+  server.dispatcher = connection.playStream(ytdl(server.queue[0], { filter: "audioonly" }));
+  
+  server.queue.shift();
+  
+  server.dispatcher.on("end", () => {
+    if (server.queue[0]) client.audio.play(connection, message)
+    else connection.disconnect();
+  });
+}
 
 client.login(process.env.TOKEN);
