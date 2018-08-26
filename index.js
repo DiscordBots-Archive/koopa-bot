@@ -161,7 +161,7 @@ client.audio.play = async (client, active, data) => {
 		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
 							.on('error', err => {
 								console.log('Error occurred when streaming video:', err);
-								playing.then(msg => msg.edit(`:x: Couldn't play .`));
+								playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}.`));
 								client.audio.finish(client, active, this);
 							});
 		data.dispatcher = await data.connection.playStream(stream)
