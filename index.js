@@ -31,7 +31,8 @@ client.registry
     .registerGroups([
         ['group1', 'Our First Command Group'],
         ["roles", "Roles"],
-        ["admin", "Administration"]
+        ["admin", "Administration"],
+        ["owner", "Owner Only"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
