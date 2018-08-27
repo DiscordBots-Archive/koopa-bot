@@ -31,7 +31,7 @@ module.exports = class ReplyCommand extends Command {
         var embed = new Discord.RichEmbed()
             .setColor(member.highestRole.color)
             .setTitle(`Info for user ${member.displayName} (${member.user.tag}) | ID ${member.user.id}`)
-            .addField(;
+            ;
       
         return msg.embed(embed);
         
