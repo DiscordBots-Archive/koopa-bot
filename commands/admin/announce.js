@@ -20,7 +20,7 @@ module.exports = class SayCommand extends Command {
         });    
     }
 
-    hasPermission(msg) {
+    ahasPermission(msg) {
         return this.client.isOwner(msg.author);
     }
 

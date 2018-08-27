@@ -6,7 +6,7 @@ module.exports = class SkipAudioCommand extends Command {
             name: 'skip',
             group: 'audio',
             memberName: 'skip',
-            description: 'Adds a vote (out of 2) to skip the currently playing music.', // Thanks NYoshi370
+            description: 'Adds a vote to skip the currently playing music.', // Thanks NYoshi370
             examples: ['skip'],
             /*args: [
 				      {
