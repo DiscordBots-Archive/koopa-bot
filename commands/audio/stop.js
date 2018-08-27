@@ -6,6 +6,7 @@ module.exports = class StopAudioCommand extends Command {
             name: 'stop',
             group: 'audio',
             memberName: 'stop',
+            aliases: ["stahp"],
             description: 'Stops the music.', // Thanks NYoshi370
             examples: ['stop'],
             /*args: [
