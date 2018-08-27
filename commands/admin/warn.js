@@ -61,13 +61,19 @@ module.exports = class WarningCommand extends Command {
       var warnuser = user.user
       var memberping = user
       var arg1 = reason
-      var user
+      var username = warnuser.username
       
       try {
         var logschannel = message.guild.channels.find("name", "logs");
       } catch (e) {
         message.guild.createChannel("logs", "text");
         var logschannel = message.guild.channels.find("name", "logs");
+      }
+      try {
+        var modlogschannel = message.guild.channels.find("name", "mod-logs");
+      } catch (e) {
+        message.guild.createChannel("mod-logs", "text");
+        var modlogschannel = message.guild.channels.find("name", "mod-logs");
       }
 
 			sqlite.get(`SELECT * FROM warns WHERE userId ="${warnuser}"`).then(row => {
@@ -93,7 +99,7 @@ module.exports = class WarningCommand extends Command {
 				});
 			}).catch(() => {
 				sqlite.run("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT)").then(() => {
-					sqlite.run("INSERT INTO warns (userId, reason, moderator, time) VALUES (?, ?, ?, ?)", [memberping.id, arg1, message.author.id, getDateTime()]).then(() => {
+					sqlite.run("INSERT INTO warns (userId, reason, moderator, time) VALUES (?, ?, ?, ?)", [memberping.id, arg1, message.author.id, this.getDateTime()]).then(() => {
 						if(logschannel)
 							logschannel.send(`${memberping.user.tag} **[${memberping.id}]** was warned by ${message.author.tag} **[${message.author.id}]** for ${arg1} at ${message.createdAt} in ${message.channel}`);
 
@@ -111,7 +117,7 @@ module.exports = class WarningCommand extends Command {
 							modlogschannel.send(embed);
 						}
 						message.channel.send(`***${warnuser.user.tag} was warned!***`)
-						warneduser.send(`You have been warned in ${message.guild.name} by ${message.author.username} for: ${arg1}.`)
+						user.user.send(`You have been warned in ${message.guild.name} by ${message.author.username} for: ${arg1}.`)
 					});
 				}).catch(error => {
 					console.error(error);
