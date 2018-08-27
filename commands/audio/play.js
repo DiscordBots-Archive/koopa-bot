@@ -12,7 +12,7 @@ module.exports = class PlayAudioCommand extends Command {
             args: [
 				      {
 				      	key: 'link',
-				      	prompt: 'If you don\'t give me a link, I\'ll be hungry and won\'t play music!',
+				      	prompt: 'if you don\'t feed me with a link, I\'ll be hungry and won\'t play music!',
 				      	type: 'string'
 				      }
 			      ]
@@ -21,7 +21,7 @@ module.exports = class PlayAudioCommand extends Command {
 
     async run(message, { link }) {
       var voiceChannel = await message.member.voiceChannel;
-			if (!voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
+			if (!voiceChannel) return message.reply("you're not in a voice channel, *are ya*? :eyes:\nConnect to a voice channel!");
 
 			var permissions = await voiceChannel.permissionsFor(message.client.user);
 			if (!permissions.has('CONNECT')) return message.reply("I can't join voice channels. Make sure I have the proper permissions.").catch(console.error);
@@ -49,7 +49,7 @@ module.exports = class PlayAudioCommand extends Command {
 			});
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
-			else					message.channel.send(`Added To Queue: ${info.title} | Requested By: ${message.author.tag}`);
+			else message.channel.send(`Added to Queue: ${info.title} | Requested by: ${message.author.tag}`);
 
 			this.client.audio.active.set(message.guild.id, data);
     }
