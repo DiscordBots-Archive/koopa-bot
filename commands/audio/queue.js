@@ -30,7 +30,7 @@ module.exports = class StopAudioCommand extends Command {
 				.setTitle("Music List")
 				.setColor("#b30000")
 				.setTimestamp(new Date())
-				.setDescription(`__**Now Playing**__\n**${nowPlaying.songTitle}**\n**Requested By:** *${nowPlaying.requester}*`)
+				.setDescription(`__**NOW PLAYING**__\n\n**${nowPlaying.songTitle}**\n*Requested by:* *__${nowPlaying.requester}__*`)
 
 			for (var i = 1; i < queue.length; i++) {
 				embed.addField(queue[i].songTitle, `Requested By ${queue[i].requester}`); 
