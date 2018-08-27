@@ -8,21 +8,25 @@ module.exports = class ReplyCommand extends Command {
             memberName: 'userinfo',
             aliases: ["uinfo", "ui"],
             description: 'Replies with info about user.',
-            examples: ['userinfo @User', 'userinfo User']
+            examples: ['userinfo @User', 'userinfo User'],
+            args: [
+              {
+                key: "mem",
+                prompt: "",
+                default: "",
+                type: "member"
+              }
+            ]
         });
     }
 
-    run(msg) {
-        const args = msg.content.slice(this.client.commandPrefix.length).trim().split(/ +/g);
-        args.shift();
-        if (msg.mentions) {
-          var user = msg.mentions.members.first();
-        } else if (!args[0]) {
-          var user = msg.member;
+    async run(msg, { mem }) {
+        if (!mem) {
+          var member = await msg.guild.members.fetch(msg.author);
         } else {
-          var user = msg.guild.members.find("name", args[0]);
+          var member = mem;
         }
         
-        return msg.say(`User ${user.displayName || msg.author.username} (ID: ${user.user.id}`);
+        return msg.say(`User ${member.displayName || msg.author.username} (ID: ${member.user.id}`);
     }
 };
