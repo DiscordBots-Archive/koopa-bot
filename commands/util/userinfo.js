@@ -22,7 +22,7 @@ module.exports = class ReplyCommand extends Command {
 
     async run(msg, { mem }) {
         if (!mem) {
-          var member = await msg.guild.members.fetch(msg.author);
+          var member = await msg.guild.members.get(msg.author.id);
         } else {
           var member = mem;
         }
