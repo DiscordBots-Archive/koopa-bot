@@ -4,7 +4,7 @@ const sqlite = require('sqlite');
 
 sqlite.open("./../warns.sqlite3");
 
-module.exports = class SayCommand extends Command {
+module.exports = class WarningCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'warn',
@@ -34,8 +34,10 @@ module.exports = class SayCommand extends Command {
         return this.client.isOwner(msg.author) || msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa").id);
     }
 
-    async run(msg, { user, reason }) {
-      var warnuser = user
+    async run(message, { user, reason }) {
+      var warnuser = user.user
+      var memberping = user
+      var arg1 = reason
 
 			sqlite.get(`SELECT * FROM warns WHERE userId ="${warnuser}"`).then(row => {
 				sqlite.run("INSERT INTO warns (userId, reason, moderator, time) VALUES (?, ?, ?, ?)", [memberping.id, arg1, message.author.id, getDateTime()]).then(() => {
