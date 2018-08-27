@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const Discord = require("discord.js");
 
 module.exports = class ReplyCommand extends Command {
     constructor(client) {
@@ -26,7 +27,13 @@ module.exports = class ReplyCommand extends Command {
         } else {
           var member = mem;
         }
+      
+        var embed = new Discord.RichEmbed()
+            .setColor(member.highestRole.color)
+            .setTitle(`Info for user ${member.displayName} (${member.user.tag}) | ID ${member.user.id}`);
+      
+        return msg.embed(embed);
         
-        return msg.say(`User ${member.displayName || msg.author.username} (ID: ${member.user.id}`);
+        // return msg.say(this.member = await this.guild.members.fetch(this.author););
     }
 };
