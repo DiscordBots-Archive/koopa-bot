@@ -43,6 +43,7 @@ client.registry
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.on('guildMemberAdd', member => {
+  if (member.user.bot) return;
 	var welcomechannel = member.guild.channels.find('name', 'general-talk');
 	if (!welcomechannel) return;
 
