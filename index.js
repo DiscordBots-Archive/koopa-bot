@@ -1,6 +1,6 @@
 const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const { RichEmbed } = require("discord.js");
-//const sqlite = require('sqlite');
+const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
 var ytdl = YTDL;
@@ -26,6 +26,10 @@ const client = new CommandoClient({
     unknownCommandResponse: false,
     owner: '280399026749440000',
     disableEveryone: true
+});
+
+sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
+    client.setProvider(new SQLiteProvider(db));
 });
 
 client.registry
