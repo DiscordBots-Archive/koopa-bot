@@ -20,8 +20,8 @@ module.exports = class SayCommand extends Command {
         });    
     }
 
-    ahasPermission(msg) {
-        return this.client.isOwner(msg.author);
+    hasPermission(msg) {
+        return this.client.isOwner(msg.author) || msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa").id);
     }
 
     async run(msg, { text }) {
