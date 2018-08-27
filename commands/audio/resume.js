@@ -3,12 +3,11 @@ const { Command } = require('discord.js-commando');
 module.exports = class SkipAudioCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'pause',
-            aliases: ["sh", "shh", "shhh", "shhhh"],
+            name: 'resume',
             group: 'audio',
-            memberName: 'pause',
-            description: 'Adds a vote to pause the currently playing music.', // Thanks NYoshi370
-            examples: ['pause'],
+            memberName: 'resume',
+            description: 'Adds a vote to resume the currently paused music.', // Thanks NYoshi370
+            examples: ['resume'],
             /*args: [
 				      {
 				      	key: 'link',
@@ -24,25 +23,25 @@ module.exports = class SkipAudioCommand extends Command {
 			if (!voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
 
 			var fetched = this.client.audio.active.get(message.guild.id);
-			if(!fetched) return message.reply("pausing a non-existent song is a great move.");
+			if(!fetched) return message.reply("resuming a non-existent song is an excellent thought. Oh well...");
 
 			let uservcCount = message.member.voiceChannel.members.size;
-			let requiredToPause = Math.ceil(uservcCount/2);
+			let requiredToRes = Math.ceil(uservcCount/2);
 
-			if(!fetched.queue[0].votePause) fetched.queue[0].votePause = [];
+			if(!fetched.queue[0].voteRes) fetched.queue[0].voteRes = [];
 
-			if (fetched.queue[0].votePause.includes(message.member.id))
-				return message.reply(`you already voted to pause! ${fetched.queue[0].votePause.length}/${requiredToPause} required.`)
+			if (fetched.queue[0].voteRes.includes(message.member.id))
+				return message.reply(`you already voted to resume! ${fetched.queue[0].voteRes.length}/${requiredToRes} required.`)
 
-			fetched.queue[0].votePause.push(message.member.id);
+			fetched.queue[0].voteRes.push(message.member.id);
 			
 			this.client.audio.active.set(message.guild.id, fetched);
-			if(fetched.queue[0].votePause.length >= requiredToPause) {
-				message.channel.send('Song skipped');
-				fetched.dispatcher.pause();
+			if(fetched.queue[0].voteRes.length >= requiredToRes) {
+				message.channel.send('Song resumed');
+				fetched.dispatcher.resume();
         return;
 			}
 
-			message.reply(`your vote has been added. ${fetched.queue[0].votePause.length}/${requiredToPause} required`);
+			message.reply(`your vote has been added. ${fetched.queue[0].voteRes.length}/${requiredToRes} required`);
     }
 };
