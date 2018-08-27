@@ -33,14 +33,45 @@ module.exports = class WarningCommand extends Command {
     hasPermission(msg) {
         return this.client.isOwner(msg.author) || msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa").id);
     }
+  
+    getDateTime() {
+	var date = new Date();
+
+	var hour = date.getHours();
+	hour = (hour < 10 ? "0" : "") + hour;
+
+	var min  = date.getMinutes();
+	min = (min < 10 ? "0" : "") + min;
+
+	var sec  = date.getSeconds();
+	sec = (sec < 10 ? "0" : "") + sec;
+
+	var year = date.getFullYear();
+
+	var month = date.getMonth() + 1;
+	month = (month < 10 ? "0" : "") + month;
+
+	var day  = date.getDate();
+	day = (day < 10 ? "0" : "") + day;
+
+	return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+}
 
     async run(message, { user, reason }) {
       var warnuser = user.user
       var memberping = user
       var arg1 = reason
+      var user
+      
+      try {
+        var logschannel = message.guild.channels.find("name", "logs");
+      } catch (e) {
+        message.guild.createChannel("logs", "text");
+        var logschannel = message.guild.channels.find("name", "logs");
+      }
 
 			sqlite.get(`SELECT * FROM warns WHERE userId ="${warnuser}"`).then(row => {
-				sqlite.run("INSERT INTO warns (userId, reason, moderator, time) VALUES (?, ?, ?, ?)", [memberping.id, arg1, message.author.id, getDateTime()]).then(() => {
+				sqlite.run("INSERT INTO warns (userId, reason, moderator, time) VALUES (?, ?, ?, ?)", [memberping.id, arg1, message.author.id, this.getDateTime()]).then(() => {
 						if(logschannel)
 							logschannel.send(`${warnuser.user.tag} **[${memberping.id}]** was warned by ${message.author.tag} **[${message.author.id}]** for ${arg1} at ${message.createdAt} in ${message.channel}`);
 
