@@ -20,11 +20,12 @@ module.exports = class SayCommand extends Command {
         });    
     }
 
-    hasPermission(msg) {
-        return this.client.isOwner(msg.author) || msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa").id);
-    }
+    /*hasPermission(msg) {
+        return this.client.isOwner(msg.author) || msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa"));
+    }*/
 
     async run(msg, { text }) {
+        if (!this.client.isOwner(msg.author) || !msg.member.roles.has(msg.guild.roles.find("name", "Magikoopa"))) return msg.reply("you don't have the permission to use this!");
         await msg.delete();
         return msg.guild.channels.find("name", "announcements").send(text);
     }
