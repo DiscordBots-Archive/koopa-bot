@@ -280,4 +280,7 @@ function extension(reaction, attachment) {
   return attachment;
 }
 
+client.scores = {}
+client.scores.table = sql;
+
 client.login(process.env.TOKEN);
