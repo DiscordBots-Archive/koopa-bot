@@ -25,17 +25,22 @@ module.exports = class WarningCommand extends Command {
     }
 
     run(msg, { member, reason }) {
-      this.client.warns.set({
+      this.client.warns.set.run({
         id: member.user.id,
         reason: reason,
         moderator: msg.author.id,
         time: this.client.getDateTime()
       });
+      let logs, modlogs;
       if (msg.guild.id == "481369156554326023") {
-        
-      } else if (msg.guild.id== "") {
-        
+        logs = msg.guild.channels.find("name", "logs");
+        modlogs = msg.guild.channels.find("name", "modlogs");
+      } else if (msg.guild.id== "472214037430534167") {
+        modlogs = msg.guild.channels.find("name", "koopa-logs");
+        logs = msg.guild.channels.find("name", "samplasion-development");
       }
-      msg.embed(this.client.warns.log(member, msg.member, reason));
+      msg.say(":ok: User warned!")
+      modlogs.send(this.client.warns.log(member, msg.member, reason));
+      logs.send(`${member.user.tag} (ID ${member.id}) was warned by ${msg.author.tag} (ID ${msg.author.id}) for reason: \`${reason}\` in ${msg.channel}`);
     }
 };
