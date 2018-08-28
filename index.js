@@ -3,7 +3,9 @@ const { RichEmbed } = require("discord.js");
 const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
-var ytdl = YTDL;d
+var ytdl = YTDL;
+const SQLite = require("better-sqlite3");
+const sql = new SQLite('./scores.sqlite');
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -62,6 +64,77 @@ client.on('guildMemberAdd', member => {
 
 	welcomechannel.send(embed);
 });
+
+client.on('ready', () => {
+    console.log('Logged in!');
+    client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
+  
+  // Set up the SQL points database
+  // Check if the table "points" exists.
+  const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
+  if (!table['count(*)']) {
+    // If the table isn't there, create it and setup the database correctly.
+    sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run();
+    // Ensure that the "id" row is always unique and indexed.
+    sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
+    sql.pragma("synchronous = 1");
+    sql.pragma("journal_mode = wal");
+  }
+
+  // And then we have two prepared statements to get and set the score data.
+  client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
+  client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
+});
+
+client.on("message", message => {
+  // client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
+  
+  // client.on(string, function(...args)) refers to Discord.Client,
+  // not Discord.js-Commando.CommandoClient
+  
+  if (message.guild) {
+    if (message.channel.name =="shitposting") return;
+  }
+});
+
+client.audio = {};
+client.audio.active = new Map();
+client.audio.play = async (client, active, data) => {
+  const playing = client.channels.get(data.queue[0].announceChannel).send(
+			`Now Playing: ${data.queue[0].songTitle} | Requested by: ${data.queue[0].requester}`
+		);
+
+		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
+							.on('error', err => {
+								console.log('Error occurred when streaming video:', err);
+								playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}.`));
+								client.audio.finish(client, active, this);
+							});
+		data.dispatcher = await data.connection.playStream(stream)
+							.on('error', err => {
+								console.log('Error occurred in stream dispatcher:', err);
+								client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
+								client.audio.finish(client, active, this)
+							});
+		data.dispatcher.guildID = data.guildID;
+
+		data.dispatcher.once('end', function() {
+			client.audio.finish(client, active, this);
+		});
+}
+client.audio.finish = (client, active, dispatcher) => {
+  var fetched = active.get(dispatcher.guildID);
+		fetched.queue.shift();
+		if(fetched.queue.length > 0) {
+			active.set(dispatcher.guildID, fetched);
+			client.audio.play(client, active, fetched);
+		} else {
+			active.delete(dispatcher.guildID);
+
+			var vc = client.guilds.get(dispatcher.guildID).me.voiceChannel;
+			if (vc) vc.leave();
+		}
+}
 
 client.on("messageReactionAdd", async (reaction, user) => {
     const message = reaction.message;
@@ -152,53 +225,5 @@ function extension(reaction, attachment) {
   if (!image) return '';
   return attachment;
 }
-
-client.on('ready', () => {
-    console.log('Logged in!');
-    client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
-});
-
-client.audio = {};
-client.audio.active = new Map();
-client.audio.play = async (client, active, data) => {
-  const playing = client.channels.get(data.queue[0].announceChannel).send(
-			`Now Playing: ${data.queue[0].songTitle} | Requested by: ${data.queue[0].requester}`
-		);
-
-		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
-							.on('error', err => {
-								console.log('Error occurred when streaming video:', err);
-								playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}.`));
-								client.audio.finish(client, active, this);
-							});
-		data.dispatcher = await data.connection.playStream(stream)
-							.on('error', err => {
-								console.log('Error occurred in stream dispatcher:', err);
-								client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
-								client.audio.finish(client, active, this)
-							});
-		data.dispatcher.guildID = data.guildID;
-
-		data.dispatcher.once('end', function() {
-			client.audio.finish(client, active, this);
-		});
-}
-client.audio.finish = (client, active, dispatcher) => {
-  var fetched = active.get(dispatcher.guildID);
-		fetched.queue.shift();
-		if(fetched.queue.length > 0) {
-			active.set(dispatcher.guildID, fetched);
-			client.audio.play(client, active, fetched);
-		} else {
-			active.delete(dispatcher.guildID);
-
-			var vc = client.guilds.get(dispatcher.guildID).me.voiceChannel;
-			if (vc) vc.leave();
-		}
-}
-
-client.on("message", message => {
-  client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
-});
 
 client.login(process.env.TOKEN);
