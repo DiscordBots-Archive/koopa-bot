@@ -3,7 +3,7 @@ const { RichEmbed } = require("discord.js");
 const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
-var ytdl = YTDL;
+var ytdl = YTDL;d
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
