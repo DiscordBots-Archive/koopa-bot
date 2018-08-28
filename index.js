@@ -360,6 +360,17 @@ client.on("log", (chn, type, member, executor, reason) => {
   chn.send(embed);
 });
 
+client.warns.log = (member, warner, reason) => {
+  return new RichEmbed()
+        .setColor(15844367)
+        .setTitle(`:warning: ${member.user.tag} was warned`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setAuthor(client.user.tag, client.user.displayAvatarURL)
+        .setTimestamp(Date.now())
+        .addField(":pencil: Moderator", `<@${warner.user.id}> (${warner.user.tag})`)
+        .addField(":biohazard: Reason", reason)
+}
+
 client.getDateTime = () => {
 	var date = new Date();
 

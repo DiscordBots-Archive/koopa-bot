@@ -25,6 +25,17 @@ module.exports = class WarningCommand extends Command {
     }
 
     run(msg, { member, reason }) {
-        return msg.say("Warned " + member.user.tag + " for reason: " + reason + "\nHihihi");
+      this.client.warns.set({
+        id: member.user.id,
+        reason: reason,
+        moderator: msg.author.id,
+        time: this.client.getDateTime()
+      });
+      if (msg.guild.id == "481369156554326023") {
+        
+      } else if (msg.guild.id== "") {
+        
+      }
+      msg.embed(this.client.warns.log(member, msg.member, reason));
     }
 };
