@@ -9,16 +9,31 @@ module.exports = class ReplyCommand extends Command {
             group: 'level',
             memberName: 'points',
             description: 'Replies with a Message.',
-            examples: ['points', 'level']
+            examples: ['points', 'level'],
+            args: [
+              {
+                key: "mem",
+                prompt: "who do you want me to stalk? :eyes:",
+                default: "",
+                type: "member"
+              }
+            ]
         });
     }
 
-    run(msg) {
-        var embed = new RichEmbed()
-          .setAuthor(message.member.displayName, message.author.displayIconURL)
-          .setTitle("Felicitations!")
-          .setDescription("*(sigh)*\n\nYou've leveled UP!")
-          .addField("New Level", curLevel)
-          .setFooter("Samplasion, why are you doing me this?");
+    async run(msg, { mem }) {
+      if (!mem) {
+        var member = await msg.guild.members.get(msg.author.id);
+      } else {
+        var member = mem;
+      }
+      
+      let score = this.client.getScore.get(member.user.id, msg.guild.id);
+      var embed = new RichEmbed()
+          .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
+          .setColor(member.highestRole.color)
+          .setTitle(mem ? mem.displayName + "'s stats" : "Your stats")
+          .addField("Points", score.points, true)
+          .addField("Level", score.level, true)
     }
 };

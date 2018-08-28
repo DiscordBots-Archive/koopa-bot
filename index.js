@@ -96,44 +96,57 @@ client.on("message", message => {
   if (message.guild) {
     // if the channel is shitposting, return (we don't want to
     // let people level up by spamming in #shitposting)
-    if (message.channel.name =="shitposting") return;
-    
-    // get score
-    let score = client.getScore.get(message.author.id, message.guild.id);
-    // if the user doesn't have a score, give him
-    if (!score) {
-      score = {
-        id: `${message.guild.id}-${message.author.id}`,
-        user: message.author.id,
-        guild: message.guild.id,
-        points: 0,
-        level: 1
+    if (message.channel.name =="shitposting") {
+      
+    } else {
+
+      // get score
+      let score = client.getScore.get(message.author.id, message.guild.id);
+      // if the user doesn't have a score, give him
+      if (!score) {
+        score = {
+          id: `${message.guild.id}-${message.author.id}`,
+          user: message.author.id,
+          guild: message.guild.id,
+          points: 0,
+          level: 1
+        }
       }
+      // Increment the score
+      score.points++;
+
+      // Calculate the current level through MATH OMG HALP.
+      // 1 level is 50 messages
+      const curLevel = Math.floor((score.points+50) / 50) // Math.floor(0.1 * Math.sqrt(score.points));
+
+      // Check if the user has leveled up, and let them know if they have:
+      if(score.level < curLevel) {
+        // Level up!
+        var embed = new RichEmbed()
+          .setAuthor(message.member.displayName, message.author.displayAvatarURL)
+          .setColor(message.member.highestRole.color)
+          .setTitle("Felicitations!")
+          .setDescription("*(sigh)*\n\nYou've leveled UP!")
+          .addField("New Level", curLevel)
+          .setFooter("Samplasion, why are you doing me this?");
+        // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
+        message.channel.send(embed)
+      }
+
+      // This looks super simple because it's calling upon the prepared statement!
+      client.setScore.run(score);
+
+      // return message.reply(`You currently have ${score.points} points and are level ${score.level}! (TEST to see if points work)`);
     }
-    // Increment the score
-    score.points++;
-
-    // Calculate the current level through MATH OMG HALP.
-    // 1 level is 50 messages
-    const curLevel = (score.points+50) / 50 // Math.floor(0.1 * Math.sqrt(score.points));
-
-    // Check if the user has leveled up, and let them know if they have:
-    if(score.level < curLevel) {
-      // Level up!
+  }
+  
+  if (message.content.startsWith("!points") {
       var embed = new RichEmbed()
-        .setAuthor(message.member.displayName, message.author.displayIconURL)
-        .setTitle("Felicitations!")
-        .setDescription("*(sigh)*\n\nYou've leveled UP!")
-        .addField("New Level", curLevel)
-        .setFooter("Samplasion, why are you doing me this?");
-      // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
-      message.channel.send(embed)
-    }
-    
-    // This looks super simple because it's calling upon the prepared statement!
-    client.setScore.run(score);
-    
-    return message.reply(`You currently have ${score.points} points and are level ${score.level}! (TEST to see if points work)`);
+          .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
+          .setColor(member.highestRole.color)
+          .setTitle(mem ? mem.displayName + "'s stats" : "Your stats")
+          .addField("Points", score.points, true)
+          .addField("Level", score.level, true)
   }
 });
 
