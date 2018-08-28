@@ -298,26 +298,29 @@ client.on('messageDelete', async (message) => {
   
   const entry = await message.guild.fetchAuditLogs({type: 'MESSAGE_DELETE'}).then(audit => audit.entries.first());
   let user = ""
-    if (entry.extra.channel.id === message.channel.id
+  let av = ""
+  if (entry.extra.channel.id === message.channel.id
       && (entry.target.id === message.author.id)
       && (entry.createdTimestamp > (Date.now() - 5000))
       && (entry.extra.count >= 1)) {
-    user = entry.executor.username
+    user = entry.executor.tag
+    av = entry.executor.displayAvatarURL
   } else { 
-    user = message.author.username
+    user = message.author.tag
+    av = message.author.displayAvatarURL
   }
-  logs.send(`A message was deleted in ${message.channel.name} by ${user}`);
+  // logs.send(`A message was deleted in ${message.channel.name} by ${user}`);
   const embed = new RichEmbed()
         // We set the color to a nice yellow here.
         .setColor(15844367)
-        // Here we use cleanContent, which replaces all mentions in the message with their
-        // equivalent text. For example, an @everyone ping will just display as @everyone, without tagging you!
-        // At the date of this edit (09/06/18) embeds do not mention yet.
-        // But nothing is stopping Discord from enabling mentions from embeds in a future update.
-        .setDescription(message.cleanContent) 
-        .setAuthor(message.author.tag, message.author.displayAvatarURL)
-        .setTimestamp(Date.now() -)
-        .setFooter(`:id: ${message.id}`)
+        .setTitle(":wastebasket: A message was deleted")
+        .setDescription("`" + message.cleanContent + "`") 
+        .addField(":blue_book: Channel", `<#${message.channel.id}> (#${message.channel.name})`)
+        .addField("🆔 Message ID", message.id)
+        .setAuthor(user, av)
+        .setTimestamp(Date.now() - 5000)
+        .setFooter(`What a waste!`)
+  logs.send(embed);
 })
 
 client.login(process.env.TOKEN);
