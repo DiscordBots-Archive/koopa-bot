@@ -4,10 +4,6 @@ const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
 var ytdl = YTDL;
-const Enmap = require("enmap");
-const Provider = require("enmap-sqlite");
-const SQLite = require("better-sqlite3");
-const sql = new SQLite('./scores.sqlite');
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -160,22 +156,6 @@ function extension(reaction, attachment) {
 client.on('ready', () => {
     console.log('Logged in!');
     client.user.setActivity('Mario Modding - YAMMS | http://mario-modding.co.nf');
-  
-  // Check if the table "points" exists.
-  const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
-  if (!table['count(*)']) {
-    // If the table isn't there, create it and setup the database correctly.
-    sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run();
-    // Ensure that the "id" row is always unique and indexed.
-    sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
-    sql.pragma("synchronous = 1");
-    sql.pragma("journal_mode = wal");
-  }
-  
-  // And then we have two prepared statements to get and set the score data.
-  client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
-  client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
-  console.log("["+Date.now()+"] - Loaded SQL");
 });
 
 client.audio = {};
@@ -217,30 +197,7 @@ client.audio.finish = (client, active, dispatcher) => {
 		}
 }
 
-client.points = new Enmap({provider: new Provider({name: "points"})});
-
 client.on("message", message => {
-  // Only react to text messages
-  let score;
-  if (message.guild && message.channel.id != "482660675794108416" && message.channel.id != "483370037319565312") {
-    score = client.getScore.get(message.author.id, message.guild.id);
-    if (!score) {
-      score = { 
-               id: `${message.guild.id}-${message.author.id}`,
-               user: message.author.id, 
-               guild: message.guild.id, 
-               points: 0, 
-               level: 1 
-      }
-    }
-    score.points++;
-    const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
-    if(score.level < curLevel) {
-      message.reply(`felicitations *(sigh)*! You've leveled up to level **${curLevel}**!`);
-    }
-    client.setScore.run(score);
-  }
-  
   client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
 });
 
