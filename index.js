@@ -365,7 +365,6 @@ client.warns.log = (member, warner, reason) => {
         .setColor(15844367)
         .setTitle(`:warning: ${member.user.tag} was warned`)
         .setThumbnail(member.user.displayAvatarURL)
-        .setAuthor(client.user.tag, client.user.displayAvatarURL)
         .setTimestamp(Date.now())
         .addField(":pencil: Moderator", `<@${warner.user.id}> (${warner.user.tag})`)
         .addField(":biohazard: Reason", reason)
