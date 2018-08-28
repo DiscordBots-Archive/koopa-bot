@@ -116,9 +116,9 @@ client.on("message", message => {
       // Calculate the current level through MATH OMG HALP.
       // 1 level is 50 messages
       // 20 mins later = nah changed mah mind
-      const curLevel = Math.floor(0.1 * Math.sqrt(score.points)); // Math.floor((score.points+50) / 50)
+      const curLevel = Math.floor((score.points+50) / 50)
 
-      // Check if the user has leveled up, and let them know if they have:
+      // Check if the user has leveled up, and let them know if they have
       if(score.level < curLevel) {
         // Level up!
         var embed = new RichEmbed()
@@ -131,6 +131,7 @@ client.on("message", message => {
           .setThumbnail(message.author.displayAvatarURL);
         // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
         message.channel.send(embed)
+        score.level = curLevel;
       }
 
       // This looks super simple because it's calling upon the prepared statement!

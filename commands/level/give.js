@@ -42,7 +42,7 @@ module.exports = class GiveCommand extends Command {
         userscore.points += pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor(0.1 * Math.sqrt(userscore.points));
+        let userLevel = Math.floor((userscore.points+50) / 50)
         userscore.level = userLevel;
 
         // And we save it!
@@ -69,9 +69,9 @@ module.exports = class GiveCommand extends Command {
         givescore.points -= pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor(0.1 * Math.sqrt(userscore.points));
+        let userLevel = Math.floor((userscore.points+50) / 50)
         userscore.level = userLevel;
-        let giveLevel = Math.floor(0.1 * Math.sqrt(givescore.points));
+        let giveLevel = Math.floor((givescore.points+50) / 50)
         givescore.level = giveLevel;
 
         // And we save it!
