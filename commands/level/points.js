@@ -1,19 +1,21 @@
 const { Command } = require('discord.js-commando');
 
-module.exports = class PointsCommand extends Command {
+module.exports = class PointsLevelCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'points',
             group: 'level',
             memberName: 'points',
-            description: 'Know your points.',
+            description: 'Know your points',
             examples: ['points']
         });
     }
 
     run(message) {
-        const key = `${message.guild.id}-${message.author.id}`;
-        const pts = this.client.getScore.run(message.guild.id, message.author.id);
-        return message.reply(`you currently have ${pts + " " + pts==1 ? "point" : "points"}, and are level ${this.client.points.getProp(key, "level")}!`);
+      console.log(1);
+      const fel = ["Great", "Fantastic", "Awesome", "I'm better"]
+      const data = this.client.getScore.get(message.guild.id, message.author.id);
+      let pts = data.points, lvl = data.level;
+      return message.reply(`you currently have ${pts + " " + pts==1 ? "point" : "points"}, and are level ${lvl}! ${fel[Math.floor(Math.random()*fel.length)]}!`);
     }
 };

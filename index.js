@@ -175,6 +175,7 @@ client.on('ready', () => {
   // And then we have two prepared statements to get and set the score data.
   client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
   client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
+  console.log("["+Date.now()+"] - Loaded SQL");
 });
 
 client.audio = {};
@@ -219,7 +220,6 @@ client.audio.finish = (client, active, dispatcher) => {
 client.points = new Enmap({provider: new Provider({name: "points"})});
 
 client.on("message", message => {
-  client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
   // Only react to text messages
   let score;
   if (message.guild && message.channel.id != "482660675794108416" && message.channel.id != "483370037319565312") {
@@ -240,6 +240,8 @@ client.on("message", message => {
     }
     client.setScore.run(score);
   }
+  
+  client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
 });
 
 client.login(process.env.TOKEN);
