@@ -286,4 +286,38 @@ function extension(reaction, attachment) {
 client.scores = {}
 client.scores.table = sql;
 
+client.on('messageDelete', async (message) => {
+  let logs = message.guild.channels.find('name', 'logs');
+  if (message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs && (message.guild.id == "481369156554326023")) {
+    message.guild.createChannel('logs', 'text');
+  }
+  if (message.guild.id == "472214037430534167") logs = message.guild.channels.find('name', 'samplasion-development');
+  if (!message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) { 
+    console.log('The logs channel does not exist and tried to create the channel but I am lacking permissions')
+  }
+  
+  const entry = await message.guild.fetchAuditLogs({type: 'MESSAGE_DELETE'}).then(audit => audit.entries.first());
+  let user = ""
+    if (entry.extra.channel.id === message.channel.id
+      && (entry.target.id === message.author.id)
+      && (entry.createdTimestamp > (Date.now() - 5000))
+      && (entry.extra.count >= 1)) {
+    user = entry.executor.username
+  } else { 
+    user = message.author.username
+  }
+  logs.send(`A message was deleted in ${message.channel.name} by ${user}`);
+  const embed = new RichEmbed()
+        // We set the color to a nice yellow here.
+        .setColor(15844367)
+        // Here we use cleanContent, which replaces all mentions in the message with their
+        // equivalent text. For example, an @everyone ping will just display as @everyone, without tagging you!
+        // At the date of this edit (09/06/18) embeds do not mention yet.
+        // But nothing is stopping Discord from enabling mentions from embeds in a future update.
+        .setDescription(message.cleanContent) 
+        .setAuthor(message.author.tag, message.author.displayAvatarURL)
+        .setTimestamp(Date.now() -)
+        .setFooter(`:id: ${message.id}`)
+})
+
 client.login(process.env.TOKEN);
