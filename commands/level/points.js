@@ -28,6 +28,7 @@ module.exports = class ScoreCommand extends Command {
       } else {
         var member = membre;
       }
+      if (member.user.bot) return msg.reply("an automated piece of code, like me, (usually called \"bot\") cannot have points. Ah, humans...");
       const message = msg;
       
       let score = this.client.getScore.get(member.user.id, msg.guild.id);

@@ -324,4 +324,23 @@ client.on('messageDelete', async (message) => {
   logs.send(embed);
 })
 
+client.on("log", (type, member) => {
+  const embed = new RichEmbed()
+        .setColor(15844367)
+        .setTitle(`${member.user.tag} was ${type}ed`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setAuthor(client.user.tag, client.user.displayAvatarURL)
+        .setTimestamp(Date.now())
+  switch (type) {
+    case "leave":
+      embed.
+    case "kick":
+      embed
+        .setTitle(`${member.user.tag} has left or was kicked`)
+      break;
+    default:
+      break;
+  }
+});
+
 client.login(process.env.TOKEN);
