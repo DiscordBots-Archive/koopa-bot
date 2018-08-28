@@ -10,7 +10,6 @@ module.exports = class ListWarningsCommand extends Command {
             memberName: 'listwarns',
             description: 'Shows the warnings an user got',
             examples: ['listwarns <user>'],
-            userPermissions: ["ADMINISTRATOR"],
             args: [
               {
                 key: "member",
@@ -25,6 +24,7 @@ module.exports = class ListWarningsCommand extends Command {
       /*if (!(this.client.isOwner(msg.author)
           && msg.member.roles.has("481492274333876224")
           && msg.member.roles.has("481492388020486171"))) return msg.reply("you don't have the permission to use this!");*/
+      if (!this.client.isOwner(msg.author) || !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
       const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ?").all(member.id);
       // Now shake it and show it! (as a nice embed, too!)
       const embed = new RichEmbed()
@@ -35,7 +35,7 @@ module.exports = class ListWarningsCommand extends Command {
         .setColor(15844367);
 
       for(const data of warns) {
-        embed.addField(`Warning given by ${msg.guild.users.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${data.time}`);
+        embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${data.time}`);
       }
       msg.embed(embed)
     }

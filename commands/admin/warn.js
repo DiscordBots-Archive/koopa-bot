@@ -24,10 +24,11 @@ module.exports = class WarningCommand extends Command {
         });
     }
 
-    run(msg, { member, reason }) {
+    run(msg, { member, reason }) {/*
       if (!this.client.isOwner(msg.author)
           || !msg.member.roles.has("481492274333876224")
-          || !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
+          || !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");*/
+      if (!this.client.isOwner(msg.author) || !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
       this.client.warns.set.run({
         id: member.user.id,
         reason: reason,
@@ -42,7 +43,8 @@ module.exports = class WarningCommand extends Command {
         modlogs = msg.guild.channels.find("name", "koopa-logs");
         logs = msg.guild.channels.find("name", "samplasion-development");
       }
-      msg.say(":ok: User warned!")
+      msg.say(":ok: User warned!");
+      member.send(`You (ID ${member.id}) were warned by ${msg.author.tag} (ID ${msg.author.id}). Reason: \`${reason}\``);
       modlogs.send(this.client.warns.log(member, msg.member, reason));
       logs.send(`${member.user.tag} (ID ${member.id}) was warned by ${msg.author.tag} (ID ${msg.author.id}) for reason: \`${reason}\` in ${msg.channel}`);
     }
