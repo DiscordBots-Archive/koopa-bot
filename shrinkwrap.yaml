@@ -3,6 +3,7 @@ dependencies:
   discord.js-commando: 0.10.0
   enmap: 4.0.6
   enmap-level: 2.1.0
+  enmap-sqlite: 2.0.5
   express: 4.16.3
   ffmpeg: 0.0.4
   node-opus: 0.3.0
@@ -409,6 +410,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-t/9fak+evWpZAZEub+wfJQiXaJmoippjV/YBjK1lt5DlOg+1Agq3jNVPcHilfV431B8K4LeuO8mAVPuPul7Rxw==
+  /enmap-sqlite/2.0.5:
+    dependencies:
+      better-sqlite-pool: 0.1.2
+    dev: false
+    resolution:
+      integrity: sha512-4MAQYZH7xFcCUFoR4VeCV3ixRTj68ef9QqYEbMY+wTYRIoDRJNRnfXzge4K7aGSJWj3U26AAd/FzUTfI12O1Jg==
   /enmap/4.0.6:
     dependencies:
       better-sqlite-pool: 0.1.2
@@ -1640,6 +1647,7 @@ specifiers:
   discord.js-commando: ^0.10.0
   enmap: ^4.0.2
   enmap-level: ^2.1.0
+  enmap-sqlite: ^2.0.5
   express: ^4.16.3
   ffmpeg: ^0.0.4
   node-opus: ^0.3.0

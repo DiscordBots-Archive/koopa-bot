@@ -42,7 +42,8 @@ client.registry
         ["admin", "Administration"],
         ["owner", "Owner Only"],
         ["audio", "Audio & Music (HUGE shoutout to NightYoshi370#5597 for his help)"],
-        ["util", "Utilities"]
+        ["util", "Utilities"],
+        ["level", "Levelling System"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
@@ -198,7 +199,7 @@ client.audio.finish = (client, active, dispatcher) => {
 		}
 }
 
-client.points = new Enmap({provider: new Provider({name: "points"})});
+client.points = new Enmap({name: "points"}); // new Enmap({provider: new Provider({name: "points"})});
 
 client.on("message", message => {
   client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
