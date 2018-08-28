@@ -98,7 +98,7 @@ client.on('ready', () => {
     warns.pragma("journal_mode = wal");
   }
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
-  client.warns.set = warns.prepare("INSERT OR REPLACE INTO warns ()");
+  client.warns.set = warns.prepare("INSERT INTO warns  (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
 });
 
 client.on("message", message => {
@@ -359,5 +359,28 @@ client.on("log", (chn, type, member, executor, reason) => {
   }
   chn.send(embed);
 });
+
+client.getDateTime = () => {
+	var date = new Date();
+
+	var hour = date.getHours();
+	hour = (hour < 10 ? "0" : "") + hour;
+
+	var min  = date.getMinutes();
+	min = (min < 10 ? "0" : "") + min;
+
+	var sec  = date.getSeconds();
+	sec = (sec < 10 ? "0" : "") + sec;
+
+	var year = date.getFullYear();
+
+	var month = date.getMonth() + 1;
+	month = (month < 10 ? "0" : "") + month;
+
+	var day  = date.getDate();
+	day = (day < 10 ? "0" : "") + day;
+
+	return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+}
 
 client.login(process.env.TOKEN);
