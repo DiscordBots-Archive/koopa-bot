@@ -5,7 +5,7 @@ module.exports = class GiveCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'give',
-            aliases: ["level"],
+            aliases: ["gift"],
             group: 'level',
             memberName: 'give',
             description: 'Giv mah yer points!! The points will be subtracted from your total, so be careful!',
@@ -29,7 +29,7 @@ module.exports = class GiveCommand extends Command {
 
     async run(message, { membre, pts: pointsToAdd }) {
       // Limited to guild owner - else you will gift your coins!
-      if(!message.author.id === message.guild.owner) {
+      if(this.client.isOwn) {
         const user = membre;
 
         // Get their current points.
@@ -60,21 +60,24 @@ module.exports = class GiveCommand extends Command {
         userscore.points += pointsToAdd;
         
         // Get their current points.
-        let givescore = this.client.getScore.get(user.id, message.guild.id);
+        let givescore = this.client.getScore.get(message.author.id, message.guild.id);
         // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
         if (!givescore || givescore.points < pointsToAdd) {
-          return 
+          return message.reply("you don't have enough points to be given to another person.");
         }
-        userscore.points -= pointsToAdd;
+        givescore.points -= pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
         let userLevel = Math.floor(0.1 * Math.sqrt(userscore.points));
         userscore.level = userLevel;
+        let giveLevel = Math.floor(0.1 * Math.sqrt(givescore.points));
+        givescore.level = giveLevel;
 
         // And we save it!
         this.client.setScore.run(userscore);
+        this.client.setScore.run(givescore);
 
-        return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.`);
+        return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.\n${message.author.tag}, instead, is at ${givescore.points}`);
       }
     }
 };
