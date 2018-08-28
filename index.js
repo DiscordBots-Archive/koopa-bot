@@ -291,7 +291,7 @@ client.on('messageDelete', async (message) => {
   if (message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs && (message.guild.id == "481369156554326023")) {
     message.guild.createChannel('logs', 'text');
   }
-  if (message.guild.id == "472214037430534167") logs = message.guild.channels.find('name', 'samplasion-development');
+  if (message.guild.id == "472214037430534167") logs = message.guild.channels.find('name', 'koopa-logs');
   if (!message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) { 
     console.log('The logs channel does not exist and tried to create the channel but I am lacking permissions')
   }
@@ -313,11 +313,12 @@ client.on('messageDelete', async (message) => {
   const embed = new RichEmbed()
         // We set the color to a nice yellow here.
         .setColor(15844367)
-        .setTitle(":wastebasket: A message was deleted")
+        .setTitle(":wastebasket: A message was deleted by " + user)
+        .setThumbnail(av)
         .setDescription("`" + message.cleanContent + "`") 
         .addField(":blue_book: Channel", `<#${message.channel.id}> (#${message.channel.name})`)
         .addField("🆔 Message ID", message.id)
-        .setAuthor(user, av)
+        .setAuthor(client.user.tag, client.user.displayAvatarURL)
         .setTimestamp(Date.now() - 5000)
         .setFooter(`What a waste!`)
   logs.send(embed);
