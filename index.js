@@ -4,6 +4,8 @@ const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
 var ytdl = YTDL;
+const Enmap = require("enmap");
+const Provider = require("enmap-level");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -195,5 +197,27 @@ client.audio.finish = (client, active, dispatcher) => {
 			if (vc) vc.leave();
 		}
 }
+
+client.points = new Enmap({provider: new Provider({name: "points"})});
+
+client.on("message", message => {
+  client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
+  // Only react to text messages
+  if (message.guild) {
+    if(!client.points.has(`${message.guild.id}-${message.author.id}`)) {
+      const key = `${message.guild.id}-${message.author.id}`;
+      if(!client.points.has(key)) {
+        client.points.set(key, {
+          user: message.author.id,
+          guild: message.guild.id,
+          points: 0,
+          level: 1
+        });
+      }
+      let currentPoints = client.points.getProp(key, "points");
+      client.points.setProp(key, "points", ++currentPoints);
+    }
+  }
+});
 
 client.login(process.env.TOKEN);

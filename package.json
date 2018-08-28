@@ -17,7 +17,9 @@
     "sqlite": "^3.0.0",
     "ytdl-core": "^0.24.0",
     "ffmpeg": "^0.0.4",
-    "node-opus": "^0.3.0"
+    "node-opus": "^0.3.0",
+    "enmap": "^4.0.2",
+    "enmap-level": "^2.1.0"
   },
   "engines": {
     "node": "8.x"
