@@ -3,19 +3,18 @@ const { Command } = require("discord.js-commando");
 module.exports = class ChannelCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'channel',
-			aliases: ['chan'],
-			group: 'util',
-			memberName: 'channel',
-			description: 'Gets information about a user.',
-			examples: ['channel #test', 'channel test'],
+			name: 'roleid',
+			aliases: ['rid', 'role'],
+			group: 'admin',
+			memberName: 'roleid',
+			description: 'Gets information about a role.',
 			guildOnly: true,
 
 			args: [
 				{
 					key: 'role',
 					label: 'role',
-					prompt: '>LOl',
+					prompt: 'enter a role',
 					type: 'role'
 				}
 			]

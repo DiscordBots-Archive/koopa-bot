@@ -23,7 +23,7 @@ module.exports = class SkipAudioCommand extends Command {
 			if (!voiceChannel) return message.reply("I think it may work better if you are in a voice channel!");
 
 			var fetched = this.client.audio.active.get(message.guild.id);
-			if(!fetched) return message.reply("resuming a non-existent song is an excellent thought. Oh well...");
+			if(!fetched) return message.reply("resuming a non-existent song is an excellent try. Oh well...");
 
 			let uservcCount = message.member.voiceChannel.members.size;
 			let requiredToRes = Math.ceil(uservcCount/2);
