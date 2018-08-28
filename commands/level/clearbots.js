@@ -13,6 +13,11 @@ module.exports = class ClearBotsCommand extends Command {
             guildOnly: true
         });
     }
+  
+    hasPermission(msg) {
+        if (!this.client.isOwner(msg.author)) return 'FFFFFFFFUUUUUUUUUUUUUUUUUUUUU!';
+        return true;
+    }
 
     async run(message) {
       var nmsg = await message.say("Cleaning bots from table scores...");
