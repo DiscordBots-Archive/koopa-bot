@@ -334,12 +334,15 @@ client.on("log", (type, member, executor, reason) => {
   switch (type) {
     case "kick":
       embed
-        .addField(":user: Moderator", )
-        
+        .addField(":user: Moderator", `${executor.displayName} (${executor.user.tag})`)
+        .addField(":biohazard: Reason", reason = null ? "No reason" : reason)
+      break;
+    case "ban":
       break;
     default:
       break;
   }
+  
 });
 
 client.login(process.env.TOKEN);
