@@ -27,7 +27,7 @@ module.exports = class WarningCommand extends Command {
     run(msg, { member, reason }) {
       if (!this.client.isOwner(msg.author)
           || !msg.member.roles.has("481492274333876224")
-          || !msg.member.roles.has("")) return msg.reply("you don't have the permission to use this!");
+          || !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
       this.client.warns.set.run({
         id: member.user.id,
         reason: reason,

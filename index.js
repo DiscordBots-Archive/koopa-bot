@@ -98,7 +98,7 @@ client.on('ready', () => {
     warns.pragma("journal_mode = wal");
   }
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
-  client.warns.set = warns.prepare("INSERT INTO warns  (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
+  client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
 });
 
 client.on("message", message => {

@@ -14,7 +14,7 @@ module.exports = class LeaderboardCommand extends Command {
             args: [
               {
                 key: "num",
-                prompt: "how many users should this leaderboard contempate?",
+                prompt: "how many users should this leaderboard contemplate?",
                 type: "integer",
                 default: 5
               }
