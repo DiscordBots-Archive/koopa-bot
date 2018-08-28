@@ -1,6 +1,6 @@
 {
   "install": {
-    "include": [
+    "include": [d
       "^package\\.json$",
       "^\\.env$"
     ]
