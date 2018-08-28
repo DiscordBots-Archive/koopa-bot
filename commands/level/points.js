@@ -13,7 +13,7 @@ module.exports = class PointsCommand extends Command {
 
     run(message) {
         const key = `${message.guild.id}-${message.author.id}`;
-        const pts = this.client.points.getProp(key, "points");
+        const pts = this.client.getScore.run(message.guild.id, message.author.id);
         return message.reply(`you currently have ${pts + " " + pts==1 ? "point" : "points"}, and are level ${this.client.points.getProp(key, "level")}!`);
     }
 };

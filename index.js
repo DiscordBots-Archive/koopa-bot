@@ -221,28 +221,24 @@ client.points = new Enmap({provider: new Provider({name: "points"})});
 client.on("message", message => {
   client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
   // Only react to text messages
+  let score;
   if (message.guild && message.channel.id != "482660675794108416" && message.channel.id != "483370037319565312") {
-    if(!client.points.has(`${message.guild.id}-${message.author.id}`)) {
-      const key = `${message.guild.id}-${message.author.id}`;
-      if(!client.points.has(key)) {
-        client.points.set(key, {
-          user: message.author.id,
-          guild: message.guild.id,
-          points: 0,
-          level: 1
-        });
-      }
-      let currentPoints = client.points.getProp(key, "points");
-      client.points.setProp(key, "points", ++currentPoints);
-      
-      const curLevel = Math.floor(0.1 * Math.sqrt(currentPoints));
-      
-      // Act upon level up by sending a message and updating the user's level in enmap.
-      if (client.points.getProp(key, "level") < curLevel) {
-        message.reply(`felicitations (sigh)! You've leveled up to level **${curLevel}**!`);
-        client.points.setProp (key, "level", curLevel);
+    score = client.getScore.get(message.author.id, message.guild.id);
+    if (!score) {
+      score = { 
+               id: `${message.guild.id}-${message.author.id}`,
+               user: message.author.id, 
+               guild: message.guild.id, 
+               points: 0, 
+               level: 1 
       }
     }
+    score.points++;
+    const curLevel = Math.floor(0.1 * Math.sqrt(score.points));
+    if(score.level < curLevel) {
+      message.reply(`felicitations *(sigh)*! You've leveled up to level **${curLevel}**!`);
+    }
+    client.setScore.run(score);
   }
 });
 
