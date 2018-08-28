@@ -27,11 +27,13 @@ module.exports = class ReplyCommand extends Command {
         } else {
           var member = mem;
         }
+      var user = member.user
       
         var embed = new Discord.RichEmbed()
             .setColor(member.highestRole.color)
             .setTitle(`Info for user ${member.displayName} (${member.user.tag}) | ID ${member.user.id}`)
-            .addField("Roles", member.roles.map(r => r.id != r.guild.id ? `<@&${r.id}>` : "@everyone").join(", "));
+            .addField("❯ Member Details", `${member.nickname !== null ? ` • Nickname: ${member.nickname}` : ' • No nickname'}\n• Roles: ${member.roles.map(r => r.id != r.guild.id ? `<@&${r.id}>` : "@everyone").join(", ")}\n• Joined at: ${member.joinedAt}`)
+            .addField("❯ User Details", `• Created at: ${user.createdAt}${user.bot ? '\n • Is a bot account' : ''}\n• Status: ${user.presence.status}\n• Game: ${user.presence.game ? user.presence.game.name : 'None'}`);
       
         return msg.embed(embed);
         

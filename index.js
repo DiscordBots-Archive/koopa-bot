@@ -47,6 +47,7 @@ client.registry
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
+    .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.on('guildMemberAdd', member => {
