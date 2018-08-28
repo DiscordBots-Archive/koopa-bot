@@ -20,7 +20,8 @@
     "node-opus": "^0.3.0",
     "enmap": "^4.0.2",
     "enmap-level": "^2.1.0",
-    "enmap-sqlite": "^2.0.5"
+    "enmap-sqlite": "^2.0.5",
+    "better-sqlite3": "^4.1.4"
   },
   "engines": {
     "node": "8.x"
