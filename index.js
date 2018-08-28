@@ -87,6 +87,7 @@ client.on('ready', () => {
 });
 
 client.on("message", message => {
+  if (message.author.bot) return;
   // client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
   
   // client.on(string, function(...args)) refers to Discord.Client,
@@ -120,7 +121,7 @@ client.on("message", message => {
     if(score.level < curLevel) {
       // Level up!
       var embed = new RichEmbed()
-        .setAuthor(message.author.avatarURL, message.member.displayName)
+        .setAuthor(message.member.displayName, message.author.displayIconURL)
         .setTitle("Felicitations!")
         .setDescription("*(sigh)*\n\nYou've leveled UP!")
         .addField("New Level", curLevel)
@@ -128,6 +129,11 @@ client.on("message", message => {
       // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
       message.channel.send(embed)
     }
+    
+    // This looks super simple because it's calling upon the prepared statement!
+    client.setScore.run(score);
+    
+    return message.reply(`You currently have ${score.points} points and are level ${score.level}! (TEST to see if points work)`);
   }
 });
 
