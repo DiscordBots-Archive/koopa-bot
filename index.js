@@ -6,6 +6,7 @@ const YTDL = require("ytdl-core");
 var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./scores.sqlite');
+const warns = new SQLite("./warns.sqlite");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -86,6 +87,18 @@ client.on('ready', () => {
   client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
   client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
   client.cleanScore = sql.prepare("DELETE FROM scores WHERE user = ? AND guild = ?");
+  
+  const warnTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
+  if (!warnTable['count(*)']) {
+    // If the table isn't there, create it and setup the database correctly.
+    warns.prepare("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT);").run();
+    // Ensure that the "id" row is always unique and indexed.
+    // warns.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
+    warns.pragma("synchronous = 1");
+    warns.pragma("journal_mode = wal");
+  }
+  client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
+  client.warns.set = warns.prepare("INSERT OR REPLACE INTO warns ()");
 });
 
 client.on("message", message => {
@@ -285,6 +298,8 @@ function extension(reaction, attachment) {
 
 client.scores = {}
 client.scores.table = sql;
+client.warns = {};
+client.warns.table = warns;
 
 client.on('messageDelete', async (message) => {
   let logs = message.guild.channels.find('name', 'logs');
@@ -324,7 +339,7 @@ client.on('messageDelete', async (message) => {
   logs.send(embed);
 })
 
-client.on("log", (type, member, executor, reason) => {
+client.on("log", (chn, type, member, executor, reason) => {
   const embed = new RichEmbed()
         .setColor(15844367)
         .setTitle(`${member.user.tag} was ${type}ed`)
@@ -342,7 +357,7 @@ client.on("log", (type, member, executor, reason) => {
     default:
       break;
   }
-  
+  chn.send(embed);
 });
 
 client.login(process.env.TOKEN);
