@@ -324,7 +324,7 @@ client.on('messageDelete', async (message) => {
   logs.send(embed);
 })
 
-client.on("log", (type, member) => {
+client.on("log", (type, member, executor, reason) => {
   const embed = new RichEmbed()
         .setColor(15844367)
         .setTitle(`${member.user.tag} was ${type}ed`)
@@ -332,11 +332,10 @@ client.on("log", (type, member) => {
         .setAuthor(client.user.tag, client.user.displayAvatarURL)
         .setTimestamp(Date.now())
   switch (type) {
-    case "leave":
-      embed.
     case "kick":
       embed
-        .setTitle(`${member.user.tag} has left or was kicked`)
+        .addField(":user: Moderator", )
+        
       break;
     default:
       break;
