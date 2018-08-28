@@ -12,7 +12,7 @@ module.exports = class GiveCommand extends Command {
             examples: ['give @User 500'],
             args: [
               {
-                key: "membre",
+                key: "user",
                 prompt: "who do you want to give points to? :eyes:",
                 type: "user"
               },
@@ -27,9 +27,10 @@ module.exports = class GiveCommand extends Command {
         });
     }
 
-    async run(message, { membre, pts: pointsToAdd }) {
+    async run(message, { user: membre, pts: pointsToAdd }) {
       // Limited to guild owner - else you will gift your coins!
-      if(this.client.isOwn) {
+      if(membre.bot) return message.reply("an automated piece of program, like me,(usually called \"bot\") cannot have points. Ah, humans...");
+      if(this.client.isOwner(message.author)) {
         const user = membre;
 
         // Get their current points.
