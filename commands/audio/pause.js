@@ -40,6 +40,7 @@ module.exports = class SkipAudioCommand extends Command {
 			if(fetched.queue[0].votePause.length >= requiredToPause) {
 				message.channel.send('Song stopped. Use '+this.client.commandPrefix+'resume to resume');
 				fetched.dispatcher.pause();
+        fetched.queue[0].votePause = [];
         return;
 			}
 

@@ -39,6 +39,7 @@ module.exports = class SkipAudioCommand extends Command {
 			if(fetched.queue[0].voteSkips.length >= requiredToSkip) {
 				message.channel.send('Song skipped');
 				fetched.dispatcher.emit('end');
+        fetched.queue[0].voteSkips = [];
         return;
 			}
 
