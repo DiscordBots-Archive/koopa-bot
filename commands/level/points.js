@@ -3,7 +3,7 @@ const { Command } = require('discord.js-commando');
 module.exports = class PointsCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'points',
+            name: 'point',
             group: 'level',
             memberName: 'points',
             description: 'Know your points.',

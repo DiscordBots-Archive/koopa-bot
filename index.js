@@ -5,7 +5,7 @@ const path = require('path');
 const YTDL = require("ytdl-core");
 var ytdl = YTDL;
 const Enmap = require("enmap");
-const Provider = require("enmap-level");
+const Provider = require("enmap-sqlite");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -199,7 +199,7 @@ client.audio.finish = (client, active, dispatcher) => {
 		}
 }
 
-client.points = new Enmap({name: "points"}); // new Enmap({provider: new Provider({name: "points"})});
+client.points = new Enmap({provider: new Provider({name: "points"})});
 
 client.on("message", message => {
   client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
