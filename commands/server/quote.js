@@ -5,6 +5,7 @@ module.exports = class ReplyCommand extends Command {
         super(client, {
             name: 'quote',
             group: 'group1',
+            aliases: ["quotes", "q"],
             memberName: 'quote',
             description: 'Adds a message to the server quotes.',
             examples: ['quote -add <quote name> <message id>', "quote -del <quote name>", "quote -list"],
@@ -31,11 +32,11 @@ module.exports = class ReplyCommand extends Command {
         });
     }
 
-    run(msg, { flag, name, mess }) {
+    async run(msg, { flag, name, mess }) {
         switch (flag) {
           case "add":
             if (!name || !mess) return msg.reply("insert a valid name and/or message id.");
-            var message = msg.channel.fetchMessage(mess).catch(e => console.error(e));
+            var message = await msg.channel.fetchMessage(mess).catch(e => console.error(e));
             var cnt = message.cleanContent;
             msg.say(cnt);
             break;
