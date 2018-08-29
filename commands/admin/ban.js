@@ -1,22 +1,31 @@
 const { Command } = require('discord.js-commando');
+const { RichEmbed } = require("discord.js");
 
-module.exports = class WarningCommand extends Command {
+module.exports = class BanCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'warn',
+            name: 'ban',
+            aliases: ["ban-hammer", "b-h"],
             group: 'admin',
-            memberName: 'warn',
-            description: 'Warns an user',
-            examples: ['warn <user> <reason>'],
+            memberName: 'ban',
+            description: 'Bans an user',
+            examples: ['ban <user> <days> <reason>', "ban @InfamousGuy003 7 spamming in #general-talk"],
+            clientPermissions: ["BAN_MEMBERS"],
             args: [
               {
                 key: "member",
-                prompt: "who do you want to warn?",
+                prompt: "who do you want to ban?",
                 type: "member"
               },
               {
+                key: "days",
+                prompt: "how long do you want to keep him baned?",
+                type: "integer",
+                default: ""
+              },
+              {
                 key: "reason",
-                prompt: "who do you want to warn?",
+                prompt: "why do you want to ban him?",
                 default: "No reason.",
                 type: "string"
               }
@@ -24,9 +33,14 @@ module.exports = class WarningCommand extends Command {
         });
     }
 
-    run(msg, { member, reason }) {
+    run(msg, { member, days, reason }) {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
+      if (days) {
+        member.ban({days: days, reason: reason});
+      } else {
+        member.ban(reason);
+      }
       let logs, modlogs;
       if (msg.guild.id == "481369156554326023") {
         logs = msg.guild.channels.find("name", "logs");
@@ -35,9 +49,18 @@ module.exports = class WarningCommand extends Command {
         modlogs = msg.guild.channels.find("name", "koopa-logs");
         logs = msg.guild.channels.find("name", "samplasion-development");
       }
-      msg.say(":ok: User warned!");
-      member.send(`You (ID ${member.id}) were warned by ${msg.author.tag} (ID ${msg.author.id}). Reason: \`${reason}\``);
-      modlogs.send(this.client.warns.log(member, msg.member, reason));
-      logs.send(`${member.user.tag} (ID ${member.id}) was warned by ${msg.author.tag} (ID ${msg.author.id}) for reason: \`${reason}\` in ${msg.channel}`);
+      let embed = new RichEmbed()
+        .setColor(0xe00b0b)
+        .setTitle(`:skull_crossbones: ${member.user.tag} was banned`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTimestamp(Date.now())
+        .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
+        .addField(":biohazard: Reason", reason)
+        .addField(":clock: Ban durstion", days ? days + "" : "Forever")
+        .setFooter("He really deserved it!")
+      msg.say(":ok: User banned!");
+      member.send(`You **[${member.id}]**were ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
+      modlogs.send(embed);
+      logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }
 };

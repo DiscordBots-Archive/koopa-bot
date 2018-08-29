@@ -44,8 +44,8 @@ module.exports = class WarningCommand extends Command {
         logs = msg.guild.channels.find("name", "samplasion-development");
       }
       msg.say(":ok: User warned!");
-      member.send(`You (ID ${member.id}) were warned by ${msg.author.tag} (ID ${msg.author.id}). Reason: \`${reason}\``);
+      member.send(`You **[${member.id}]** were warned by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
       modlogs.send(this.client.warns.log(member, msg.member, reason));
-      logs.send(`${member.user.tag} (ID ${member.id}) was warned by ${msg.author.tag} (ID ${msg.author.id}) for reason: \`${reason}\` in ${msg.channel}`);
+      logs.send(`${member.user.tag} **[${member.id}]** was warned by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }
 };

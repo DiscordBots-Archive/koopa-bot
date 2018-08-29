@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const { RichEmbed } = require("discord.js");
 
-module.exports = class WarningCommand extends Command {
+module.exports = class KickCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'kick',
@@ -40,15 +40,15 @@ module.exports = class WarningCommand extends Command {
         logs = msg.guild.channels.find("name", "samplasion-development");
       }
       let embed = new RichEmbed()
-        .setColor(15844367)
-        .setTitle(`:warning: ${member.user.tag} was warned`)
+        .setColor(0xff9d00)
+        .setTitle(`:warning: ${member.user.tag} was kicked`)
         .setThumbnail(member.user.displayAvatarURL)
         .setTimestamp(Date.now())
         .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
         .addField(":biohazard: Reason", reason)
       msg.say(":ok: User kicked!");
-      member.send(`You (ID ${member.id}) were kicked by ${msg.author.tag} (ID ${msg.author.id}). Reason: \`${reason}\``);
+      member.send(`You **[${member.id}]** were kicked by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
       modlogs.send(embed);
-      logs.send(`${member.user.tag} **[${member.id}]** was warned by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
+      logs.send(`${member.user.tag} **[${member.id}]** was kicked by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }
 };
