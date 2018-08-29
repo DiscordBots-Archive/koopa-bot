@@ -24,4 +24,4 @@ On the back-end,
 Made by [Fog Creek](https://fogcreek.com/)
 -------------------
 
-\ ゜o゜)ノ
+\\( ゜o゜)ノ
