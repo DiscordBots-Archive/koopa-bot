@@ -7,7 +7,6 @@ var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./scores.sqlite');
 const warns = new SQLite("./warns.sqlite");
-const quotes = new SQLite("./quotes.sqlite");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -39,13 +38,14 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['group1', 'Mario Modding'],
+        ['server', 'Mario Modding'],
         ["roles", "Selfroles"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
         ["audio", "Audio & Music (HUGE thanks to NightYoshi370#5597 for his help)"],
         ["util", "Utilities"],
-        ["level", "Levelling System"]
+        ["level", "Levelling System"],
+        ["fun", "Fun"]
     ])
     .registerDefaultGroups()
     .registerDefaultCommands()
