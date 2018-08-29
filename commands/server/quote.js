@@ -38,11 +38,25 @@ module.exports = class ReplyCommand extends Command {
             if (!name || !mess) return msg.reply("insert a valid name and/or message id.");
             var message = await msg.channel.fetchMessage(mess).catch(e => console.error(e));
             var cnt = message.cleanContent;
-            var author = message
+            var author = message.author.id;
+            var guild = message.guild.id;
+            this.client.quotes.set.run({
+              id: message,
+              name: name,
+              message: cnt,
+              guild: guild,
+              author: author
+            });
             break;
           case "del":
             break;
           case "list":
+            break;
+          case "get":
+            if (!name) return msg.reply("insert a valid name.");
+            var guild = msg.guild.id;
+            var quote = this.client.quotes.get.get(guild, name);
+            msg.say(quote.message);
             break;
           default:
             return msg.reply("insert a valid flag");
