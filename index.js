@@ -7,6 +7,7 @@ var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./scores.sqlite');
 const warns = new SQLite("./warns.sqlite");
+const quotes = new SQLite("./quotes.sqlite");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -38,7 +39,7 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['group1', 'Our First Command Group'],
+        ['group1', 'Mario Modding'],
         ["roles", "Selfroles"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
@@ -100,19 +101,20 @@ client.on('ready', () => {
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
   client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
   
-  const quotes = client.quotes.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'quotes';").get();
-  if (!quotes['count(*)']) {
+  const quotesTable = client.quotes.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'quotes';").get();
+  if (!quotesTable['count(*)']) {
     // If the table isn't there, create it and setup the database correctly.
-    client.quotes.prepare("CREATE TABLE quotes (id TEXT PRIMARY KEY, name TEXT, message TEXT, guild TEXT, author TEXT);").run();
+    quotes.prepare("CREATE TABLE quotes (id TEXT PRIMARY KEY, name TEXT, message TEXT, guild TEXT, author TEXT);").run();
     // Ensure that the "id" row is always unique and indexed.
-    client.quotes.prepare("CREATE UNIQUE INDEX idx_quotes_id ON quotes (id);").run();
-    client.quotes.pragma("synchronous = 1");
-    client.quotes.pragma("journal_mode = wal");
+    quotes.prepare("CREATE UNIQUE INDEX idx_quotes_id ON quotes (id);").run();
+    quotes.pragma("synchronous = 1");
+    quotes.pragma("journal_mode = wal");
   }
-​
+
   // And then we have two prepared statements to get and set the score data.
-  client.getScore = sql.prepare("SELECT * FROM quotes WHERE user = ? AND guild = ?");
-  client.setScore = sql.prepare("INSERT OR REPLACE INTO quotes (id, name, message, guild, author) VALUES (@id, @name, @message, @guild, @author);");
+  client.quotes.get = quotes.prepare("SELECT * FROM quotes WHERE name = ? AND guild = ?");
+  client.quotes.set = quotes.prepare("INSERT OR REPLACE INTO quotes (id, name, message, guild, author) VALUES (@id, @name, @message, @guild, @author);");
+  client.quotes.delete = quotes.prepare("DELETE FROM quotes WHERE name = ? AND guild = ?");
 });
 
 client.on("message", message => {
@@ -291,10 +293,12 @@ function extension(reaction, attachment) {
   return attachment;
 }
 
-client.scores = {}
+client.scores = {};
 client.scores.table = sql;
 client.warns = {};
 client.warns.table = warns;
+client.quotes = {};
+client.quotes.table = quotes;
 
 client.on('messageDelete', async (message) => {
   let logs = message.guild.channels.find('name', 'logs');
