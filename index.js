@@ -282,8 +282,6 @@ client.scores = {};
 client.scores.table = sql;
 client.warns = {};
 client.warns.table = warns;
-client.quotes = {};
-client.quotes.table = quotes;
 
 client.on('messageDelete', async (message) => {
   var msg = message;
@@ -357,7 +355,7 @@ client.warns.log = (member, warner, reason) => {
 
 client.util = {}
 client.util.embed = () => new RichEmbed();
-client.util.memberTag = member => `${member.displayName}#${member.user.tag}`
+client.util.memberTag = member => `${member.displayName}#${member.user.discriminator}`
 client.util.getDateTime = () => {
 	var date = new Date();
 

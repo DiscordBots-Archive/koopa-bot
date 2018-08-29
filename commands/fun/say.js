@@ -4,7 +4,7 @@ module.exports = class SayCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'say',
-            group: 'group2',
+            group: 'fun',
             memberName: 'say',
             description: 'Replies with the text you provide.',
             examples: ['say Hi there!'],
@@ -24,7 +24,6 @@ module.exports = class SayCommand extends Command {
 
     run(msg, { text }) {
         msg.delete();
-        return msg.say(this.client.util.embed()
-                        .set());
+        return msg.say(this.client.util.embed().setDescription(text).setFooter("Requested by " + this.client.util.memberTag(msg.member)));
     }
 };
