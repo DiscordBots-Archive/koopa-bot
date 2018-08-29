@@ -15,7 +15,7 @@ module.exports = class ClearBotsCommand extends Command {
     }
   
     hasPermission(msg) {
-        if (!this.client.isOwner(msg.author)) return 'FFFFFFFFUUUUUUUUUUUUUUUUUUUUU!';
+        if (!this.client.isOwner(msg.author)) return 'This is a table clearing utility. Honestly, I don\'t think you would benefit from running this.';
         return true;
     }
 
