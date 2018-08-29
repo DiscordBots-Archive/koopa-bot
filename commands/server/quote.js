@@ -17,23 +17,32 @@ module.exports = class ReplyCommand extends Command {
               },
               {
                 key: 'name',
-                prompt: 'insert a name gor the quote',
-                type: 'string'
+                prompt: 'insert a name for the quote',
+                type: 'string',
+                default: ""
               },
               {
-                key: 'message',
-                prompt: 'What text would you like the bot to say?',
-                type: 'message'
+                key: 'mess',
+                prompt: 'insert the id of the message you want quoted.',
+                type: 'message',
+                default: ""
               }
             ]
         });
     }
 
-    run(msg, { flag, name, message }) {
+    run(msg, { flag, name, mess }) {
         switch (flag) {
           case "add":
+            if (!name || !mess) return msg.reply("insert a valid name and/or message id.");
+            var message = 
             break;
-          
+          case "del":
+            break;
+          case "list":
+            break;
+          default:
+            return msg.reply("insert a valid flag");
         }
     }
 };
