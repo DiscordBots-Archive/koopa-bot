@@ -299,7 +299,7 @@ client.on('messageDelete', async (message) => {
       && (entry.target.id === message.author.id)
       && (entry.createdTimestamp > (Date.now() - 5000))
       && (entry.extra.count >= 1)) {
-    user = entry.executor.tag
+    user = "himself"
     av = entry.executor.displayAvatarURL
   } else { 
     user = message.author.tag
@@ -309,7 +309,7 @@ client.on('messageDelete', async (message) => {
   const embed = new RichEmbed()
         // We set the color to a nice yellow here.
         .setColor(15844367)
-        .setTitle(":wastebasket: A message was deleted by " + user)
+        .setTitle(":wastebasket: A message by " + message.author.tag + " was deleted by " + user)
         .setThumbnail(av)
         .setDescription("`" + message.cleanContent + "`") 
         .addField(":blue_book: Channel", `<#${message.channel.id}> (#${message.channel.name})`)

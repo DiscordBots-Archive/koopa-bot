@@ -3,8 +3,7 @@
     "include": [
       "^package\\.json$",
       "^\\.env$"
-    ]
-  },
+    ]  },
   "restart": {
     "exclude": [
       "^public/",
@@ -16,4 +15,4 @@
     ]
   },
   "throttle": 900000
-}
+}h
