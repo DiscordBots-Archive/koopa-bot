@@ -31,11 +31,12 @@ module.exports = class LeaderboardCommand extends Command {
       const embed = new RichEmbed()
         .setTitle("Leaderboard")
         .setAuthor(this.client.user.username, this.client.user.avatarURL)
-        .setDescription("Our top " + num + " points leaders!")
+        .setDescription("Our top " + num + " of point leaders!")
         .setColor(0x00AE86);
 
       for(const data of top10) {
-        embed.addField(this.client.users.get(data.user).tag, `${data.points} points (level ${data.level})`);
+        let usr = this.client.users.get(data.user)
+        embed.addField(usr.tag, `${usr.id == msg.author.id ? "**" : ""}${data.points} points (level ${data.level})${usr.id == msg.author.id ? "**" : ""}`);
       }
       return msg.embed(embed);
       

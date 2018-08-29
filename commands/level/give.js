@@ -29,8 +29,8 @@ module.exports = class GiveCommand extends Command {
 
     async run(message, { user: membre, pts: pointsToAdd }) {
       // Limited to guild owner - else you will gift your coins!
-      if(membre.bot) return message.reply("an automated piece of code, like me, (usually called \"bot\") cannot have points. Ah, humans...");
-      if(this.client.isOwner(message.author)) {
+      if(membre.bot) return message.reply("bots cannot have points!");
+      if(this.client.isOwner(message.author) || message.author.id == message.guild.ownerID) {
         const user = membre;
 
         // Get their current points.
