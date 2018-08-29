@@ -29,7 +29,7 @@ module.exports = class GiveCommand extends Command {
 
     async run(message, { user: membre, pts: pointsToAdd }) {
       // Limited to guild owner - else you will gift your coins!
-      if(membre.bot) return message.reply("bots cannot have points!");
+      if(membre.bot) return message.reply("bots don't have points!");
       if(this.client.isOwner(message.author) || message.author.id == message.guild.ownerID) {
         const user = membre;
 
@@ -42,7 +42,7 @@ module.exports = class GiveCommand extends Command {
         userscore.points += pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor((userscore.points+50) / 50)
+        let userLevel = Math.floor((userscore.points+100) / 100)
         userscore.level = userLevel;
 
         // And we save it!
@@ -51,6 +51,8 @@ module.exports = class GiveCommand extends Command {
         return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.`);
       } else {
         const user = membre;
+        
+        if (pointsToAdd < 0) return message.reply("you can't steal points!");
 
         // Get their current points.
         let userscore = this.client.getScore.get(user.id, message.guild.id);
@@ -69,9 +71,9 @@ module.exports = class GiveCommand extends Command {
         givescore.points -= pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor((userscore.points+50) / 50)
+        let userLevel = Math.floor((userscore.points+100) / 100)
         userscore.level = userLevel;
-        let giveLevel = Math.floor((givescore.points+50) / 50)
+        let giveLevel = Math.floor((givescore.points+100) / 100)
         givescore.level = giveLevel;
 
         // And we save it!

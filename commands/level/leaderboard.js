@@ -35,7 +35,7 @@ module.exports = class LeaderboardCommand extends Command {
         .setColor(0x00AE86);
 
       for(const data of top10) {
-        let usr = this.client.users.get(data.user)
+        let usr = await this.client.users.get(data.user)
         embed.addField(usr.tag, `${usr.id == msg.author.id ? "**" : ""}${data.points} points (level ${data.level})${usr.id == msg.author.id ? "**" : ""}`);
       }
       return msg.embed(embed);

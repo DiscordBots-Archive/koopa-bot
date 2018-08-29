@@ -131,7 +131,7 @@ client.on("message", message => {
       // Calculate the current level through MATH OMG HALP.
       // 1 level is 50 messages
       // 20 mins later = nah changed mah mind
-      const curLevel = Math.floor((score.points+50) / 50)
+      const curLevel = Math.floor((score.points+100) / 100)
 
       // Check if the user has leveled up, and let them know if they have
       if(score.level < curLevel) {
