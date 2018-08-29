@@ -23,6 +23,7 @@ module.exports = class LeaderboardCommand extends Command {
     }
 
     async run(msg, { num }) {
+      try {
       let sql = this.client.scores.table;
       
       const top10 = sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT ?;").all(msg.guild.id, num);
@@ -35,11 +36,12 @@ module.exports = class LeaderboardCommand extends Command {
         .setColor(0x00AE86);
 
       for(const data of top10) {
-        let usr = await this.client.users.get(data.user)
-        embed.addField(usr.tag, `${usr.id == msg.author.id ? "**" : ""}${data.points} points (level ${data.level})${usr.id == msg.author.id ? "**" : ""}`);
+        let usr = await this.client.users.get(data.user);
+        embed.addField(this.client.users.get(data.user).tag, `${usr.id == msg.author.id ? "**" : ""}${data.points} points (level ${data.level})${usr.id == msg.author.id ? "**" : ""}`);
       }
       return msg.embed(embed);
       
       msg.embed(embed);
+      } catch (e) { console.error(e) }
     }
 };
