@@ -1,18 +1,14 @@
 const { ArgumentType } = require('discord.js-commando');
-const emojiRegex = new RegExp(emojiRanges.join('|'), 'g');
-const regex = /<:([a-zA-Z0-9_]+):(\d+)>/;
+const regex = /-([a-zA-Z0-9_]+)/;
 
-class EmojiArgumentType extends ArgumentType {
+class FlagArgumentType extends ArgumentType {
 	constructor(client) {
-		super(client, 'emoji');
+		super(client, 'flag');
 	}
 
 	validate(value, msg) {
 		if (value.match(regex)) {
-			const emoji = msg.client.emojis.get(value.match(regex)[2]);
-			if (emoji) return true;
-		} else if (value.match(emojiRegex)) {
-			return true;
+      return true;
 		}
 
 		return false;
@@ -20,12 +16,10 @@ class EmojiArgumentType extends ArgumentType {
 
 	parse(value, msg) { // eslint-disable-line consistent-return
 		if (value.match(regex)) {
-			const emoji = msg.client.emojis.get(value.match(regex)[2]);
-			if (emoji) return emoji;
-		} else if (value.match(emojiRegex)) {
-			return value.match(emojiRegex)[0];
+      const flag = value.replace("-", "");
+			return flag;
 		}
 	}
 }
 
-module.exports = EmojiArgumentType;
+module.exports = FlagArgumentType;
