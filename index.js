@@ -99,6 +99,20 @@ client.on('ready', () => {
   }
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
   client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
+  
+  const quotes = client.quotes.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'quotes';").get();
+  if (!quotes['count(*)']) {
+    // If the table isn't there, create it and setup the database correctly.
+    client.quotes.prepare("CREATE TABLE quotes (id TEXT PRIMARY KEY, name TEXT, message TEXT, guild TEXT, author TEXT);").run();
+    // Ensure that the "id" row is always unique and indexed.
+    client.quotes.prepare("CREATE UNIQUE INDEX idx_quotes_id ON quotes (id);").run();
+    client.quotes.pragma("synchronous = 1");
+    client.quotes.pragma("journal_mode = wal");
+  }
+​
+  // And then we have two prepared statements to get and set the score data.
+  client.getScore = sql.prepare("SELECT * FROM quotes WHERE user = ? AND guild = ?");
+  client.setScore = sql.prepare("INSERT OR REPLACE INTO quotes (id, name, message, guild, author) VALUES (@id, @name, @message, @guild, @author);");
 });
 
 client.on("message", message => {
