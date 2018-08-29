@@ -9,7 +9,7 @@ module.exports = class BanCommand extends Command {
             group: 'admin',
             memberName: 'ban',
             description: 'Bans an user',
-            examples: ['ban <user> <days> <reason>', "ban @InfamousGuy003 7 spamming in #general-talk"],
+            examples: ['ban <user> <reason wrapped in "s> <days (opt)>', "ban @InfamousGuy003 \"spamming in #general-talk\" 7"],
             clientPermissions: ["BAN_MEMBERS"],
             args: [
               {
@@ -18,22 +18,22 @@ module.exports = class BanCommand extends Command {
                 type: "member"
               },
               {
-                key: "days",
-                prompt: "how long do you want to keep him baned?",
-                type: "integer",
-                default: ""
-              },
-              {
                 key: "reason",
                 prompt: "why do you want to ban him?",
                 default: "No reason.",
                 type: "string"
+              },
+              {
+                key: "days",
+                prompt: "how long do you want to keep him banned?",
+                type: "integer",
+                default: ""
               }
             ]
         });
     }
 
-    run(msg, { member, days, reason }) {
+    run(msg, { member, reason, days }) {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
       if (days) {
@@ -56,7 +56,7 @@ module.exports = class BanCommand extends Command {
         .setTimestamp(Date.now())
         .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
         .addField(":biohazard: Reason", reason)
-        .addField(":clock: Ban durstion", days ? days + "" : "Forever")
+        .addField(":clock: Ban duration", days ? days + " days" : "Forever")
         .setFooter("He really deserved it!")
       msg.say(":ok: User banned!");
       member.send(`You **[${member.id}]**were ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
