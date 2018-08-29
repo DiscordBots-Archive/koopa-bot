@@ -1,4 +1,4 @@
-{
+s{
   "install": {
     "include": [
       "^package\\.json$",

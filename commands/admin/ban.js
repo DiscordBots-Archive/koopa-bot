@@ -27,13 +27,6 @@ module.exports = class WarningCommand extends Command {
     run(msg, { member, reason }) {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
-      if (member.user.bot) return msg.reply("if you think that us bots deserve to be warned, I'll take that as a personal offense!");
-      this.client.warns.set.run({
-        id: member.user.id,
-        reason: reason,
-        moderator: msg.author.id,
-        time: this.client.getDateTime()
-      });
       let logs, modlogs;
       if (msg.guild.id == "481369156554326023") {
         logs = msg.guild.channels.find("name", "logs");

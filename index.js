@@ -302,10 +302,10 @@ client.on('messageDelete', async (message) => {
       && (entry.target.id === message.author.id)
       && (entry.createdTimestamp > (Date.now() - 5000))
       && (entry.extra.count >= 1)) {
-    user = "himself"
+    user = entry.executor.tag
     av = entry.executor.displayAvatarURL
   } else { 
-    user = message.author.tag
+    user = "himself"
     av = message.author.displayAvatarURL
   }
   // logs.send(`A message was deleted in ${message.channel.name} by ${user}`);
