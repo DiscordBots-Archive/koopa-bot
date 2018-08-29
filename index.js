@@ -43,7 +43,7 @@ client.registry
         ["roles", "Selfroles"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
-        ["audio", "Audio & Music (HUGE shoutout to NightYoshi370#5597 for his help)"],
+        ["audio", "Audio & Music (HUGE thanks to NightYoshi370#5597 for his help)"],
         ["util", "Utilities"],
         ["level", "Levelling System"]
     ])
@@ -286,13 +286,14 @@ client.quotes = {};
 client.quotes.table = quotes;
 
 client.on('messageDelete', async (message) => {
-  let logs = message.guild.channels.find('name', 'logs');
-  if (message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs && (message.guild.id == "481369156554326023")) {
-    message.guild.createChannel('logs', 'text');
-  }
-  if (message.guild.id == "472214037430534167") logs = message.guild.channels.find('name', 'koopa-logs');
-  if (!message.guild.me.hasPermission('MANAGE_CHANNELS') && !logs) { 
-    console.log('The logs channel does not exist and tried to create the channel but I am lacking permissions')
+  var msg = message;
+  let logs, modlogs;
+  if (msg.guild.id == "481369156554326023") {
+    logs = msg.guild.channels.find("name", "logs");
+    modlogs = msg.guild.channels.find("name", "modlogs");
+  } else if (msg.guild.id== "472214037430534167") {
+    modlogs = msg.guild.channels.find("name", "koopa-logs");
+    logs = msg.guild.channels.find("name", "samplasion-development");
   }
   
   const entry = await message.guild.fetchAuditLogs({type: 'MESSAGE_DELETE'}).then(audit => audit.entries.first());
@@ -320,7 +321,7 @@ client.on('messageDelete', async (message) => {
         .setAuthor(client.user.tag, client.user.displayAvatarURL)
         .setTimestamp(Date.now() - 5000)
         .setFooter(`What a waste!`)
-  logs.send(embed);
+  modlogs.send(embed);
 })
 
 client.on("log", (chn, type, member, executor, reason) => {

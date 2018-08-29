@@ -9,6 +9,7 @@ module.exports = class BanCommand extends Command {
             group: 'admin',
             memberName: 'ban',
             description: 'Bans an user',
+            details: "To give a reason, but not days, use ban @User \"reason\".\nTo give days, but not a reason, use ban @User \"\" days.\nTo give both, use ban @User \"reason\" days.",
             examples: ['ban <user> <reason wrapped in "s> <days (opt)>', "ban @InfamousGuy003 \"spamming in #general-talk\" 7"],
             clientPermissions: ["BAN_MEMBERS"],
             args: [
@@ -56,7 +57,7 @@ module.exports = class BanCommand extends Command {
         .setTimestamp(Date.now())
         .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
         .addField(":biohazard: Reason", reason)
-        .addField(":clock: Ban duration", days ? days + " days" : "Forever")
+        .addField(":calendar_spiral: Ban duration", days ? days + " days" : "Forever")
         .setFooter("He really deserved it!")
       msg.say(":ok: User banned!");
       member.send(`You **[${member.id}]**were ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
