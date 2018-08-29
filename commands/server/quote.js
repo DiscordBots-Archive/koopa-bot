@@ -35,7 +35,9 @@ module.exports = class ReplyCommand extends Command {
         switch (flag) {
           case "add":
             if (!name || !mess) return msg.reply("insert a valid name and/or message id.");
-            var message = 
+            var message = msg.channel.fetchMessage(mess).catch(e => console.error(e));
+            var cnt = message.cleanContent;
+            msg.say(cnt);
             break;
           case "del":
             break;
