@@ -355,7 +355,10 @@ client.warns.log = (member, warner, reason) => {
         .addField(":biohazard: Reason", reason)
 }
 
-client.getDateTime = () => {
+client.util = {}
+client.util.embed = () => new RichEmbed();
+client.util.memberTag = member => `${member.displayName}#${member.user.tag}`
+client.util.getDateTime = () => {
 	var date = new Date();
 
 	var hour = date.getHours();
