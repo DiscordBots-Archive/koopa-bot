@@ -7,12 +7,12 @@ module.exports = class CleasWarningsCommand extends Command {
             aliases: ["c-w"],
             group: 'admin',
             memberName: 'clear-warns',
-            description: 'Warns an user',
-            examples: ['warn <user>'],
+            description: 'Clears all the warns for an user',
+            examples: ['clear-warns @AnnoyingGuy'],
             args: [
               {
                 key: "member",
-                prompt: "who do you want to warn?",
+                prompt: "who do you want to clear the warns of?",
                 type: "member"
               }
             ]
