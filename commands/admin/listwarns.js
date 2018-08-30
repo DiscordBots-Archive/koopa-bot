@@ -36,7 +36,7 @@ module.exports = class ListWarningsCommand extends Command {
         .setColor(15844367);
 
       for(const data of warns) {
-        embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${moment.format(data.time)}`);
+        embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${moment(data.time).format("ddd, MMM Do, YYYY at HH:MM:SS")}`);
       }
       msg.embed(embed)
     }
