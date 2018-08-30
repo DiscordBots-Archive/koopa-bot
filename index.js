@@ -394,10 +394,42 @@ client.on("message", message => {
 			"message": message.content,
 			"author": message.author.id
 		});
+  
+  // Check how many times the same message has been sent.
+		var msgMatch = 0;
+		for (var i = 0; i < spam.repeat.length; i++) {
+			if (spam.repeat[i].message == message.content && (spam.repeat[i].author == message.author.id)) {
+				msgMatch++;
+			}
+		}
+
+		// Check matched count
+		if (msgMatch == 10) {
+			warn(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+			// message.reply("don't spam!");
+		}// else if (msgMatch == 10)
+		//	ban(message.author, 'Spamming', client.user, message);
+
+		var matched = 0;
+
+		for (var i = 0; i < spam.stroke.length; i++) {
+			if (spam.stroke[i].time > now - 1000) {
+				matched++;
+				if (matched == 8) {
+					warn(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+					// message.reply("do not spam here");
+				}// else if (matched == 8) {
+				//	ban(message.author, 'Spamming', client.user, message);
+				// }
+			}
+
+			if (spam.repeat.length >= 200)
+				spam.repeat.shift();
+		}
 });
 
 function warn(member, reason, moderator, message) {
-  var msg = message
+  var msg = message;
 		this.client.warns.set.run({
         uid: member.user.id,
         reason: reason,
@@ -414,21 +446,19 @@ function warn(member, reason, moderator, message) {
         logs = msg.guild.channels.find("name", "samplasion-development");
       }
 
-		if(logschannel)
-			logschannel.send(`${member.user.tag} **[${member.id}]** was warned by ${moderator.username} **[${moderator.id}]** for ${reason} at ${message.createdAt} in ${message.channel}`);
+		if(logs)
+			logs.send(`${member.user.tag} **[${member.id}]** was warned by ${moderator.username} **[${moderator.id}]**. Reason: ${reason}\nIn ${message.channel}`);
 
-		if(modlogschannel) {
-			var embed = new Discord.RichEmbed() // Master is MessageEmbed
-				.setTitle("User Warned")
-				.setColor("#ff0000")
-				.setTimestamp(new Date())
-				.addField("Warned User:", `${member.user.tag}, ID: ${member.id}`)
-				.addField("Reason:", reason)
-				.addField("Moderator:", `${moderator.username}, ID: ${moderator.id}`)
-				.addField("Time:", message.createdAt)
-				.addField("Channel:", message.channel);
+		if(modlogs) {
+			var embed = client.util.embed() // Master is MessageEmbed
+				.setColor(15844367)
+        .setTitle(`:warning: ${member.user.tag} was warned`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTimestamp(Date.now())
+        .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.tag})`)
+        .addField(":biohazard: Reason", reason)
 
-			modlogschannel.send(embed);
+			modlogs.send(embed);
 		}
 	}
 
