@@ -33,7 +33,7 @@ module.exports = class WarningCommand extends Command {
         uid: member.user.id,
         reason: reason,
         moderator: msg.author.id,
-        time: this.client.util.getDateTime(),
+        time: Date.now(),
         guild: msg.guild.id
       });
       let logs, modlogs;
