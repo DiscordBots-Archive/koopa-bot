@@ -70,6 +70,6 @@ module.exports = class WarningCommand extends Command {
       var day  = date.getDate();
       day = (day < 10 ? "0" : "") + day;
 
-      return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec + " +0001";
+      return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec + "+01:00";
     }
 };
