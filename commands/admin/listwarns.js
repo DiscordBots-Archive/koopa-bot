@@ -24,7 +24,7 @@ module.exports = class ListWarningsCommand extends Command {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")
           && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
-      const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ?").all(member.id);
+      const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?").all(member.id, msg.guild.id);
       // Now shake it and show it! (as a nice embed, too!)
       const embed = new RichEmbed()
         .setTitle("Warning List")
