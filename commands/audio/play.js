@@ -33,10 +33,10 @@ module.exports = class PlayAudioCommand extends Command {
 
 			let validate = await YTDL.validateURL(link);
 			if(!validate) {
-        // return message.reply("please input a valid URL following the command");
+        return message.reply("please input a valid URL following the command");
         ytSearch(link, (e, r) => {
           if (e) console.error(e);
-          link = r.videos[0
+          link = "https://youtube.com" + r.videos[0].url
         });
       }
 
