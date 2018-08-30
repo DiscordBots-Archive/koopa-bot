@@ -22,7 +22,8 @@
     "path": "^0.12.7",
     "sqlite": "^3.0.0",
     "yt-search": "^0.1.4",
-    "ytdl-core": "^0.24.0"
+    "ytdl-core": "^0.24.0",
+    "moment": "^2.22.2"
   },
   "engines": {
     "node": "8.x"
