@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { RichEmbed } = require("discord.js");
+const moment = require("moment");
 
 module.exports = class ListWarningsCommand extends Command {
     constructor(client) {
@@ -35,7 +36,7 @@ module.exports = class ListWarningsCommand extends Command {
         .setColor(15844367);
 
       for(const data of warns) {
-        embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${data.time}`);
+        embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${moment.format(data.time)}`);
       }
       msg.embed(embed)
     }
