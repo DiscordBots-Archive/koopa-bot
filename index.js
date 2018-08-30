@@ -381,4 +381,55 @@ client.util.getDateTime = () => {
 	return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec;
 }
 
+var spam = {}
+spam.stroke = []
+spam.repeat = []
+client.on("message", message => {
+    var now = Math.floor(Date.now());
+		spam.stroke.push({
+			"time": now,
+			"author": message.author.id
+		});
+		spam.repeat.push({
+			"message": message.content,
+			"author": message.author.id
+		});
+});
+
+function warn(member, reason, moderator, message) {
+  var msg = message
+		this.client.warns.set.run({
+        uid: member.user.id,
+        reason: reason,
+        moderator: msg.author.id,
+        time: this.getDateTime(),
+        guild: msg.guild.id
+      });
+      let logs, modlogs;
+      if (msg.guild.id == "481369156554326023") {
+        logs = msg.guild.channels.find("name", "logs");
+        modlogs = msg.guild.channels.find("name", "modlogs");
+      } else if (msg.guild.id== "472214037430534167") {
+        modlogs = msg.guild.channels.find("name", "koopa-logs");
+        logs = msg.guild.channels.find("name", "samplasion-development");
+      }
+
+		if(logschannel)
+			logschannel.send(`${member.user.tag} **[${member.id}]** was warned by ${moderator.username} **[${moderator.id}]** for ${reason} at ${message.createdAt} in ${message.channel}`);
+
+		if(modlogschannel) {
+			var embed = new Discord.RichEmbed() // Master is MessageEmbed
+				.setTitle("User Warned")
+				.setColor("#ff0000")
+				.setTimestamp(new Date())
+				.addField("Warned User:", `${member.user.tag}, ID: ${member.id}`)
+				.addField("Reason:", reason)
+				.addField("Moderator:", `${moderator.username}, ID: ${moderator.id}`)
+				.addField("Time:", message.createdAt)
+				.addField("Channel:", message.channel);
+
+			modlogschannel.send(embed);
+		}
+	}
+
 client.login(process.env.TOKEN);
