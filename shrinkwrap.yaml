@@ -10,6 +10,7 @@ dependencies:
   moment: 2.22.2
   node-opus: 0.3.0
   path: 0.12.7
+  snekfetch: 4.0.4
   sqlite: 3.0.0
   yt-search: 0.1.4
   ytdl-core: 0.24.0
@@ -1673,6 +1674,11 @@ packages:
     dev: false
     resolution:
       integrity: sha512-NjxjITIj04Ffqid5lqr7XdgwM7X61c/Dns073Ly170bPQHLm6jkmelye/eglS++1nfTWktpP6Y2bFXjdPlQqdw==
+  /snekfetch/4.0.4:
+    deprecated: use node-fetch instead
+    dev: false
+    resolution:
+      integrity: sha512-dyycG9fvwtSJqKPfMVOpXt+60qvMGe7vWLwOJDiSJaiAx+hs2EnFChG2bXCWn7ulz+zGzrHdN9/yeEb0YqEPww==
   /sql-template-strings/2.2.2:
     dev: false
     engines:
@@ -1974,6 +1980,7 @@ specifiers:
   moment: ^2.22.2
   node-opus: ^0.3.0
   path: ^0.12.7
+  snekfetch: ^4.0.4
   sqlite: ^3.0.0
   yt-search: ^0.1.4
   ytdl-core: ^0.24.0
