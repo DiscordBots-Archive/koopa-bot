@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const YTDL = require("ytdl-core");
+const ytSearch = require('yt-search');
 
 module.exports = class PlayAudioCommand extends Command {
     constructor(client) {
@@ -12,7 +13,7 @@ module.exports = class PlayAudioCommand extends Command {
             args: [
 				      {
 				      	key: 'link',
-				      	prompt: 'if you don\'t feed me with a link, I\'ll be hungry and won\'t play music!',
+				      	prompt: 'if you don\'t give me a link, how could I know what music do you want to hear?',
 				      	type: 'string'
 				      }
 			      ]
@@ -31,7 +32,13 @@ module.exports = class PlayAudioCommand extends Command {
 			// if (!args[0])	return message.reply("Please specify a link");
 
 			let validate = await YTDL.validateURL(link);
-			if(!validate) return message.reply("please input a valid URL following the command");
+			if(!validate) {
+        // return message.reply("please input a valid URL following the command");
+        ytSearch(link, (e, r) => {
+          if (e) console.error(e);
+          link = r.videos[0
+        });
+      }
 
 			let info = await YTDL.getInfo(link);
 
