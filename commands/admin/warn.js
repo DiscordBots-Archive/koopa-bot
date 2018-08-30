@@ -28,7 +28,7 @@ module.exports = class WarningCommand extends Command {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")
           && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
-      if (member.user.bot) return msg.reply("if you think that us bots deserve to be warned, I'll take that as a personal offense!");
+      if (member.user.bot) return msg.reply("you cannot warn a bot (unless someone stole its token, that is).");
       this.client.warns.set.run({
         uid: member.user.id,
         reason: reason,
@@ -51,25 +51,25 @@ module.exports = class WarningCommand extends Command {
     }
   
     getDateTime() {
-	var date = new Date();
+      var date = new Date();
 
-	var hour = date.getHours();
-	hour = (hour < 10 ? "0" : "") + hour;
+      var hour = date.getHours();
+      hour = (hour < 10 ? "0" : "") + hour;
 
-	var min  = date.getMinutes();
-	min = (min < 10 ? "0" : "") + min;
+      var min  = date.getMinutes();
+      min = (min < 10 ? "0" : "") + min;
 
-	var sec  = date.getSeconds();
-	sec = (sec < 10 ? "0" : "") + sec;
+      var sec  = date.getSeconds();
+      sec = (sec < 10 ? "0" : "") + sec;
 
-	var year = date.getFullYear();
+      var year = date.getFullYear();
 
-	var month = date.getMonth() + 1;
-	month = (month < 10 ? "0" : "") + month;
+      var month = date.getMonth() + 1;
+      month = (month < 10 ? "0" : "") + month;
 
-	var day  = date.getDate();
-	day = (day < 10 ? "0" : "") + day;
+      var day  = date.getDate();
+      day = (day < 10 ? "0" : "") + day;
 
-	return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec+ " +0001Z";
-}
+      return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec + " +0001";
+    }
 };
