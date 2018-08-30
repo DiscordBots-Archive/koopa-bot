@@ -92,14 +92,14 @@ client.on('ready', () => {
   const warnTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
   if (!warnTable['count(*)']) {
     // If the table isn't there, create it and setup the database correctly.
-    warns.prepare("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT);").run();
+    warns.prepare("CREATE TABLE IF NOT EXISTS warns (id TEXT PRIMARY KEY, userId TEXT, reason TEXT, moderator TEXT, time TEXT);").run();
     // Ensure that the "id" row is always unique and indexed.
-    // warns.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
+    warns.prepare("CREATE UNIQUE INDEX idx_warns_id ON scores (id);").run();
     warns.pragma("synchronous = 1");
     warns.pragma("journal_mode = wal");
   }
-  client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ?");
-  client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time) VALUES (@id, @reason, @moderator, @time)");
+  client.warns.get = warns.prepare("SELECT * FROM warns WHERE id = ?");
+  client.warns.set = warns.prepare("INSERT INTO warns (iduserId, reason, moderator, time) VALUES (@uid, @id, @reason, @moderator, @time)");
 });
 
 client.on("message", message => {
