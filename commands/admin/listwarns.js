@@ -25,12 +25,13 @@ module.exports = class ListWarningsCommand extends Command {
           && !msg.member.roles.has("481492274333876224")
           && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
       const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?").all(member.id, msg.guild.id);
+      // console.log(warns);
       // Now shake it and show it! (as a nice embed, too!)
       const embed = new RichEmbed()
         .setTitle("Warning List")
         .setAuthor(this.client.user.username, this.client.user.avatarURL)
         .setThumbnail(member.user.displayAvatarURL)
-        .setDescription("All the warnings for user " + member.displayName)
+        .setDescription(`${warns.length == 0 ? "No" : warns.length} warnings for ${member.displayName}`)
         .setColor(15844367);
 
       for(const data of warns) {
