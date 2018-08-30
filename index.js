@@ -100,6 +100,7 @@ client.on('ready', () => {
   }
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?");
   client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time, guild) VALUES (@uid, @reason, @moderator, @time, @guild)");
+  client.warns.delete = warns.prepare("DELETE FROM warns WHERE userId = ? AND guild = ?");
   client.warns.drop = warns.prepare("DROP TABLE warns");
 });
 

@@ -7,6 +7,7 @@ dependencies:
   enmap-sqlite: 2.0.5
   express: 4.16.3
   ffmpeg: 0.0.4
+  moment: 2.22.2
   node-opus: 0.3.0
   path: 0.12.7
   sqlite: 3.0.0
@@ -1173,6 +1174,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
+  /moment/2.22.2:
+    dev: false
+    resolution:
+      integrity: sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1966,6 +1971,7 @@ specifiers:
   enmap-sqlite: ^2.0.5
   express: ^4.16.3
   ffmpeg: ^0.0.4
+  moment: ^2.22.2
   node-opus: ^0.3.0
   path: ^0.12.7
   sqlite: ^3.0.0
