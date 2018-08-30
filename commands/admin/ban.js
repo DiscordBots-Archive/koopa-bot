@@ -60,7 +60,7 @@ module.exports = class BanCommand extends Command {
         .addField(":calendar_spiral: Ban duration", days ? days + " days" : "Forever")
         .setFooter("He really deserved it!")
       msg.say(":ok: User banned!");
-      member.send(`You **[${member.id}]**were ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
+      member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
       modlogs.send(embed);
       logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }

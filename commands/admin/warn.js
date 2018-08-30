@@ -33,7 +33,7 @@ module.exports = class WarningCommand extends Command {
         uid: member.user.id,
         reason: reason,
         moderator: msg.author.id,
-        time: new Date().toISOString,
+        time: this.getDateTime(),
         guild: msg.guild.id
       });
       let logs, modlogs;
@@ -49,4 +49,27 @@ module.exports = class WarningCommand extends Command {
       modlogs.send(this.client.warns.log(member, msg.member, reason));
       logs.send(`${member.user.tag} **[${member.id}]** was warned by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }
+  
+    getDateTime() {
+	var date = new Date();
+
+	var hour = date.getHours();
+	hour = (hour < 10 ? "0" : "") + hour;
+
+	var min  = date.getMinutes();
+	min = (min < 10 ? "0" : "") + min;
+
+	var sec  = date.getSeconds();
+	sec = (sec < 10 ? "0" : "") + sec;
+
+	var year = date.getFullYear();
+
+	var month = date.getMonth() + 1;
+	month = (month < 10 ? "0" : "") + month;
+
+	var day  = date.getDate();
+	day = (day < 10 ? "0" : "") + day;
+
+	return year + "-" + month + "-" + day + "T" + hour + ":" + min + ":" + sec+ " +0001Z";
+}
 };
