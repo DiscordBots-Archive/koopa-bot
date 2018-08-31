@@ -443,13 +443,11 @@ function warn(member, reason, moderator, message) {
 
 function ban(member, reason, moderator, message, days = null) {
   var msg = message;
-	client.warns.set.run({
-    uid: member.user.id,
-    reason: reason,
-    moderator: msg.author.id,
-    time: client.util.getDateTime(),
-    guild: msg.guild.id
-  });
+	if (days) {
+    member.ban({days: days, reason: reason});
+  } else {
+    member.ban(reason);
+  }
   let logs, modlogs;
   if (msg.guild.id== "472214037430534167") {
     modlogs = msg.guild.channels.find("name", "koopa-logs");
@@ -463,20 +461,23 @@ function ban(member, reason, moderator, message, days = null) {
 		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
   
 	if(modlogs) {
-		var embed = client.util.embed() // Master is MessageEmbed
-			.setColor(15844367)
-      .setTitle(`:warning: ${member.user.tag} was warned`)
-      .setThumbnail(member.user.displayAvatarURL)
-      .setTimestamp(Date.now())
-      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
-      .addField(":biohazard: Reason", reason)
+		let embed = new RichEmbed()
+        .setColor(0xe00b0b)
+        .setTitle(`:skull_crossbones: ${member.user.tag} was banned`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTimestamp(Date.now())
+        .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
+        .addField(":biohazard: Reason", reason)
+        .addField(":calendar_spiral: Ban duration", days ? days + " days" : "Forever")
+        .setFooter("He really deserved it!")
 
 		modlogs.send(embed);
 	}
   
-  member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
+  member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
+client.ban = ban;
 
 client.login(process.env.TOKEN);
