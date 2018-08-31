@@ -405,7 +405,7 @@ client.on("message", message => {
 
 		// Check matched count
 		if (msgMatch == 10) {
-			warn(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+			warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 			// message.reply("don't spam!");
 		}// else if (msgMatch == 10)
 		//	ban(message.author, 'Spamming', client.user, message);
@@ -416,7 +416,7 @@ client.on("message", message => {
 			if (spam.stroke[i].time > now - 1000) {
 				matched++;
 				if (matched == 8) {
-					warn(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+					warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 					// message.reply("do not spam here");
 				}// else if (matched == 8) {
 				//	ban(message.author, 'Spamming', client.user, message);
@@ -430,36 +430,40 @@ client.on("message", message => {
 
 function warn(member, reason, moderator, message) {
   var msg = message;
-		this.client.warns.set.run({
-        uid: member.user.id,
-        reason: reason,
-        moderator: msg.author.id,
-        time: this.getDateTime(),
-        guild: msg.guild.id
-      });
-      let logs, modlogs;
-      if (msg.guild.id == "481369156554326023") {
-        logs = msg.guild.channels.find("name", "logs");
-        modlogs = msg.guild.channels.find("name", "modlogs");
-      } else if (msg.guild.id== "472214037430534167") {
-        modlogs = msg.guild.channels.find("name", "koopa-logs");
-        logs = msg.guild.channels.find("name", "samplasion-development");
-      }
+	this.client.warns.set.run({
+    uid: member.user.id,
+    reason: reason,
+    moderator: msg.author.id,
+    time: this.getDateTime(),
+    guild: msg.guild.id
+  });
+  let logs, modlogs;
+  if (msg.guild.id== "472214037430534167") {
+    modlogs = msg.guild.channels.find("name", "koopa-logs");
+    logs = msg.guild.channels.find("name", "samplasion-development");
+  } else {
+    logs = msg.guild.channels.find("name", "logs");
+    modlogs = msg.guild.channels.find("name", "modlogs");
+  }
 
-		if(logs)
-			logs.send(`${member.user.tag} **[${member.id}]** was warned by ${moderator.username} **[${moderator.id}]**. Reason: ${reason}\nIn ${message.channel}`);
+	if(logs)
+		logs.send(`${member.user.tag} **[${member.user.id}]** was warned by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: ${reason}\nIn ${message.channel}`);
 
-		if(modlogs) {
-			var embed = client.util.embed() // Master is MessageEmbed
-				.setColor(15844367)
-        .setTitle(`:warning: ${member.user.tag} was warned`)
-        .setThumbnail(member.user.displayAvatarURL)
-        .setTimestamp(Date.now())
-        .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.tag})`)
-        .addField(":biohazard: Reason", reason)
+	if(modlogs) {
+		var embed = client.util.embed() // Master is MessageEmbed
+			.setColor(15844367)
+      .setTitle(`:warning: ${member.user.tag} was warned`)
+      .setThumbnail(member.user.displayAvatarURL)
+      .setTimestamp(Date.now())
+      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.tag})`)
+      .addField(":biohazard: Reason", reason)
 
-			modlogs.send(embed);
-		}
+		modlogs.send(embed);
 	}
+  
+  member.send(`You **[${member.id}]** were warned by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
+}
+
+client.warn = warn;
 
 client.login(process.env.TOKEN);
