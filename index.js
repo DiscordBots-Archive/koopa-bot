@@ -385,6 +385,7 @@ var spam = {}
 spam.stroke = []
 spam.repeat = []
 client.on("message", message => {
+  console.log("msg");
     var now = Math.floor(Date.now());
 		spam.stroke.push({
 			"time": now,
@@ -430,11 +431,11 @@ client.on("message", message => {
 
 function warn(member, reason, moderator, message) {
   var msg = message;
-	this.client.warns.set.run({
+	client.warns.set.run({
     uid: member.user.id,
     reason: reason,
     moderator: msg.author.id,
-    time: this.getDateTime(),
+    time: client.util.getDateTime(),
     guild: msg.guild.id
   });
   let logs, modlogs;
@@ -447,7 +448,7 @@ function warn(member, reason, moderator, message) {
   }
 
 	if(logs)
-		logs.send(`${member.user.tag} **[${member.user.id}]** was warned by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: ${reason}\nIn ${message.channel}`);
+		logs.send(`${member.user.tag} **[${member.user.id}]** was warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
 
 	if(modlogs) {
 		var embed = client.util.embed() // Master is MessageEmbed
@@ -455,13 +456,13 @@ function warn(member, reason, moderator, message) {
       .setTitle(`:warning: ${member.user.tag} was warned`)
       .setThumbnail(member.user.displayAvatarURL)
       .setTimestamp(Date.now())
-      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.tag})`)
+      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
       .addField(":biohazard: Reason", reason)
 
 		modlogs.send(embed);
 	}
   
-  member.send(`You **[${member.id}]** were warned by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
+  member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
