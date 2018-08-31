@@ -1,6 +1,9 @@
 const { RichEmbed } = require("discord.js");
 
 module.exports = (client) => {
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
   client.util = {}
   client.util.embed = () => new RichEmbed();
   client.util.memberTag = member => `${member.displayName}#${member.user.discriminator}`;
@@ -24,6 +27,8 @@ module.exports = (client) => {
     }
   }
   client.util.weekDayAbbr = (wdn) => client.util.weekDay(wdn).substr(0, 3)
+  client.util.month = (wdn) => monthNames[wdn]
+  client.util.monthAbbr = (wdn) => monthNames[wdn].substr(0, 3)
   client.util.getDateTime = () => {
     var date = new Date();
 
@@ -38,14 +43,13 @@ module.exports = (client) => {
 
     var year = date.getFullYear();
 
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
+    var month = client.util.monthAbbr(date.getMonth());
 
     var day  = date.getDate();
     day = (day < 10 ? "0" : "") + day;
     
     var wd = client.util.weekDayAbbr(date.getDay())
 
-    return `${wd}, `
+    return `${wd}, ${month} ${day}, ${year} ${hour}:${min}:${sec} GMT`
   }
 }
