@@ -388,8 +388,8 @@ client.on("message", message => {
 		if (msgMatch == 10) {
 			warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 			message.reply("spamming isn't allowed");
-		}// else if (msgMatch == 10)
-		ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+		} else if (msgMatch == 13)
+		  ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
 
 		var matched = 0;
 
