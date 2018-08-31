@@ -385,7 +385,6 @@ var spam = {}
 spam.stroke = []
 spam.repeat = []
 client.on("message", message => {
-  console.log("msg");
     var now = Math.floor(Date.now());
 		spam.stroke.push({
 			"time": now,
@@ -462,7 +461,7 @@ function warn(member, reason, moderator, message) {
 		modlogs.send(embed);
 	}
   
-  member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: \`${reason}\``);
+  member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
