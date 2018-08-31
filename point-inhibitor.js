@@ -1,12 +1,12 @@
 exports.inhibite = (client, msg) => {
   var chn = msg.channel;
   var name = chn.name;
-  return ([""].includes(name))
+  return (["meme", "dank", "shit", "spam", "end-of-server"].incContains(name))
 }
 
 Array.prototype.incContains = (str) => {
   for (var item in this) {
-    if (item.contains(str)) return true
+    if (item.includes(str)) return true;
   }
   return false;
 }

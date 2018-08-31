@@ -3,6 +3,7 @@ const { RichEmbed } = require("discord.js");
 const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
+const inhibitor = require("./point-inhibitor");
 var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
 const sql = new SQLite('./scores.sqlite');
@@ -112,9 +113,9 @@ client.on("message", message => {
   // not Discord.js-Commando.CommandoClient
   let score;
   if (message.guild) {
-    // if the channel is shitposting, return (we don't want to
-    // let people level up by spamming in #shitposting)
-    if (message.channel.name =="shitposting") return
+    // if the channel is the guild's spam channel, return (we don't
+    // want to let people level up by spamming in the spam channel)
+    if (inhibitor.inhibite(client, message)) return;
     // get score
       score = client.getScore.get(message.author.id, message.guild.id);
       // if the user doesn't have a score, give him
@@ -438,6 +439,42 @@ function warn(member, reason, moderator, message) {
 	}
   
   member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
+}
+
+function ban(member, reason, moderator, message, days = null) {
+  var msg = message;
+	client.warns.set.run({
+    uid: member.user.id,
+    reason: reason,
+    moderator: msg.author.id,
+    time: client.util.getDateTime(),
+    guild: msg.guild.id
+  });
+  let logs, modlogs;
+  if (msg.guild.id== "472214037430534167") {
+    modlogs = msg.guild.channels.find("name", "koopa-logs");
+    logs = msg.guild.channels.find("name", "samplasion-development");
+  } else {
+    logs = msg.guild.channels.find("name", "logs");
+    modlogs = msg.guild.channels.find("name", "modlogs");
+  }
+
+	if(logs)
+		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
+  
+	if(modlogs) {
+		var embed = client.util.embed() // Master is MessageEmbed
+			.setColor(15844367)
+      .setTitle(`:warning: ${member.user.tag} was warned`)
+      .setThumbnail(member.user.displayAvatarURL)
+      .setTimestamp(Date.now())
+      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
+      .addField(":biohazard: Reason", reason)
+
+		modlogs.send(embed);
+	}
+  
+  member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
