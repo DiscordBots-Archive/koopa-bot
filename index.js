@@ -57,6 +57,9 @@ client.on('guildMemberAdd', member => {
   if (member.user.bot) return;
 	var welcomechannel = member.guild.channels.find('name', 'general-talk');
 	if (!welcomechannel) return;
+  
+  var role = member.guild.roles.find(r => r.name == "Green Toad");
+  member.addRole().catch(e => console.error(e));
 
 	var embed = new RichEmbed()
     .setThumbnail(member.guild.iconURL)
@@ -64,6 +67,7 @@ client.on('guildMemberAdd', member => {
 		.setTitle(`Welcome to Mario Modding, ${member.user.username}`)
 		.setDescription("Mario Modding is the board where you can talk about, well, Mario modding")
 		.addField("Website", "http://mario-modding.co.nf", true)
+    .setThumbnail("http://mario-modding.co.nf/img/favicon.ico")
 		.setFooter(`Read #rules before starting`);
 
 	welcomechannel.send(embed);
