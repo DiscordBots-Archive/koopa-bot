@@ -37,31 +37,8 @@ module.exports = class BanCommand extends Command {
     run(msg, { member, reason, days }) {
       if (!this.client.isOwner(msg.author)
           && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
-      if (days) {
-        member.ban({days: days, reason: reason});
-      } else {
-        member.ban(reason);
-      }
-      let logs, modlogs;
-      if (msg.guild.id == "481369156554326023") {
-        logs = msg.guild.channels.find("name", "logs");
-        modlogs = msg.guild.channels.find("name", "modlogs");
-      } else if (msg.guild.id== "472214037430534167") {
-        modlogs = msg.guild.channels.find("name", "koopa-logs");
-        logs = msg.guild.channels.find("name", "samplasion-development");
-      }
-      let embed = new RichEmbed()
-        .setColor(0xe00b0b)
-        .setTitle(`:skull_crossbones: ${member.user.tag} was banned`)
-        .setThumbnail(member.user.displayAvatarURL)
-        .setTimestamp(Date.now())
-        .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
-        .addField(":biohazard: Reason", reason)
-        .addField(":calendar_spiral: Ban duration", days ? days + " days" : "Forever")
-        .setFooter("He really deserved it!")
+      var d = days ? days : null
+      this.client.ban(member, reason, msg.member, msg, days);
       msg.say(":ok: User banned!");
-      member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${msg.author.tag} **[${msg.author.id}]**. Reason: \`${reason}\``);
-      modlogs.send(embed);
-      logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
     }
 };
