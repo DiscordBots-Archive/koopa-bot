@@ -219,7 +219,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
     const message = reaction.message;
     if (reaction.emoji.name !== '⭐') return;
     //if (message.author.id === user.id) return message.channel.send(`${user}, you cannot star your own messages.`);
-    if (message.author.bot) return message.channel.send(`${user}, you cannot star bot messages.`);
+    //if (message.author.bot) return message.channel.send(`${user}, you cannot star bot messages.`);
     const starChannel = message.guild.channels.find(channel => channel.name == "starboard")
     if (!starChannel) return message.channel.send(`It appears that you do not have a \`starboard\` channel.`); 
     const fetchedMessages = await starChannel.fetchMessages({ limit: 100 });
@@ -231,7 +231,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
       const embed = new RichEmbed()
         .setColor(foundStar.color)
         .setDescription(foundStar.description)
-        .setAuthor(message.author.tag, message.author.displayAvatarURL)
+        .setAuthor(message.author.tag + " in #" + message.channel.name, message.author.displayAvatarURL)
         .setTimestamp()
         .setFooter(`⭐ ${parseInt(star[1])+1} | ${message.id}`)
         .setImage(image);
@@ -244,7 +244,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
       const embed = new RichEmbed()
         .setColor(15844367)
         .setDescription(message.cleanContent)
-        .setAuthor(message.author.tag, message.author.displayAvatarURL)
+        .setAuthor(message.author.tag + " in #" + message.channel.name, message.author.displayAvatarURL)
         .setTimestamp(new Date())
         .setFooter(`⭐ 1 | ${message.id}`)
         .setImage(image);
@@ -267,7 +267,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
       const embed = new RichEmbed()
         .setColor(foundStar.color)
         .setDescription(foundStar.description)
-        .setAuthor(message.author.tag, message.author.displayAvatarURL)
+        .setAuthor(message.author.tag + " in #" + message.channel.name, message.author.displayAvatarURL)
         .setTimestamp()
         .setFooter(`⭐ ${parseInt(star[1])-1} | ${message.id}`)
         .setImage(image);
