@@ -387,9 +387,9 @@ client.on("message", message => {
 		// Check matched count
 		if (msgMatch == 10) {
 			warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
-			// message.reply("don't spam!");
+			message.reply("spamming isn't allowed");
 		}// else if (msgMatch == 10)
-		//	ban(message.author, 'Spamming', client.user, message);
+		ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
 
 		var matched = 0;
 
@@ -398,10 +398,10 @@ client.on("message", message => {
 				matched++;
 				if (matched == 8) {
 					warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
-					// message.reply("do not spam here");
-				}// else if (matched == 8) {
-				//	ban(message.author, 'Spamming', client.user, message);
-				// }
+					message.reply("spamming isn't allowed");
+				} else if (matched == 11) {
+					ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+				}
 			}
 
 			if (spam.repeat.length >= 200)
