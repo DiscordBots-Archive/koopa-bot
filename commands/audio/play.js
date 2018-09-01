@@ -42,7 +42,7 @@ module.exports = class PlayAudioCommand extends Command {
       }
       */
       /* Still thank NightYoshi */
-      var lnk = "https://youtube.com"
+      var lnk = ""
       let validate = await YTDL.validateURL(link);
       if(!validate) {
           await ytSearch(link, (err, res) => {
@@ -83,7 +83,7 @@ module.exports = class PlayAudioCommand extends Command {
               .then((collected) => {
                 message.channel.send(`Ok. I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
                 console.log(videos[parseInt(collected.first().content)-1].url)
-                lnk = "https://www.youtube.com" + videos[parseInt(collected.first().content)-1].url.trim();
+                lnk = videos[parseInt(collected.first().content)-1].url.trim();
               })
               .catch(() => {
                 message.channel.send('There was no collected message that passed the filter within the time limit!');
@@ -93,9 +93,11 @@ module.exports = class PlayAudioCommand extends Command {
         lnk = link
       }
       
-      console.log(".com/watch?v="+lnk)
+      lnk = lnk.replace(/\r?\n|\r/g, "")
+      
+      console.log(lnk)
 
-			let info = await YTDL.getInfo(link);
+			let info = await YTDL.getInfo(lnk);
 
 			let data = this.client.audio.active.get(message.guild.id) || {};
 
@@ -106,7 +108,7 @@ module.exports = class PlayAudioCommand extends Command {
 			data.queue.push({
 				songTitle: info.title,
 				requester: message.author.tag,
-				url: link,
+				url: lnk,
 				announceChannel: message.channel.id
 			});
 
