@@ -111,12 +111,16 @@ module.exports = class PlayAudioCommand extends Command {
 				requester: message.author.tag,
 				url: lnk,
 				announceChannel: message.channel.id,
-        length: `${this.client.util.pad(info.length_seconds / 60)}:${this.client.util.pad(info.length_seconds % 60)}`
+        length: this.getTime(info.length_seconds)
 			});
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
-			else message.channel.send(`Added to Queue: ${info.title} | Requested by: ${message.author.tag}`);
+			else message.channel.send(`Added to Queue: ${info.title} \`[${this.getTime(info.length_seconds / 60)}]\` | Requested by: ${message.author.tag}`);
 
 			this.client.audio.active.set(message.guild.id, data);
+  }
+  
+  getTime(secs) {
+    return `${this.client.util.pad(Math.floor(secs / 60))}:${this.client.util.pad(secs % 60)}`
   }
 };
