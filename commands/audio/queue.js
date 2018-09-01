@@ -31,7 +31,7 @@ module.exports = class StopAudioCommand extends Command {
 				.setTitle("Music List")
 				.setColor("#b30000")
 				.setTimestamp(new Date())
-				.setDescription(`__**NOW PLAYING**__\n\n**${nowPlaying.songTitle}** \`[${this.getTime(fetched.dispatcher.time/1000)}/${this.getTime(nowPlaying.length)}]\`\n*Requested by* *__${nowPlaying.requester}__*`)
+				.setDescription(`__**NOW PLAYING**__\n\n**${nowPlaying.songTitle}** \`[${this.getTime(fetched.dispatcher.time/1000)}/${nowPlaying.length}]\`\n*Requested by* *__${nowPlaying.requester}__*`)
 
 			for (var i = 1; i < queue.length; i++) {
 				embed.addField(queue[i].songTitle, `*Requested by __${queue[i].requester}__*`); 
@@ -40,6 +40,6 @@ module.exports = class StopAudioCommand extends Command {
     }
   
   getTime(secs) {
-    return `${this.client.util.pad(Math.floor(secs / 60))}:${this.client.util.pad(secs % 60)}`
+    return `${this.client.util.pad(Math.floor(secs / 60))}:${this.client.util.pad(Math.floor(secs % 60))}`
   }
 };

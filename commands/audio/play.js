@@ -121,6 +121,6 @@ module.exports = class PlayAudioCommand extends Command {
   }
   
   getTime(secs) {
-    return `${this.client.util.pad(Math.floor(secs / 60))}:${this.client.util.pad(secs % 60)}`
+    return `${this.client.util.pad(Math.floor(secs / 60))}:${this.client.util.pad(Math.floor(secs % 60))}`
   }
 };
