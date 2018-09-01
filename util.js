@@ -52,4 +52,5 @@ module.exports = (client) => {
 
     return `${wd}, ${month} ${day}, ${year} ${hour}:${min}:${sec} GMT`
   }
+  client.util.pad = (n) => n < 10 ? "0"+n : ""+n
 }
