@@ -14,7 +14,7 @@ module.exports = class ListWarningsCommand extends Command {
             args: [
               {
                 key: "member",
-                prompt: "who do you want to warn?",
+                prompt: "who do you want to see the warns of?",
                 type: "member"
               }
             ]

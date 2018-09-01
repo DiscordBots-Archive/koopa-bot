@@ -16,7 +16,7 @@ module.exports = class WarningCommand extends Command {
               },
               {
                 key: "reason",
-                prompt: "who do you want to warn?",
+                prompt: "why do you want to warn?",
                 default: "No reason.",
                 type: "string"
               }
