@@ -179,7 +179,7 @@ client.audio = {};
 client.audio.active = new Map();
 client.audio.play = async (client, active, data) => {
   const playing = client.channels.get(data.queue[0].announceChannel).send(
-			`Now Playing: ${data.queue[0].songTitle} \`[${data.queue[0].length}]\` | Requested by: ${data.queue[0].requester}`
+			`Now Playing: ${data.queue[0].songTitle} | Requested by: ${data.queue[0].requester}`
 		);
 
 		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
