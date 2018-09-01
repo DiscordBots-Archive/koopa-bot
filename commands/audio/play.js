@@ -42,6 +42,7 @@ module.exports = class PlayAudioCommand extends Command {
       }
       */
       /* Still thank NightYoshi */
+      var lnk = "htps://youtube.com"
       let validate = await YTDL.validateURL(link);
       if(!validate) {
           await ytSearch(link, function(err, res) {
@@ -57,10 +58,11 @@ module.exports = class PlayAudioCommand extends Command {
                   resp += `**${parseInt(i)+1}.** ${videos[i].title}\n`;
               }
 
-              resp += `\n**Choose a number between \`1-${videos.length}\``;
+              resp += `\n**Choose a number between** \`1-${videos.length}\` (in 30 seconds the command will be canceled)`;
 
               message.reply(resp);
 
+              /*
               const filter = m => !isNaN(m.content) && parseInt(m.content) < videos.length+1 && parseInt(m.content) > 0;
               const collector = message.channel.createMessageCollector(filter);
 
@@ -69,8 +71,29 @@ module.exports = class PlayAudioCommand extends Command {
               collector.once('collect', (m) => {
                 link = videos[parseInt(m.content)-1].url;
               });
+              */
+              message.channel.awaitMessages(response => response.author.id == message.author.id
+                                            && !isNaN(response.content)
+                                            && parseInt(response.content) <= videos.length
+                                            && parseInt(response.content) > 0, {
+                max: 1,
+                time: 30000,
+                errors: ['time'],
+              })
+              .then((collected) => {
+                message.channel.send(`The collected message was: ${collected.first().content}`);
+                console.log(videos[parseInt(collected.first().content)-1])
+                lnk = link + videos[parseInt(collected.first().content)-1].url;
+              })
+              .catch(() => {
+                message.channel.send('There was no collected message that passed the filter within the time limit!');
+              });
           });
+      } else {
+        lnk = link
       }
+      
+      console.log("is?"+lnk)
 
 			let info = await YTDL.getInfo(link);
 
