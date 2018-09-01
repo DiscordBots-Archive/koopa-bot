@@ -48,19 +48,19 @@ module.exports = class PlayAudioCommand extends Command {
           await ytSearch(link, (err, res) => {
               if (err) {
                   console.error(err);
-                  return message.reply("something went wrong, tell `NightYoshi370#5597` or `Samplasion#7901`");
+                  return message.reply("something went really wrong, tell `NightYoshi370#5597` or `Samplasion#7901`: `"+err+"`");
               }
 
               let videos = res.videos.slice(0, 10);
 
               let resp = '';
               for (var i in videos) {
-                  resp += `**${parseInt(i)+1}.** ${videos[i].title}\n`;
+                  resp += `**${parseInt(i)+1}.** ${videos[i].title} \`[${videos[i].timestamp}]\`\n`;
               }
 
               resp += `\n**Choose a number between** \`1-${videos.length}\` (in 30 seconds the command will be canceled)`;
 
-              message.reply(resp);
+              message.say(resp);
 
               /*
               const filter = m => !isNaN(m.content) && parseInt(m.content) < videos.length+1 && parseInt(m.content) > 0;
@@ -81,19 +81,18 @@ module.exports = class PlayAudioCommand extends Command {
                 errors: ['time'],
               })
               .then((collected) => {
-                message.channel.send(`Ok. I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
-                console.log(videos[parseInt(collected.first().content)-1].url)
-                lnk = videos[parseInt(collected.first().content)-1].url.trim();
+                message.channel.send(`Ok, I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
+                console.log(videos[parseInt(collected.first().content)-1])
+                lnk = "https://youtube.com/watch?v=" + videos[parseInt(collected.first().content)-1].videoId.trim();
+                console.error(lnk);
               })
               .catch(() => {
-                message.channel.send('There was no collected message that passed the filter within the time limit!');
+                message.reply('command canceled!');
               });
           });
       } else {
         lnk = link
       }
-      
-      lnk = lnk.replace(/\r?\n|\r/g, "")
       
       console.log(lnk)
 
