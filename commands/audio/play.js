@@ -124,6 +124,6 @@ module.exports = class PlayAudioCommand extends Command {
     var mins = secs / 60;
     var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second — if mins isn't precise, add a second and floor mins
     var sec = oms ? (secs % 60) + 1 : secs % 60;
-    return `${this.client.util.pad(Math.floor(mins))}:${this.client.util.pad(Math.floor(secs))}`
+    return `${this.client.util.pad(Math.floor(mins))}:${this.client.util.pad(Math.floor(sec))}`
   }
 };
