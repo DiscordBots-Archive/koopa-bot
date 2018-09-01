@@ -8,12 +8,12 @@ module.exports = class PlayAudioCommand extends Command {
             name: 'play',
             group: 'audio',
             memberName: 'play',
-            description: 'Plays the music at the given YouTube link',
+            description: 'Plays the music for the given indication (YouTube link or search query)',
             examples: ['play https://youtube.com/someVideo12', "play some music name"],
             args: [
 				      {
 				      	key: 'link',
-				      	prompt: 'if you don\'t give me a link, how could I know what music do you want to hear?',
+				      	prompt: 'if you don\'t give me a link or a search query, how could I know what music do you want to hear?',
 				      	type: 'string'
 				      }
 			      ]
