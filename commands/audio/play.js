@@ -9,7 +9,7 @@ module.exports = class PlayAudioCommand extends Command {
             group: 'audio',
             memberName: 'play',
             description: 'Plays the music at the given YouTube link',
-            examples: ['play https://youtube.com/someVideo12'],
+            examples: ['play https://youtube.com/someVideo12', "play some music name"],
             args: [
 				      {
 				      	key: 'link',
@@ -80,11 +80,11 @@ module.exports = class PlayAudioCommand extends Command {
                 time: 30000,
                 errors: ['time'],
               })
-              .then((collected) => {
+              .then(async (collected) => {
                 message.channel.send(`Ok, I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
-                console.log(videos[parseInt(collected.first().content)-1])
                 lnk = "https://youtube.com/watch?v=" + videos[parseInt(collected.first().content)-1].videoId.trim();
-                console.error(lnk);
+
+                this.play(message, lnk)
               })
               .catch(() => {
                 message.reply('command canceled!');
@@ -92,11 +92,13 @@ module.exports = class PlayAudioCommand extends Command {
           });
       } else {
         lnk = link
+        
+        this.play(message, lnk)
       }
-      
-      console.log(lnk)
-
-			let info = await YTDL.getInfo(lnk);
+    }
+  
+  async play(message, lnk) {
+    let info = await YTDL.getInfo(lnk);
 
 			let data = this.client.audio.active.get(message.guild.id) || {};
 
@@ -115,5 +117,5 @@ module.exports = class PlayAudioCommand extends Command {
 			else message.channel.send(`Added to Queue: ${info.title} | Requested by: ${message.author.tag}`);
 
 			this.client.audio.active.set(message.guild.id, data);
-    }
+  }
 };
