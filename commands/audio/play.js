@@ -31,6 +31,7 @@ module.exports = class PlayAudioCommand extends Command {
       // commando logic
 			// if (!args[0])	return message.reply("Please specify a link");
 
+      /*
 			let validate = await YTDL.validateURL(link);
 			if(!validate) {
         return message.reply("please input a valid URL following the command");
@@ -38,6 +39,37 @@ module.exports = class PlayAudioCommand extends Command {
           if (e) console.error(e);
           link = "https://youtube.com" + r.videos[0].url
         });
+      }
+      */
+      /* Still thank NightYoshi */
+      let validate = await YTDL.validateURL(link);
+      if(!validate) {
+          await ytSearch(link, function(err, res) {
+              if (err) {
+                  console.error(err);
+                  return message.reply("something went wrong, tell `NightYoshi370#5597` or `Samplasion#7901`");
+              }
+
+              let videos = res.videos.slice(0, 10);
+
+              let resp = '';
+              for (var i in videos) {
+                  resp += `**${parseInt(i)+1}.** ${videos[i].title}\n`;
+              }
+
+              resp += `\n**Choose a number between \`1-${videos.length}\``;
+
+              message.reply(resp);
+
+              const filter = m => !isNaN(m.content) && parseInt(m.content) < videos.length+1 && parseInt(m.content) > 0;
+              const collector = message.channel.createMessageCollector(filter);
+
+              collector.videos = videos;
+
+              collector.once('collect', (m) => {
+                link = videos[parseInt(m.content)-1].url;
+              });
+          });
       }
 
 			let info = await YTDL.getInfo(link);
