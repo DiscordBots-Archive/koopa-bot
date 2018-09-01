@@ -115,7 +115,7 @@ module.exports = class PlayAudioCommand extends Command {
 			});
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
-			else message.channel.send(`Added to Queue: ${info.title} \`[${this.getTime(info.length_seconds / 60)}]\` | Requested by: ${message.author.tag}`);
+			else message.channel.send(`Added to Queue: ${info.title} \`[${this.getTime(info.length_seconds)}]\` | Requested by: ${message.author.tag}`);
 
 			this.client.audio.active.set(message.guild.id, data);
   }
