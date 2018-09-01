@@ -42,10 +42,10 @@ module.exports = class PlayAudioCommand extends Command {
       }
       */
       /* Still thank NightYoshi */
-      var lnk = "htps://youtube.com"
+      var lnk = "https://youtube.com"
       let validate = await YTDL.validateURL(link);
       if(!validate) {
-          await ytSearch(link, function(err, res) {
+          await ytSearch(link, (err, res) => {
               if (err) {
                   console.error(err);
                   return message.reply("something went wrong, tell `NightYoshi370#5597` or `Samplasion#7901`");
@@ -81,9 +81,9 @@ module.exports = class PlayAudioCommand extends Command {
                 errors: ['time'],
               })
               .then((collected) => {
-                message.channel.send(`The collected message was: ${collected.first().content}`);
-                console.log(videos[parseInt(collected.first().content)-1])
-                lnk = link + videos[parseInt(collected.first().content)-1].url;
+                message.channel.send(`Ok. I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
+                console.log(videos[parseInt(collected.first().content)-1].url)
+                lnk = "https://www.youtube.com" + videos[parseInt(collected.first().content)-1].url.trim();
               })
               .catch(() => {
                 message.channel.send('There was no collected message that passed the filter within the time limit!');
@@ -93,7 +93,7 @@ module.exports = class PlayAudioCommand extends Command {
         lnk = link
       }
       
-      console.log("is?"+lnk)
+      console.log(".com/watch?v="+lnk)
 
 			let info = await YTDL.getInfo(link);
 
