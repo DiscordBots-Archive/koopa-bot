@@ -365,7 +365,7 @@ require("./util.js")(client);
 var spam = {}
 spam.stroke = []
 spam.repeat = []
-spam.swears = ["shit", "fuck", "cunt", "turd", "kys", ""]
+spam.swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt"]
 client.on("message", async message => {
   if (message.author.bot) return;
     var now = Math.floor(Date.now());
@@ -390,8 +390,10 @@ client.on("message", async message => {
 		if (msgMatch == 10) {
 			warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 			message.reply("spamming isn't allowed");
-		} else if (msgMatch == 13)
-		  ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+		} else if (msgMatch == 13) {
+      var mod = await message.guild.members.get(client.user.id)
+		  ban(message.author, 'Sending spam in #'+message.channel.name, mod, message);
+    }
 
 		var matched = 0;
 
@@ -403,7 +405,7 @@ client.on("message", async message => {
 					message.reply("spamming isn't allowed");
 				} else if (matched == 11) {
           var mod = await message.guild.members.get(client.user.id)
-					ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
+					ban(message.author, 'Sending spam in #'+message.channel.name, mod, message);
 				}
 			}
 
