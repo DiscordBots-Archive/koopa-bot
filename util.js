@@ -53,4 +53,32 @@ module.exports = (client) => {
     return `${wd}, ${month} ${day}, ${year} ${hour}:${min}:${sec} GMT`
   }
   client.util.pad = (n) => n < 10 ? "0"+n : ""+n
+  client.util.loadBar = async (num) => {
+    var bar = 10 // The lenght of the bar!
+    var msg = "Loading " // The message
+    var b = ""
+    var fbar = "[ " // Do not change!
+    var ebar = "]"
+    var t = "/" // Do not change!
+    var char = "| " // The chrachter if the loading bar
+
+    message.channel.send(msg).then(m => {
+
+        for (var i = 0; i < bar; i++) {
+
+            b += char
+
+            var t = fbar + b + ebar
+
+            await m.edit(t)
+
+        }
+
+        var fm = "Loaded! :tada:"
+
+            await m.edit(fm)
+
+        })
+})()
+  }
 }
