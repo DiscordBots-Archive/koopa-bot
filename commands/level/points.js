@@ -46,7 +46,7 @@ module.exports = class ScoreCommand extends Command {
           .setColor(member.highestRole.color)
           .setTitle(membre ? membre.displayName + "'s stats" : "Your stats")
           .setDescription(`${membre ? membre.displayName + " needs" : "You need"} ${100 - (score.points % 100)} EXP points to advance level.`)
-          .addField("EXP Points", score.points, true)
+          .addField("EXP Points", `${score.points}`, true)
           .addField("Level", score.level, true)
           .setThumbnail(member.user.displayAvatarURL);
       
