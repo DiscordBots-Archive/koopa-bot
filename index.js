@@ -365,7 +365,8 @@ require("./util.js")(client);
 var spam = {}
 spam.stroke = []
 spam.repeat = []
-client.on("message", message => {
+spam.swears = ["shit", "fuck", "cunt", "turd", "kys", ""]
+client.on("message", async message => {
   if (message.author.bot) return;
     var now = Math.floor(Date.now());
 		spam.stroke.push({
@@ -401,6 +402,7 @@ client.on("message", message => {
 					warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 					message.reply("spamming isn't allowed");
 				} else if (matched == 11) {
+          var mod = await message.guild.members.get(client.user.id)
 					ban(message.author, 'Sending spam in #'+message.channel.name, client.user, message);
 				}
 			}
