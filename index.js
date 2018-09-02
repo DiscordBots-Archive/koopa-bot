@@ -188,7 +188,7 @@ client.audio.play = async (client, active, data) => {
 								playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}.`));
 								client.audio.finish(client, active, this);
 							});
-		data.dispatcher = await data.connection.playStream(stream)
+		data.dispatcher = await data.connection.playStream(stream) // this line's awesome: it awaits the end of the song to continue
 							.on('error', err => {
 								console.log('Error occurred in stream dispatcher:', err);
 								client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
