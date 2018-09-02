@@ -5,7 +5,7 @@ module.exports = class ScoreCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'points',
-            aliases: ["level"],
+            aliases: ["level", "xp", "exp"],
             group: 'level',
             memberName: 'points',
             description: 'Know your way (to dem points)',
@@ -28,7 +28,7 @@ module.exports = class ScoreCommand extends Command {
       } else {
         var member = membre;
       }
-      if (member.user.bot) return msg.reply("an automated piece of code, like me, (usually called \"bot\") cannot have points. Ah, humans...");
+      if (member.user.bot) return msg.reply("bots don't have EXP points!");
       const message = msg;
       
       let score = this.client.getScore.get(member.user.id, msg.guild.id);
@@ -45,7 +45,8 @@ module.exports = class ScoreCommand extends Command {
           .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
           .setColor(member.highestRole.color)
           .setTitle(membre ? membre.displayName + "'s stats" : "Your stats")
-          .addField("Points", score.points, true)
+          .setTitle(`${membre ? membre.displayName + " needs" : "You need"} ${score.points % 100} EXP points to advance level.`)
+          .addField("EXP", score.points, true)
           .addField("Level", score.level, true)
           .setThumbnail(member.user.displayAvatarURL);
       
