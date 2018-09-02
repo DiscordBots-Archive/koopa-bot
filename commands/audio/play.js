@@ -81,7 +81,7 @@ module.exports = class PlayAudioCommand extends Command {
                 errors: ['time'],
               })
               .then(async (collected) => {
-                message.channel.send(`Ok, I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
+                // message.channel.send(`Ok, I'll play **${videos[parseInt(collected.first().content)-1].title}** \`[${videos[parseInt(collected.first().content)-1].timestamp}]\``);
                 lnk = "https://youtube.com/watch?v=" + videos[parseInt(collected.first().content)-1].videoId.trim();
 
                 this.play(message, lnk)
@@ -115,14 +115,15 @@ module.exports = class PlayAudioCommand extends Command {
 			});
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
-			else message.channel.send(`Added to Queue: ${info.title} \`[${this.getTime(info.length_seconds)}]\` | Requested by: ${message.author.tag}`);
+			else message.channel.send(`Added to Queue: **${info.title}** \`[${this.getTime(info.length_seconds)}]\` | Requested by: ${message.author.tag}`);
 
 			this.client.audio.active.set(message.guild.id, data);
   }
   
   getTime(secs) {
     var mins = secs / 60;
-    var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second — if mins isn't precise, add a second and floor mins
+    var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second
+                                                                // if `mins` is greater than the nearest lower int, but lower than the nearest greater int, add a second
     var sec = oms ? (secs % 60) + 1 : secs % 60;
     return `${this.client.util.pad(Math.floor(mins))}:${this.client.util.pad(Math.floor(sec))}`
   }
