@@ -179,26 +179,26 @@ client.audio = {};
 client.audio.active = new Map();
 client.audio.play = async (client, active, data) => {
   const playing = client.channels.get(data.queue[0].announceChannel).send(
-			`Now Playing: **${data.queue[0].songTitle}** \`[${data.queue[0].length}]\` | Requested by: ${data.queue[0].requester}`
-		);
+		`Now Playing: ${data.queue[0].songTitle} | Requested by: ${data.queue[0].requester}`
+	);
 
-		const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
-							.on('error', err => {
-								console.log('Error occurred when streaming video:', err);
-								playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}.`));
-								client.audio.finish(client, active, this);
-							});
-		data.dispatcher = await data.connection.playStream(stream) // this line's awesome: it awaits the end of the song to continue
-							.on('error', err => {
-								console.log('Error occurred in stream dispatcher:', err);
-								client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
-								client.audio.finish(client, active, this)
-							});
-		data.dispatcher.guildID = data.guildID;
+	const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
+						.on('error', err => {
+							console.log('Error occurred when streaming video:', err);
+							playing.then(msg => msg.edit(`:x: Couldn't play ${data.queue[0].songTitle}. What a drag!`));
+							client.audio.finish(client, active, this);
+						});
+	data.dispatcher = await data.connection.playStream(stream)
+						.on('error', err => {
+							console.log('Error occurred in stream dispatcher:', err);
+							client.channels.get(data.queue[0].announceChannel).send(`An error occurred while playing the song: \`${err}\``);
+							client.audio.finish(client, active, this)
+						});
+	data.dispatcher.guildID = data.guildID;
 
-		data.dispatcher.once('end', function() {
-			client.audio.finish(client, active, this);
-		});
+	data.dispatcher.once('end', function() {
+		client.audio.finish(client, active, this);
+	});
 }
 client.audio.finish = (client, active, dispatcher) => {
   var fetched = active.get(dispatcher.guildID);
