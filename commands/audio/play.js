@@ -13,7 +13,7 @@ module.exports = class PlayAudioCommand extends Command {
             args: [
 				      {
 				      	key: 'link',
-				      	prompt: 'if you don\'t give me a link or a search query, how could I know what music do you want to hear?',
+				      	prompt: 'if you don\'t give me a link or a search query, how could I know what music do you want to listen to?',
 				      	type: 'string'
 				      }
 			      ]
