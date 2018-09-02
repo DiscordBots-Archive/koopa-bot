@@ -32,11 +32,11 @@ module.exports = class LeaderboardCommand extends Command {
       const embed = new RichEmbed()
         .setTitle("Leaderboard")
         .setAuthor(this.client.user.username, this.client.user.avatarURL)
-        .setDescription("Our top " + num + " of point leaders!")
+        .setDescription("Our top " + num + " of EXP point leaders!")
         .setColor(0x00AE86);
 
       for(const data of top10) {
-        embed.addField(this.client.users.get(data.user).tag, `${data.points} points (level ${data.level})`);
+        embed.addField(this.client.users.get(data.user).tag, `${data.points} EXP points (level ${data.level})`);
       }
       return msg.embed(embed);
       

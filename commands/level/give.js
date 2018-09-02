@@ -48,19 +48,11 @@ module.exports = class GiveCommand extends Command {
         // And we save it!
         this.client.setScore.run(userscore);
 
-        return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.`);
+        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userscore.points} EXP points.`);
       } else {
         const user = membre;
         
         if (pointsToAdd < 0) return message.reply("you can't steal points!");
-
-        // Get their current points.
-        let userscore = this.client.getScore.get(user.id, message.guild.id);
-        // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
-        if (!userscore) {
-          userscore = { id: `${message.guild.id}-${user.id}`, user: user.id, guild: message.guild.id, points: 0, level: 1 }
-        }
-        userscore.points += pointsToAdd;
         
         // Get their current points.
         let givescore = this.client.getScore.get(message.author.id, message.guild.id);
@@ -69,6 +61,14 @@ module.exports = class GiveCommand extends Command {
           return message.reply("you don't have enough points to be given to another person.");
         }
         givescore.points -= pointsToAdd;
+
+        // Get their current points.
+        let userscore = this.client.getScore.get(user.id, message.guild.id);
+        // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
+        if (!userscore) {
+          userscore = { id: `${message.guild.id}-${user.id}`, user: user.id, guild: message.guild.id, points: 0, level: 1 }
+        }
+        userscore.points += pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
         let userLevel = Math.floor((userscore.points+100) / 100)
@@ -80,7 +80,7 @@ module.exports = class GiveCommand extends Command {
         this.client.setScore.run(userscore);
         this.client.setScore.run(givescore);
 
-        return message.channel.send(`${user.tag} has received ${pointsToAdd} points and now stands at ${userscore.points} points.\n${message.author.tag}, instead, is at ${givescore.points}`);
+        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userscore.points} EXP points.\n${message.author.tag}, instead, is at ${givescore.points} EXP points`);
       }
     }
 };
