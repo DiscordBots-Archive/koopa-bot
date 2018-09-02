@@ -366,6 +366,7 @@ var spam = {}
 spam.stroke = []
 spam.repeat = []
 client.on("message", message => {
+  if (message.author.bot) return;
     var now = Math.floor(Date.now());
 		spam.stroke.push({
 			"time": now,
