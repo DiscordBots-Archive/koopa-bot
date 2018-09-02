@@ -53,12 +53,12 @@ client.registry
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async member => {
   if (member.user.bot) return;
 	var welcomechannel = member.guild.channels.find('name', 'general-talk');
 	if (!welcomechannel) return;
   
-  var role = member.guild.roles.find(r => r.name == "Green Toad");
+  var role = await member.guild.roles.find(r => r.name == "Green Toad");
   member.addRole().catch(e => console.error(e));
 
 	var embed = new RichEmbed()
