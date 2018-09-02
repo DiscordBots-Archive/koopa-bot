@@ -53,7 +53,7 @@ module.exports = (client) => {
     return `${wd}, ${month} ${day}, ${year} ${hour}:${min}:${sec} GMT`
   }
   client.util.pad = (n) => n < 10 ? "0"+n : ""+n
-  client.util.loadBar = async (num) => {
+  client.util.loadBar = async (message) => {
     var bar = 10 // The lenght of the bar!
     var msg = "Loading " // The message
     var b = ""
@@ -62,7 +62,7 @@ module.exports = (client) => {
     var t = "/" // Do not change!
     var char = "| " // The chrachter if the loading bar
 
-    message.channel.send(msg).then(m => {
+    message.channel.send(msg).then(async m => {
 
         for (var i = 0; i < bar; i++) {
 
@@ -76,9 +76,8 @@ module.exports = (client) => {
 
         var fm = "Loaded! :tada:"
 
-            await m.edit(fm)
+        await m.edit(fm)
 
-        })
-})()
+    })
   }
 }
