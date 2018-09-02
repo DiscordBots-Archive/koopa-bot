@@ -52,6 +52,8 @@ module.exports = class PlayAudioCommand extends Command {
               }
 
               let videos = res.videos.slice(0, 10);
+            
+              if (videos.length== 0) return message.reply("couldn't find any video for the search query `" + link + "`");
 
               let resp = '';
               for (var i in videos) {
