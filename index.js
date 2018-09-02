@@ -65,7 +65,7 @@ client.on('guildMemberAdd', member => {
     .setThumbnail(member.guild.iconURL)
 		.setColor("#B30000")
 		.setTitle(`Welcome to Mario Modding, ${member.user.username}`)
-		.setDescription("Mario Modding is the board where you can talk about, well, Mario modding")
+		.setDescription("Mario Modding is a board where you can talk about all sorts of Mario games modding, from the first apparition of Mario in Donkey Kong to the latest entry Super Mario Odysse")
 		.addField("Website", "http://mario-modding.co.nf", true)
     .setThumbnail("http://mario-modding.co.nf/img/favicon.ico")
 		.setFooter(`Read #rules before starting`);
