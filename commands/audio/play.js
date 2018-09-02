@@ -97,6 +97,7 @@ module.exports = class PlayAudioCommand extends Command {
       }
     }
   
+  // to avoid code repeat
   async play(message, lnk) {
     let info = await YTDL.getInfo(lnk);
 
