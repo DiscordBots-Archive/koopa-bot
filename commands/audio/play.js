@@ -74,11 +74,10 @@ module.exports = class PlayAudioCommand extends Command {
                 link = videos[parseInt(m.content)-1].url;
               });
               */
-              message.channel.awaitMessages(response => response.author.id == message.author.id
-                                            && (response.content.toLowerCase == "cancel"
-                                            || (!isNaN(response.content)
+              message.channel.awaitMessages(response => response.author.id == message.author.id && message.content.toLowerCase == "cancel"
+                                            && !isNaN(response.content)
                                             && parseInt(response.content) <= videos.length
-                                            && parseInt(response.content) > 0)), {
+                                            && parseInt(response.content) > 0, {
                 max: 1,
                 time: 30000,
                 errors: ['time'],

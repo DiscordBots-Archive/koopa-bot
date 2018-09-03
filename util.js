@@ -82,7 +82,7 @@ module.exports = (client) => {
   }
   client.util.musicProgressBar = (now, total, play = true) => {
     var ab = Math.round(now / 100 * 15)
-    var a = ""
+    var a = "["
     var i = 0;
     while (i <= 15) {
       a += ab > i ? "▬" : ""
