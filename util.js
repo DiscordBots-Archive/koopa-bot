@@ -80,7 +80,19 @@ module.exports = (client) => {
 
     })
   }
-  client.util.musicProgressBar = (now, total) => {
-    
+  client.util.musicProgressBar = (now, total, play = true) => {
+    var ab = Math.round(now / 100 * 15)
+    var a = play ? "►[" : "❙❙["
+    var i = 0;
+    while (i <= ab) {
+      a += ab > i ? "▬" : ""
+      i++;
+    }
+    a += "](http://mario-modding.co.nf)⚫"
+    while (i <= ab) {
+      a += ab > i ? "" : "▬"
+      i++;
+    }
+    return a;
   }
 }
