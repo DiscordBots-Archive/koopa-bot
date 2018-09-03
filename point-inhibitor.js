@@ -22,6 +22,7 @@ function spamchannel(message, name) {
 		'voice-text', // Let Me Level With You
 		'no-mic-chat', // MayroSMM
 		'shitposting', // YAMMS
+    'end-of-the-world', // YAMMS
 		'spamhere', // TWL Mode Hacking!
 		'mirage-saloon-zone', // NightYoshi Island
 		'spam-bot-commands', // Game Chat Network
