@@ -81,10 +81,8 @@ module.exports = (client) => {
     })
   }
   client.util.musicProgressBar = (now, total) => {
-    console.log(`${now}, ${total}`)
     var bars = 15
-    var ab = Math.round(now)
-    console.error(ab)
+    var ab = Math.round((now * bars) / total)
     var a = "[["
     var i = 0, j = 0;
     while (i <= bars) {
@@ -93,7 +91,7 @@ module.exports = (client) => {
     }
     a += "](http://mario-modding.co.nf)"
     while (j <= bars) {
-      a += ab > j ? "" : "▬"
+      a += ab >= j ? "" : "▬"
       j++;
     }
     return a + "]";
