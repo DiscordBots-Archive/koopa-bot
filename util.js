@@ -80,4 +80,7 @@ module.exports = (client) => {
 
     })
   }
+  client.util.musicProgressBar = (now, total) => {
+    
+  }
 }

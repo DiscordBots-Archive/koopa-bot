@@ -114,7 +114,8 @@ module.exports = class PlayAudioCommand extends Command {
 				requester: message.author.tag,
 				url: lnk,
 				announceChannel: message.channel.id,
-        length: this.getTime(info.length_seconds)
+        length: this.getTime(info.length_seconds),
+        secs: info.length_seconds
 			});
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
