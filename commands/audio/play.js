@@ -75,9 +75,10 @@ module.exports = class PlayAudioCommand extends Command {
               });
               */
               message.channel.awaitMessages(response => response.author.id == message.author.id
-                                            && !isNaN(response.content)
+                                            && (response.content.toLowerCase == "cancel"
+                                            || (!isNaN(response.content)
                                             && parseInt(response.content) <= videos.length
-                                            && parseInt(response.content) > 0, {
+                                            && parseInt(response.content) > 0)), {
                 max: 1,
                 time: 30000,
                 errors: ['time'],
