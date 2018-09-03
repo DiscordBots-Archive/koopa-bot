@@ -80,7 +80,7 @@ module.exports = (client) => {
 
     })
   }
-  client.util.musicProgressBar = (now, total, play = true) => {
+  client.util.musicProgressBar = (now, total) => {
     var ab = Math.round(now / 100 * 15)
     var a = "[["
     var i = 0, j = 0;
