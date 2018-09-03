@@ -1,7 +1,7 @@
 const { RichEmbed } = require("discord.js");
 
 module.exports = (client) => {
-  const monthNames = ["January", "February", "March", "April", "May", "June",
+  const monthNames = ["", "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
   client.util = {}
@@ -82,8 +82,8 @@ module.exports = (client) => {
   }
   client.util.musicProgressBar = (now, total) => {
     console.log(`${now}, ${total}`)
-    var bars = 20
-    var ab = Math.round(now / 100 * bars)
+    var bars = 15
+    var ab = Math.round(now)
     console.error(ab)
     var a = "[["
     var i = 0, j = 0;
