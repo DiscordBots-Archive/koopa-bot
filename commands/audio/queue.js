@@ -31,7 +31,7 @@ module.exports = class StopAudioCommand extends Command {
 				.setTitle("Music Queue")
 				.setColor("#b30000")
 				.setTimestamp(new Date())
-				.setDescription(`__**NOW PLAYING**__\n\n**${nowPlaying.songTitle}**\n*Requested by* *__${nowPlaying.requester}__*\n${this.client.util.musicProgressBar(fetched.dispatcher.time/1000, nowPlaying.secs)}`)
+				.setDescription(`__**NOW PLAYING**__\n\n**${nowPlaying.songTitle}**\n*Requested by* *__${nowPlaying.requester}__*\n\`[${this.getTime(fetched.dispatcher.time/1000)}/${nowPlaying.length}]\` ${this.client.util.musicProgressBar(Math.round(fetched.dispatcher.time/1000), nowPlaying.secs)}`)
 
 			for (var i = 1; i < queue.length; i++) {
 				embed.addField(queue[i].songTitle, `*Requested by __${queue[i].requester}__*`); 
