@@ -82,17 +82,17 @@ module.exports = (client) => {
   }
   client.util.musicProgressBar = (now, total, play = true) => {
     var ab = Math.round(now / 100 * 15)
-    var a = "["
-    var i = 0;
+    var a = "[["
+    var i = 0, j = 0;
     while (i <= 15) {
       a += ab > i ? "▬" : ""
       i++;
     }
-    a += "](http://mario-modding.co.nf)⚫"
-    while (i <= 15) {
-      a += ab > i ? "" : "▬"
-      i++;
+    a += "](http://mario-modding.co.nf)"
+    while (j <= 15) {
+      a += ab > j ? "" : "▬"
+      j++;
     }
-    return a;
+    return a + "]";
   }
 }
