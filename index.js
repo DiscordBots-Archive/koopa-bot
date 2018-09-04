@@ -181,8 +181,16 @@ client.on("message", message => {
 client.audio = {};
 client.audio.active = new Map();
 client.audio.play = async (client, active, data) => {
+  var mario = this.client.emojis.get("486608176356261889")
+  let embed = this.client.util.embed()
+    .setTitle("Music Queue")
+    .setDescription(`Added to Queue: **${data.queue[0].songTitle}** \nDuration: \`[${this.getTime(data.queue[0].length)}]\``)
+    .addField(mario + " Requester", data.queue[0].requester)
+  //const playing = client.channels.get(data.queue[0].announceChannel).send(
+	//	`Now Playing: **${data.queue[0].songTitle}** \`[${data.queue[0].length}]\` | Requested by: ${data.queue[0].requester}`
+	//);
   const playing = client.channels.get(data.queue[0].announceChannel).send(
-		`Now Playing: **${data.queue[0].songTitle}** \`[${data.queue[0].length}]\` | Requested by: ${data.queue[0].requester}`
+		embed
 	);
 
 	const stream = YTDL(data.queue[0].url, { filter: 'audioonly' })
