@@ -29,6 +29,7 @@ const client = new CommandoClient({
     commandPrefix: '!',
     unknownCommandResponse: false,
     owner: '280399026749440000',
+    invite: "https://invite.gg/modmario",
     disableEveryone: true
 });
 
