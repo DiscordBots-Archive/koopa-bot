@@ -27,7 +27,7 @@ module.exports = class StopAudioCommand extends Command {
 			let queue = fetched.queue;
 			let nowPlaying = queue[0];
 
-			var embed = new RichEmbed()
+			var embed = this.cli()
 				.setTitle("Music Queue")
 				.setColor("#b30000")
 				.setTimestamp(new Date())
