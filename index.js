@@ -415,15 +415,18 @@ var automod = async message => {
 			if (spam.repeat.length >= 200)
 				spam.repeat.shift();
 		}
-  var found = false
-  for (var swear in spam.swears)
-    if (message.content.toLowerCase().includes(swear))
+  var found = false, swea = ""
+  for (var swear in spam.swears) {
+    if (message.content.toLowerCase().includes(swear)) {
       found = true
-  
-  if (found) {
-    warn(message.member, "Swearing", message.guild.members.get(client.user.id), message);
-    message.reply("no swearing here!");
+      swea = swear
+    }
   }
+  
+  //if (found) {
+  //  warn(message.member, "Swearing (" + swea + ")", message.guild.members.get(client.user.id), message);
+  //  message.reply("no swearing here!");
+  //}
 };
 client.on("message", message => automod(message));
 
@@ -511,8 +514,7 @@ const rawEvents = {
 // Uncached msgRAdd and msgRRemove event
 client.on('raw', packet => {
     // We don't want this to run on unrelated packets
-    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE',
-         "MESSAGE_DELETE"].includes(packet.t)) return;
+    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     console.log(packet)
     // Grab the channel to check the message from
     const channel = client.channels.get(packet.d.channel_id);
