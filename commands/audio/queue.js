@@ -39,10 +39,20 @@ module.exports = class StopAudioCommand extends Command {
 			return message.channel.send(embed);
     }
   
+  /*
   getTime(secs) {
     var mins = secs / 60;
     var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second — if mins isn't precise, add a second and floor mins
     var sec = oms ? (secs % 60) + 1 : secs % 60;
     return `${this.client.util.pad(Math.floor(mins))}:${this.client.util.pad(Math.floor(sec))}`
+  }
+  */
+  getTime(secs) {
+    var mins = secs / 60;
+    var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second
+                                                                // if `mins` is greater than the nearest lower int, but lower than the nearest greater int, add a second
+    var sec = oms ? (secs % 60) + 1 : secs % 60;
+    mins = Math.floor(mins);
+    return `${mins > 59 ? "1:" + mins - 60 : this.client.util.pad(mins)}:${this.client.util.pad(Math.floor(sec))}`
   }
 };
