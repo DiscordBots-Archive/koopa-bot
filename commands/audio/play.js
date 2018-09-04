@@ -60,12 +60,12 @@ module.exports = class PlayAudioCommand extends Command {
 
               let resp = '';
               for (var i in videos) {
-                  resp += `**${parseInt(i)+1}.** ${videos[i].title} \`[${videos[i].timestamp}]\`\n`;
+                  embed.addField(`**${parseInt(i)+1}.** ${videos[i].title}`, `Duration: \`[${videos[i].timestamp}]\``);
               }
 
-              resp += `\n**Choose a number between** \`1-${videos.length}\` (in 30 seconds the command will be canceled)`;
+              embed.setDescription(`\n**Choose a number between** \`1-${videos.length}\` (in 30 seconds the command will be canceled)`);
 
-              message.say(resp);
+              message.embed(embed);
 
               /*
               const filter = m => !isNaN(m.content) && parseInt(m.content) < videos.length+1 && parseInt(m.content) > 0;
