@@ -13,7 +13,7 @@ dependencies:
   snekfetch: 4.0.4
   sqlite: 3.0.0
   yt-search: 0.1.4
-  ytdl-core: 0.24.0
+  ytdl-core: 0.25.2
 packages:
   /@types/better-sqlite3/3.1.3:
     dependencies:
@@ -1059,14 +1059,15 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Jzi9nw089PhEkMVzbEhpmsYyzaM=
-  /m3u8stream/0.3.0:
+  /m3u8stream/0.4.1:
     dependencies:
-      miniget: 1.3.0
+      miniget: 1.4.0
+      sax: 1.2.4
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-0tvjXDIa6BolPEGo9zioQiPqfQhjopZXN3L7vZH/rZQCOLd4rPXNZc1UBMdW3TRpjNBoD0+F1X41/f0iY23rlQ==
+      integrity: sha512-RxqZWkxZWZqJZ8DQgWfyg6OKtqND0P6YyARpsb8VyUUtKeJvWB2oIzn4I7xXr0kBuppBP3k4gmeSDKER6RGgiw==
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -1135,12 +1136,12 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-j5EctnkH7amfV/q5Hgmoal1g2QHFJRraOtmx0JpIqkxhBhI/lJSl1nMpQ45hVarwNETOoWEimndZ4QK0RHxuxQ==
-  /miniget/1.3.0:
+  /miniget/1.4.0:
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-qvj5v1gbTvK6iVt1DqYrF0B9Lm6VAPNCa930TmTDQp6i1svDzzV8geu+e87XA14OBWDsWENptnP6BO9iJJOD9Q==
+      integrity: sha512-yx/z/uIhJvtGoe2Ifco9auzWJzG579ZA11ohBFlN9iAPJbSIfsmvoOagKAomwo6Cjv55D8D1To5qtBj7AjxgkQ==
   /minimatch/3.0.4:
     dependencies:
       brace-expansion: 1.1.11
@@ -1954,17 +1955,17 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-gWLbfFYrvkudT8p4KQo+DVo2gMY=
-  /ytdl-core/0.24.0:
+  /ytdl-core/0.25.2:
     dependencies:
       html-entities: 1.2.1
-      m3u8stream: 0.3.0
-      miniget: 1.3.0
+      m3u8stream: 0.4.1
+      miniget: 1.4.0
       sax: 1.2.4
     dev: false
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-VwCe+uhKz2M1cH0UEnNxVQyLwGK8DIJgbUPF9svEh0zxUl2DP7LORCDIloLqDUxR6JnC3s01GU0YPxiOmjcqVA==
+      integrity: sha512-/iBcw6SQ2jH3jyCdMy8lhRGo9ZY7ufhgVv9DEO1Zyvw6wadWolrcEc0qJ54k0Yin1IehU8NjL2Psnx9e6/F/zA==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
@@ -1983,4 +1984,4 @@ specifiers:
   snekfetch: ^4.0.4
   sqlite: ^3.0.0
   yt-search: ^0.1.4
-  ytdl-core: ^0.24.0
+  ytdl-core: ^0.25.2

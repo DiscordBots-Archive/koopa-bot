@@ -218,7 +218,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
     console.log("messageReactionAdd");
     const message = reaction.message;
     if (reaction.emoji.name !== '⭐') return;
-    //if (message.author.id === user.id) return message.channel.send(`${user}, you cannot star your own messages.`);
+    if (message.author.id === user.id) return message.channel.send(`${user}, you cannot star your own messages.`);
     //if (message.author.bot) return message.channel.send(`${user}, you cannot star bot messages.`);
     const starChannel = message.guild.channels.find(channel => channel.name == "starboard")
     if (!starChannel) return message.channel.send(`It appears that you do not have a \`starboard\` channel.`); 
@@ -254,7 +254,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 
 client.on("messageReactionRemove", async (reaction, user) => {
     const message = reaction.message;
-    // if (message.author.id === user.id) return;
+    if (message.author.id === user.id) return;
     if (reaction.emoji.name !== '⭐') return;
     const starChannel = message.guild.channels.find(channel => channel.name == "starboard")
     if (!starChannel) return message.channel.send(`It appears that you do not have a \`starboard\` channel.`); 
