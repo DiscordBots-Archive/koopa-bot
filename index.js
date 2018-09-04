@@ -510,6 +510,7 @@ const rawEvents = {
 
 // Uncached msgRAdd and msgRRemove event
 client.on('raw', packet => {
+  console.log(packet)
     // We don't want this to run on unrelated packets
     if (!rawEvents.hasOwnProperty(packet.t)) return;
     // Grab the channel to check the message from
