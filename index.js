@@ -536,6 +536,7 @@ client.on('raw', packet => {
     });
 });
 
+/*
 // Raw msgDelete
 client.on("raw", packet => {
     // We don't want this to run on unrelated packets
@@ -554,7 +555,8 @@ client.on("raw", packet => {
         if (packet.t === "MESSAGE_DELETE") {
             client.emit("messageDelete", message)
         }
-    });
+    }).catch(console.error);
 });
+*/
 
 client.login(process.env.TOKEN);
