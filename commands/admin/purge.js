@@ -8,11 +8,39 @@ module.exports = class PurgeCommand extends Command {
             group: 'admin',
             memberName: 'purge',
             description: 'Purges a channel.',
-            examples: ['reply']
+            examples: ['reply'],
+            args: [
+              {
+                key: "amount",
+                prompt: "how many messages should I purge?",
+                type: "integer",
+                max: 100,
+                min: 0
+              },
+              {
+                key: "user",
+                prompt: "who do you want to purge the messages by? :eyes:",
+                type: "user"
+              }
+            ],
+            guildOnly: true
         });
     }
 
-    run(msg) {
-        return msg.say('Hi, I\'m awake!');
+    run(message, { amount, user }) {
+        // Parse Amount
+        const amount = !!parseInt(message.content.split(' ')[1]) ? parseInt(message.content.split(' ')[1]) : parseInt(message.content.split(' ')[2])
+        if (!amount) return message.reply('Must specify an amount to delete!');
+        if (!amount && !user) return message.reply('Must specify a user and amount, or just an amount, of messages to purge!');
+        // Fetch 100 messages (will be filtered and lowered up to max amount requested)
+        message.channel.fetchMessages({
+          limit: 100,
+        }).then((messages) => {
+           if (user) {
+             const filterBy = user ? user.id : this.client.user.id;
+             messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
+           }
+           message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+        });
     }
 };
