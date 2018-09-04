@@ -54,6 +54,9 @@ module.exports = class PlayAudioCommand extends Command {
               let videos = res.videos.slice(0, 10);
             
               if (videos.length== 0) return message.reply("couldn't find any video for the search query `" + link + "`");
+            
+              let embed = this.client.util.embed()
+                .setTitle("Music Search")
 
               let resp = '';
               for (var i in videos) {
@@ -129,7 +132,6 @@ module.exports = class PlayAudioCommand extends Command {
     var oms = mins > Math.floor(mins) && mins < Math.ceil(mins) // one more second
                                                                 // if `mins` is greater than the nearest lower int, but lower than the nearest greater int, add a second
     var sec = oms ? (secs % 60) + 1 : secs % 60;
-    mins = Math.floor(mins);
-    return `${mins > 59 ? "1:" + mins - 60 : this.client.util.pad(mins)}:${this.client.util.pad(Math.floor(sec))}`
+    return `${this.client.util.pad(Math.floor(mins))}:${this.client.util.pad(Math.floor(sec))}`
   }
 };
