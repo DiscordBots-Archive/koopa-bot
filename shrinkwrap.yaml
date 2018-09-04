@@ -7,6 +7,7 @@ dependencies:
   enmap-sqlite: 2.0.5
   express: 4.16.3
   ffmpeg: 0.0.4
+  including-range-array: 1.0.0
   moment: 2.22.2
   node-opus: 0.3.0
   path: 0.12.7
@@ -882,6 +883,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-DTVlMx3IYPe0/JJcYP7Gxg7ttZZu3IInhuEhbchuqneY9wWe5Ojy2mXLBaQFUQmo0AW2r3qG7m1mg86js+gnlQ==
+  /including-range-array/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-1hI7cFYVFfclJXeRtFfytCp+Ae48v5V4tSC+FG59wb11FUDuMOfXqoxGWd3LUbAo32JSg5xdIFuNdawmqubOrg==
   /inflight/1.0.6:
     dependencies:
       once: 1.4.0
@@ -1978,6 +1983,7 @@ specifiers:
   enmap-sqlite: ^2.0.5
   express: ^4.16.3
   ffmpeg: ^0.0.4
+  including-range-array: ^1.0.0
   moment: ^2.22.2
   node-opus: ^0.3.0
   path: ^0.12.7

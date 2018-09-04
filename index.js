@@ -112,6 +112,10 @@ client.on('ready', () => {
 
 client.on('error', console.error);
 
+function getEXP() {
+  
+}
+
 client.on("message", message => {
   if (message.author.bot) return;
   // client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
