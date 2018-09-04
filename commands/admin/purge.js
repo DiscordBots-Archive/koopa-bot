@@ -16,13 +16,13 @@ module.exports = class PurgeCommand extends Command {
                 type: "integer",
                 max: 100,
                 min: 0
-              },
+              },/*
               {
                 key: "user",
                 prompt: "who do you want to purge the messages by? :eyes:",
                 type: "user",
                 default: ""
-              }
+              }*/
             ],
             guildOnly: true
         });
