@@ -110,6 +110,8 @@ client.on('ready', () => {
   client.warns.drop = warns.prepare("DROP TABLE warns");
 });
 
+client.on('error', console.error);
+
 client.on("message", message => {
   if (message.author.bot) return;
   // client.dispatcher.handleMessage(message).catch(err => {client.emit("err", err)});
