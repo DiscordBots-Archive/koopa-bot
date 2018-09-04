@@ -60,7 +60,7 @@ module.exports = class PlayAudioCommand extends Command {
 
               let resp = '';
               for (var i in videos) {
-                  resp += `**${parseInt(i)+1}.** ${videos[i].title} \`[${videos[i].timestamp}]\``, `\u200b`;
+                  resp += `**${parseInt(i)+1}.** ${videos[i].title} \`[${videos[i].timestamp}]\`\n`;
               }
 
               embed.setDescription(`\n**Choose a number between** \`1-${videos.length}\` (in 30 seconds the command will be canceled)\n\n${resp}`);
@@ -120,6 +120,9 @@ module.exports = class PlayAudioCommand extends Command {
         length: this.getTime(info.length_seconds),
         secs: info.length_seconds
 			});
+    
+      let embed = this.client.util.embed()
+        .setTitle()
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
 			else message.channel.send(`Added to Queue: **${info.title}** \`[${this.getTime(info.length_seconds)}]\` | Requested by: ${message.author.tag}`);
