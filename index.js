@@ -366,7 +366,7 @@ var spam = {}
 spam.stroke = []
 spam.repeat = []
 spam.swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt"]
-client.on("message", async message => {
+var automod = async message => {
   if (message.author.bot) return;
     var now = Math.floor(Date.now());
 		spam.stroke.push({
@@ -412,7 +412,17 @@ client.on("message", async message => {
 			if (spam.repeat.length >= 200)
 				spam.repeat.shift();
 		}
-});
+  var found = false
+  for (var swear in spam.swears)
+    if (message.content.toLowerCase().contains(swear))
+      found = true
+  
+  if (found && message.channel.name != "shitposting") {
+    warn(message.member, "Swearing", message.guild.members.get(client.user.id), message);
+    message.reply("no swearing here!");
+  }
+};
+client.on("message", automod);
 
 function warn(member, reason, moderator, message) {
   var msg = message;
