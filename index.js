@@ -1,5 +1,6 @@
 const { CommandoClient, SQLiteProvider } = require("discord.js-commando");
 const { RichEmbed } = require("discord.js");
+const { range, random } = require("including-range-array")
 const sqlite = require('sqlite');
 const path = require('path');
 const YTDL = require("ytdl-core");
@@ -113,7 +114,7 @@ client.on('ready', () => {
 client.on('error', console.error);
 
 function getEXP() {
-  
+  return random(5, 2);
 }
 
 client.on("message", message => {
@@ -139,8 +140,10 @@ client.on("message", message => {
           level: 1
         }
       }
+    
       // Increment the score
-      score.points++;
+      // score.points++;
+      score.points += getEXP();
 
       // Calculate the current level through MATH OMG HALP.
       // 1 level is 50 messages
