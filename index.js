@@ -365,7 +365,7 @@ require("./util.js")(client);
 var spam = {}
 spam.stroke = []
 spam.repeat = []
-spam.swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt"]
+spam.swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
 var automod = async message => {
   if (message.author.bot) return;
     var now = Math.floor(Date.now());
@@ -417,12 +417,12 @@ var automod = async message => {
     if (message.content.toLowerCase().includes(swear))
       found = true
   
-  if (found && message.channel.name != "shitposting") {
+  if (found) {
     warn(message.member, "Swearing", message.guild.members.get(client.user.id), message);
     message.reply("no swearing here!");
   }
 };
-client.on("message", automod);
+client.on("message", message => automod(message));
 
 function warn(member, reason, moderator, message) {
   var msg = message;
