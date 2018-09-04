@@ -502,10 +502,16 @@ function ban(member, reason, moderator, message, days = null) {
 client.warn = warn;
 client.ban = ban;
 
+const rawEvents = {
+    MESSAGE_REACTION_ADD: 'messageReactionAdd',
+    MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+    MESSAGE_DELETE: "messageDelete"
+};
+
 // Uncached msgRAdd and msgRRemove event
 client.on('raw', packet => {
     // We don't want this to run on unrelated packets
-    if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+    if (!rawEvents.hasOwnProperty(packet.t)) return;
     // Grab the channel to check the message from
     const channel = client.channels.get(packet.d.channel_id);
     // There's no need to emit if the message is cached, because the event will fire anyway for that
@@ -522,6 +528,9 @@ client.on('raw', packet => {
         }
         if (packet.t === 'MESSAGE_REACTION_REMOVE') {
             client.emit('messageReactionRemove', reaction, client.users.get(packet.d.user_id));
+        }
+        if (packet.t === "MESSAGE_DELETE") {
+            client.emit("messageDelete", message)
         }
     });
 });
