@@ -122,9 +122,10 @@ module.exports = class PlayAudioCommand extends Command {
 			});
     
       var mario = this.client.emojis.get("486608176356261889")
+      var note = this.client.emojis.get("486620721930436609")
       let embed = this.client.util.embed()
         .setTitle("Music Queue")
-        .setDescription(`Added to Queue: **${info.title}** \nDuration: \`[${this.getTime(info.length_seconds)}]\``)
+        .setDescription(`${note} Added to Queue: **${info.title}** \nDuration: \`[${this.getTime(info.length_seconds)}]\``)
         .addField(mario + " Requester", message.author.tag)
 
 			if (!data.dispatcher)	this.client.audio.play(this.client, this.client.audio.active, data);
