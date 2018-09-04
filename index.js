@@ -414,7 +414,7 @@ var automod = async message => {
 		}
   var found = false
   for (var swear in spam.swears)
-    if (message.content.toLowerCase().contains(swear))
+    if (message.content.toLowerCase().includes(swear))
       found = true
   
   if (found && message.channel.name != "shitposting") {
