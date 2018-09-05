@@ -48,9 +48,13 @@ client.settings = new Enmap({
 });
 // Just setting up a default configuration object here, to have somethign to insert.
 const defaultSettings = {
-  modLogChannel: "mod-log",
+  logChannel: "logs",
+  modLogChannel: "modlogs",
   modRole: "Moderator",
-  adminRole: "Administrator"
+  adminRole: "Administrator",
+  welcomeChannel: "welcome",
+  welcomeEnabled: false,
+  welcomeMessage: "Say hello to {{user}}, everyone!"
 }
 
 client.registry
@@ -74,22 +78,46 @@ client.registry
 
 client.on('guildMemberAdd', async member => {
   if (member.user.bot) return;
-	var welcomechannel = member.guild.channels.find('name', 'general-talk');
-	if (!welcomechannel) return;
   
-  var role = await member.guild.roles.find(r => r.name == "Green Toad");
-  if (role) member.addRole(role).catch(e => console.error(e));
+  // First, ensure the settings exist
+  client.settings.ensure(member.guild.id, defaultSettings);
+  
+  // Then, get the welcome message using get: 
+  let welcomeMessage = client.settings.get(member.guild.id, "welcomeMessage");
+  
+  // Our welcome message has a bit of a placeholder, let's fix that:
+  welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag)
+  
+  // we'll send to the welcome channel.
+  if (client.settings.get(member.guild.id, "welcomeEnabled")) member.guild.channels
+    .find("name", client.settings.get(member.guild.id, "welcomeChannel"))
+    .send(welcomeMessage)
+    .catch(console.error);
+  
+  // YAMMS-only stuff
+  if (member.guild.id == "481369156554326023") {
+    var welcomechannel = member.guild.channels.find('name', 'general-talk');
+    if (!welcomechannel) return;
 
-	var embed = new RichEmbed()
-    .setThumbnail(member.guild.iconURL)
-		.setColor("#B30000")
-		.setTitle(`Welcome to Mario Modding, ${member.user.username}`)
-		.setDescription("Mario Modding is a board where you can talk about all sorts of Mario games modding, from the first apparition of Mario in Donkey Kong to the latest entry Super Mario Odyssey")
-		.addField("Website", "http://mario-modding.co.nf", true)
-    .setThumbnail("http://mario-modding.co.nf/img/favicon.ico")
-		.setFooter(`Read #rules before starting`);
+    var role = await member.guild.roles.find(r => r.name == "Green Toad");
+    if (role) member.addRole(role).catch(e => console.error(e));
 
-	welcomechannel.send(embed);
+    var embed = new RichEmbed()
+      .setThumbnail(member.guild.iconURL)
+      .setColor("#B30000")
+      .setTitle(`Welcome to Mario Modding, ${member.user.username}`)
+      .setDescription("Mario Modding is a board where you can talk about all sorts of Mario games modding, from the first apparition of Mario in Donkey Kong to the latest entry Super Mario Odyssey")
+      .addField("Website", "http://mario-modding.co.nf", true)
+      .setThumbnail("http://mario-modding.co.nf/img/favicon.ico")
+      .setFooter(`Read #rules before starting`);
+
+    welcomechannel.send(embed);
+  }
+});
+
+client.on("guildDelete", guild => {
+  // When the bot leaves or is kicked, delete settings to prevent stale entries.
+  client.settings.delete(guild.id);
 });
 
 client.on('ready', () => {
