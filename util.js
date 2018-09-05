@@ -102,8 +102,8 @@ module.exports = (client) => {
     var perm = 0
     
     // needed
-    var mod = member.guild.roles.find(r => r.name == guildConf.modRole);
-    var admin = member.guild.roles.find(r => r.name == guildConf.adminRole);
+    var mod = await member.guild.roles.find(r => r.name == guildConf.modRole);
+    var admin = await member.guild.roles.find(r => r.name == guildConf.adminRole);
     
     if (member.user.bot) perm = 0;
     if (client.isOwner(member.user)) perm = 10
