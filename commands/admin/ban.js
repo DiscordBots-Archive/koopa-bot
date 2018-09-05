@@ -39,6 +39,9 @@ module.exports = class BanCommand extends Command {
       //if (!this.client.isOwner(msg.author)
       //    && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
       var d = days ? days : null
+      if (msg.member.highestRole.position <= member.highestRole.position) {
+				return msg.reply("you can't ban that user.");
+			}
       this.client.ban(member, reason, msg.member, msg, days);
       msg.say(":ok: User banned!");
     }

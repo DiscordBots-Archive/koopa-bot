@@ -8,6 +8,7 @@ module.exports = class WarningCommand extends Command {
             memberName: 'warn',
             description: 'Warns an user',
             examples: ['warn <user> <reason>'],
+            minPerm: 2,
             args: [
               {
                 key: "member",
@@ -25,10 +26,10 @@ module.exports = class WarningCommand extends Command {
     }
 
     run(msg, { member, reason }) {
-      if (!this.client.isOwner(msg.author)
-          && !msg.member.roles.has("481492274333876224")
-          && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
       if (member.user.bot) return msg.reply("you cannot warn a bot (unless someone stole its token, that is).");
+      if (msg.member.highestRole.position <= member.highestRole.position) {
+				return msg.reply("you can't warn that user.");
+			}
       this.client.warn(member, reason, msg.member, msg)
       msg.say(":ok: User warned!");
     }
