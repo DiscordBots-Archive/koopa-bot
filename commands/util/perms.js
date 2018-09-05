@@ -27,7 +27,7 @@ module.exports = class PermsCommand extends Command {
       } else {
         var member = membre;
       }
-      var lvl = this.client.util.getPermLevel(member)
+      var lvl = await this.client.util.getPermLevel(member)
       const embed = this.client.util.embed()
         .setTitle(membre ? membre.displayName + "'s permission level" : "Your permission level")
         .addField("Level", lvl, true).addField("Level name", this.client.util.getPerm(lvl), true);
