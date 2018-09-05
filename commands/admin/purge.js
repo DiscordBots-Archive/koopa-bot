@@ -28,18 +28,20 @@ module.exports = class PurgeCommand extends Command {
         });
     }
 
-    run(message, { amount, user }) {
+    async run(message, { amount, user }) {
         if (!amount) return message.reply('Must specify an amount to delete!');
         if (!amount && !user) return message.reply('Must specify a user and amount, or just an amount, of messages to purge!');
+        await message.delete()
         // Fetch 100 messages (will be filtered and lowered up to max amount requested)
         message.channel.fetchMessages({
-          limit: 100,
-        }).then((messages) => {
+          limit: amount,
+        }).then(async (messages) => {
            if (user) {
              const filterBy = user ? user.id : this.client.user.id;
              messages = messages.filter(m => m.author.id === filterBy).array().slice(0, amount);
            }
-           message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+           await message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+          message.channel.send(amount + " message" + (amount > 1 || amount < 1 ? "s" : "") + " deleted!").then(msg =>setTimeout(()=>msg.delete(), 2000))
         });
     }
 };

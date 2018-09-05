@@ -62,6 +62,7 @@ function spamchannel(message, name) {
 		'no-mic-chat', // MayroSMM
 		'shitposting', // YAMMS
     'end-of-the-world', // YAMMS
+    'purging-spamroom', // YAMMS
 		'spamhere', // TWL Mode Hacking!
 		'mirage-saloon-zone', // NightYoshi Island
 		'spam-bot-commands', // Game Chat Network
