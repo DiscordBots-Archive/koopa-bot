@@ -13,7 +13,8 @@ class Command extends Commando.Command {
       return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224")
     } else if (this.modOnly) {
       return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
-    } else super(msg, ownerOverride);
+    }
+    else super.hasPermission(msg, ownerOverride)
 	}
 }
 
