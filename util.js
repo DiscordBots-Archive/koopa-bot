@@ -96,11 +96,16 @@ module.exports = (client) => {
     }
     return a + "]";
   }
-  client.util.getPermLevel = (member) => {
+  client.util.getPermLevel = async (member) => {
+    const guildConf = client.settings.ensure(member.guild.id, client.defaultSettings);
+    
+    var mod = await member.guild.roles.find(r => r.name == guildConf.modRole);
+    var admin = await member.guild.roles.find(r => r.name == guildConf.adminRole);
+    
     if (member.user.bot) return 0;
     if (client.isOwner(member.user)) return 10
     else if (member.guild.ownerId == member.id) return 4
-    else if (member.roles.has("481492274333876224")) return 3
+    else if (member.roles.has(member.g)) return 3
     else if (member.roles.has("481492388020486171")) return 2
     else return 1;
   }
