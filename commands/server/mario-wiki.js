@@ -49,19 +49,22 @@ module.exports = class ReplyCommand extends Command {
     .then(async (collected) => {
       var newq = json[1][parseInt(collected.first().content)];
       var { body: newj } = await get("https://www.mariowiki.com/api.php?action=parse&format=json&page="+encodeURI(query));
-      var text = this.stripHTML(newj.parse.text)
+      var text = this.stripHTML(newj.parse.text["*"])
       const newe = this.client.util.embed()
         .setTitle("Mario Wiki - " + newq)
-        .setDescription(text)
+        .setDescription(text.toString())
         .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
         .setThumbnail("https://www.mariowiki.com/images/mariowiki.png");
-      })
-      .catch(() => {
-        message.reply('command canceled!');
-      });
+      message.channel.send(newe);
+    })
+    .catch((e) => {
+      message.reply('command canceled!');
+      console.log(e)
+    });
   }
   
-  stripHTML(text) {
+  // still Thanks NightYoshi
+  stripHTML(text) {/*1
     text = text.replace(/<style([\s\S]*?)<\/style>/gi, '');
     text = text.replace(/<script([\s\S]*?)<\/script>/gi, '');
     text = text.replace(/<\/div>/ig, '\n');
@@ -70,7 +73,7 @@ module.exports = class ReplyCommand extends Command {
     text = text.replace(/<\/ul>/ig, '\n');
     text = text.replace(/<\/p>/ig, '\n');
     text = text.replace(/<br\s*[\/]?>/gi, "\n");
-    text = text.replace(/<[^>]+>/ig, '');
+    text = text.replace(/<[^>]+>/ig, '');*/
     text = htmlToText.fromString(text, {
       wordwrap: 1000
     });
