@@ -96,14 +96,14 @@ module.exports = (client) => {
     }
     return a + "]";
   }
-  client.util.getPermLevel = async (member) => {
+  client.util.getPermLevel = (member) => {
     const guildConf = client.settings.ensure(member.guild.id, client.defaultSettings);
     
     var perm = 0
     
     // needed
-    var mod = await member.guild.roles.find(r => r.name == guildConf.modRole);
-    var admin = await member.guild.roles.find(r => r.name == guildConf.adminRole);
+    var mod = guildConf.modRole;
+    var admin = guildConf.adminRole;
     
     if (member.user.bot) perm = 0;
     if (client.isOwner(member.user)) perm = 10
@@ -111,7 +111,7 @@ module.exports = (client) => {
     else if (member.roles.has(admin)) perm = 3
     else if (member.roles.has(mod)) perm = 2
     else perm = 1;
-    return await perm;
+    return perm;
   }
   const lvls = ["N/A", "Normal user", "Server moderator", "Server admin", "Server owner",
                   "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];

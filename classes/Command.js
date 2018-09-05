@@ -9,7 +9,7 @@ class Command extends Commando.Command {
     // this.modOnly = info.modOnly || this.minPerm >= 2;
 	}
   
-  async hasPermission(msg, ownerOverride = true) {/*
+  hasPermission(msg, ownerOverride = true) {/*
     if (this.minPerm >= 3) {
       return this.client.util.getPermLevel(msg.member) >= 3;
     } else if (this.minPerm >= 2) {
@@ -17,7 +17,7 @@ class Command extends Commando.Command {
     }
     else super.hasPermission(msg, ownerOverride)
     */
-    var myPerm = await this.client.util.getPermLevel(msg.member)
+    var myPerm = this.client.util.getPermLevel(msg.member)
     if (msg.channel.type == "text") return (this.minPerm <= myPerm);
     else if (this.client.isOwner(msg.author)) return true
     else super.hasPermission(msg, ownerOverride)
