@@ -1,6 +1,6 @@
 const { stripIndents, oneLine } = require('common-tags');
-const Command = require('../base');
-const { disambiguation } = require('../../util');
+const { Command } = require('../../classes/Command.js');
+const { disambiguation } = require('../../util.js');
 
 module.exports = class HelpCommand extends Command {
 	constructor(client) {

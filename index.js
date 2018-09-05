@@ -51,7 +51,9 @@ client.registry
         ["fun", "Fun"]
     ])
     .registerDefaultGroups()
-    .registerDefaultCommands()
+    .registerDefaultCommands({
+        help: false,
+    })
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
