@@ -8,7 +8,7 @@ module.exports = class KickCommand extends Command {
             group: 'admin',
             memberName: 'kick',
             description: 'Kicks an user',
-            examples: ['kick <user> <reason>'],
+            examples: ['kick @Gamer666 trolling'],
             clientPermissions: ["KICK_MEMBERS"],
             modOnly: true,
             args: [
@@ -28,9 +28,6 @@ module.exports = class KickCommand extends Command {
     }
 
     run(msg, { member, reason }) {
-      if (!this.client.isOwner(msg.author)
-          && !msg.member.roles.has("481492274333876224")
-          && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
       member.kick(reason);
       let logs, modlogs;
       if (msg.guild.id == "481369156554326023") {
