@@ -31,7 +31,7 @@ module.exports = class BanCommand extends Command {
                 default: ""
               }
             ],
-            adminOnly: true
+            minPerm: 3
         });
     }
 

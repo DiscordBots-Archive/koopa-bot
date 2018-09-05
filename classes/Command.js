@@ -4,16 +4,16 @@ class Command extends Commando.Command {
   constructor(client, info) {
 		super(client, info);
     
-    this.minPerm
+    this.minPerm = info.minPerm || 1
     this.adminOnly = info.adminOnly || this.minPerm >= 3;
-    this.modOnly = info.modOnly || false;
+    this.modOnly = info.modOnly || this.minPerm >= 2;
 	}
   
   hasPermission(msg, ownerOverride = true) {
     if (this.adminOnly) {
-      return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224")
+      return this.client.util.getPermLevel(msg.member) >= 3;
     } else if (this.modOnly) {
-      return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
+      return this.client.util.getPermLevel(msg.member) >= 2;
     }
     else super.hasPermission(msg, ownerOverride)
 	}
