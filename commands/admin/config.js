@@ -7,19 +7,21 @@ module.exports = class ConfigCommand extends Command {
             name: 'config',
             aliases: ["conf", "settings", "sets"],
             group: 'admin',
-            memberName: 'ban',
-            description: 'Changes the client configuration for the s',
+            memberName: 'config',
+            description: 'Changes the client configuration for the server',
             examples: ["conf welcomeMessage Welcome, {{user}}, to this server!"],
+            guildOnly: true,
             args: [
               {
                 key: "prop",
                 label: "property",
-                prompt: "who do you want to ban?",
-                type: "member"
+                prompt: "what key do you want to edit?",
+                type: "string",
+                default: ""
               },
               {
                 key: "value",
-                prompt: "why do you want to ban him?",
+                prompt: "what should the value be?",
                 type: "string",
                 default: ""
               },
@@ -30,11 +32,11 @@ module.exports = class ConfigCommand extends Command {
 
     run(message, { prop, value }) {
       const guildConf = this.client.settings.ensure(message.guild.id, this.client.defaultSettings);
-      if (!value || value == "") {
+      if (!prop || prop == "" || !value || value == "") {
         let configProps = Object.keys(guildConf).map(prop => {
           return `${prop}  :  ${guildConf[prop]}\n`;
         });
-        message.channel.send(`The following are the server's current configuration:
+        return message.channel.send(`The following are the server's current configuration:
         \`\`\`${configProps}\`\`\``);
       }
 
@@ -46,9 +48,9 @@ module.exports = class ConfigCommand extends Command {
 
       // Now we can finally change the value. Here we only have strings for values 
       // so we won't bother trying to make sure it's the right type and such. 
-      this.client.settings.set(message.guild.id, value.join(" "), prop);
+      this.client.settings.set(message.guild.id, value, prop);
 
       // We can confirm everything's done to the client.
-      message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value.join(" ")}\``);
+      message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
     }
 };
