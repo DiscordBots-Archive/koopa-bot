@@ -28,7 +28,7 @@ module.exports = class BanCommand extends Command {
                 key: "days",
                 prompt: "how long do you want to keep him banned?",
                 type: "integer",
-                default: ""
+                default: "",
               }
             ],
             minPerm: 3

@@ -450,7 +450,7 @@ client.on("message", message => automod(message));
 
 function catchAndSend(error, message) {
   console.error(error)
-  message
+  message.reply(`an error occurred: \`${error}\`\nTell Samplasion#7901 for details`);
 }
 
 function warn(member, reason, moderator, message) {
@@ -492,9 +492,9 @@ function warn(member, reason, moderator, message) {
 function ban(member, reason, moderator, message, days = null) {
   var msg = message;
 	if (days) {
-    member.ban({days: days, reason: reason});
+    member.ban({days: days, reason: reason}).catch(e=> catchAndSend(e, message));
   } else {
-    member.ban(reason).catch();
+    member.ban(reason).catch(e=> catchAndSend(e, message));
   }
   let logs, modlogs;
   if (msg.guild.id== "472214037430534167") {
