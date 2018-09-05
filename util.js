@@ -105,7 +105,7 @@ module.exports = (client) => {
     var mod = guildConf.modRole;
     var admin = guildConf.adminRole;
     
-    if (member.user.bot) perm = 0;
+    if (member.user.bot) return 0;
     if (client.isOwner(member.user)) perm = 10
     else if (member.guild.ownerId == member.id) perm = 4
     else if (member.roles.has(admin)) perm = 3
@@ -113,7 +113,7 @@ module.exports = (client) => {
     else perm = 1;
     return perm;
   }
-  const lvls = ["N/A", "Normal user", "Server moderator", "Server admin", "Server owner",
+  const lvls = ["Bot", "Normal user", "Server moderator", "Server admin", "Server owner",
                   "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
   client.util.getPerm = (lvl) => lvls[lvl];
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
