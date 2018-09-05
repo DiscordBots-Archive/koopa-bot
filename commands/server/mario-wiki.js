@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { post, get } = require("snekfetch");
+const htmlToText = require('html-to-text');
 
 module.exports = class ReplyCommand extends Command {
   constructor(client) {
@@ -35,6 +36,9 @@ module.exports = class ReplyCommand extends Command {
       .setDescription(desc)
       .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
       .setThumbnail("https://www.mariowiki.com/images/mariowiki.png")
+    var text = htmlToText.fromString('<h1>Hello World</h1>', {
+      wordwrap: 130
+    });
     msg.embed(embed);
   }
 };

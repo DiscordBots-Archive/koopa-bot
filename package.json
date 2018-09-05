@@ -25,7 +25,8 @@
     "snekfetch": "^4.0.4",
     "sqlite": "^3.0.0",
     "yt-search": "^0.1.4",
-    "ytdl-core": "^0.25.2"
+    "ytdl-core": "^0.25.2",
+    "html-to-text": "^4.0.0"
   },
   "engines": {
     "node": "8.x"
