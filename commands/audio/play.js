@@ -53,7 +53,12 @@ module.exports = class PlayAudioCommand extends Command {
 
               let videos = res.videos.slice(0, 10);
             
-              if (videos.length== 0) return message.reply("couldn't find any video for the search query `" + link + "`");
+              let nvembed = this.client.util.embed()
+                .setTitle("Music Search")
+                .setDescription(`No results for query \`${link}\``)
+            
+              // if (videos.length== 0) return message.reply("couldn't find any video for the search query `" + link + "`");
+              if (videos.length== 0) return message.embed(nvembed);
             
               let embed = this.client.util.embed()
                 .setTitle("Music Search")
