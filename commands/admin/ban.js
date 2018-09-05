@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 const { RichEmbed } = require("discord.js");
 
 module.exports = class BanCommand extends Command {
@@ -30,13 +30,14 @@ module.exports = class BanCommand extends Command {
                 type: "integer",
                 default: ""
               }
-            ]
+            ],
+            adminOnly: true
         });
     }
 
     run(msg, { member, reason, days }) {
-      if (!this.client.isOwner(msg.author)
-          && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
+      //if (!this.client.isOwner(msg.author)
+      //    && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
       var d = days ? days : null
       this.client.ban(member, reason, msg.member, msg, days);
       msg.say(":ok: User banned!");
