@@ -13,7 +13,6 @@ module.exports = class HelpCommand extends Command {
 			details: oneLine`
 				The command may be part of a command name or a whole command name.
 				If it isn't specified, all available commands will be listed.
-        Only the commands for your permission level will be listed.
 			`,
 			examples: ['help', 'help prefix'],
 			guarded: true,
@@ -50,6 +49,7 @@ module.exports = class HelpCommand extends Command {
 				`}`;
 				if(commands[0].details) help += `\n**Details:** ${commands[0].details}`;
 				if(commands[0].examples) help += `\n**Examples:**\n${commands[0].examples.join('\n')}`;
+        if(commands[0].minPerm) help += `\n**Minimum Permission Level:**\n${this.client.util.getPerm(commands[0].minPerm)} [${commands[0].minPerm}]`;
 
 				const messages = [];
 				try {
