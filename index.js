@@ -38,6 +38,21 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
     client.setProvider(new SQLiteProvider(db));
 });
 
+const Enmap = require('enmap');
+
+client.settings = new Enmap({
+  name: "settings",
+  fetchAll: false,
+  autoFetch: true,
+  cloneLevel: 'deep'
+});
+// Just setting up a default configuration object here, to have somethign to insert.
+const defaultSettings = {
+  modLogChannel: "mod-log",
+  modRole: "Moderator",
+  adminRole: "Administrator"
+}
+
 client.registry
     .registerDefaultTypes()
     .registerGroups([
