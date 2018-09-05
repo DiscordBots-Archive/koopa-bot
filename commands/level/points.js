@@ -13,6 +13,7 @@ module.exports = class ScoreCommand extends Command {
             args: [
               {
                 key: "membre",
+                label: "member",
                 prompt: "who do you want me to stalk? :eyes:",
                 default: "",
                 type: "member"
@@ -43,7 +44,7 @@ module.exports = class ScoreCommand extends Command {
       }
       var embed = new RichEmbed()
           .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
-          .setColor(member.highestRole.color)
+          //.setColor(member.highestRole.color)
           .setTitle(membre ? membre.displayName + "'s stats" : "Your stats")
           .setDescription(`${membre ? membre.displayName + " needs" : "You need"} ${100 - (score.points % 100)} EXP points to advance level.`)
           .addField("EXP Points", `${score.points}`, true)

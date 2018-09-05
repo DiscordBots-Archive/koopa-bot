@@ -97,15 +97,15 @@ module.exports = (client) => {
     return a + "]";
   }
   client.util.getPermLevel = (member) => {
+    if (member.user.bot) return 0;
     if (client.isOwner(member.user)) return 10
     else if (member.guild.ownerId == member.id) return 4
     else if (member.roles.has("481492274333876224")) return 3
     else if (member.roles.has("481492388020486171")) return 2
-    else return 1
+    else return 1;
   }
-  client.util.getPerm = (lvl) => {
-    const lvls = ["N/A", "Normal user", "Server moderator", "Server admin", "Server owner",
-                  "5", "", "", "Bot moderator", "Bot admin", "Bot owner"]
-  }
+  const lvls = ["N/A", "Normal user", "Server moderator", "Server admin", "Server owner",
+                  "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
+  client.util.getPerm = (lvl) => lvls[lvl];
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
 }
