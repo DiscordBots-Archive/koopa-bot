@@ -7,7 +7,7 @@ module.exports = class SayCommand extends Command {
             group: 'admin',
             memberName: 'announce',
             description: 'Sends a message to the #announcements channel',
-            examples: ['say Hi there!'],
+            examples: ['announce We Reached 1 Member!'],
             clientPermissions: ['MANAGE_MESSAGES'],
             guildOnly: true,
             args: [

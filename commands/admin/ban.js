@@ -10,7 +10,7 @@ module.exports = class BanCommand extends Command {
             memberName: 'ban',
             description: 'Bans an user',
             details: "To give a reason, but not days, use ban @User \"reason\".\nTo give days, but not a reason, use ban @User \"\" days.\nTo give both, use ban @User \"reason\" days.",
-            examples: ['ban <user> <reason wrapped in "s> <days (opt)>', "ban @InfamousGuy003 \"spamming in #general-talk\" 7"],
+            examples: ['`ban <user> <reason wrapped in "s> <days (opt)>`', "ban @InfamousGuy003 \"spamming in #general-talk\" 7"],
             clientPermissions: ["BAN_MEMBERS"],
             args: [
               {

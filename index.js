@@ -61,7 +61,7 @@ client.on('guildMemberAdd', async member => {
 	if (!welcomechannel) return;
   
   var role = await member.guild.roles.find(r => r.name == "Green Toad");
-  member.addRole().catch(e => console.error(e));
+  member.addRole(role).catch(e => console.error(e));
 
 	var embed = new RichEmbed()
     .setThumbnail(member.guild.iconURL)
