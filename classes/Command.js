@@ -4,7 +4,7 @@ class Command extends Commando.Command {
   constructor(client, info) {
 		super(client, info);
     
-    this.minPerm = info.minPerm || 1
+    this.minPerm = info.minPerm || 1;
     this.adminOnly = info.adminOnly || this.minPerm >= 3;
     this.modOnly = info.modOnly || this.minPerm >= 2;
 	}
