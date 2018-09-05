@@ -46,6 +46,7 @@ client.settings = new Enmap({
   autoFetch: true,
   cloneLevel: 'deep'
 });
+
 // Just setting up a default configuration object here, to have somethign to insert.
 const defaultSettings = {
   logChannel: "logs",
@@ -56,6 +57,8 @@ const defaultSettings = {
   welcomeEnabled: false,
   welcomeMessage: "Say hello to {{user}}, everyone!"
 }
+
+client.defaultSettings = defaultSettings;
 
 client.registry
     .registerDefaultTypes()
