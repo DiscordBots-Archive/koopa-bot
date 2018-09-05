@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class DmCommand extends Command {
     constructor(client) {
@@ -8,7 +8,7 @@ module.exports = class DmCommand extends Command {
             memberName: 'dm',
             description: 'Sends a DM to someone',
             examples: ['dm @User No'],
-            userPermissions: ['MANAGE_MESSAGES'],
+            modOnly: true,
             args: [
                 {
                     key: 'mem',

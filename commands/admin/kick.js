@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 const { RichEmbed } = require("discord.js");
 
 module.exports = class KickCommand extends Command {
@@ -10,6 +10,7 @@ module.exports = class KickCommand extends Command {
             description: 'Kicks an user',
             examples: ['kick <user> <reason>'],
             clientPermissions: ["KICK_MEMBERS"],
+            modOnly: true,
             args: [
               {
                 key: "member",
