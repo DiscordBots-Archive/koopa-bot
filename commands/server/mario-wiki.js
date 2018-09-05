@@ -47,12 +47,14 @@ module.exports = class ReplyCommand extends Command {
       errors: ['time'],
     })
     .then(async (collected) => {
-      var newq = json[1][parseInt(collected.first().content)];
+      var newq = json[1][parseInt(collected.first().content)-1];
+      var newl = json[3][parseInt(collected.first().content)-1];
       var { body: newj } = await get("https://www.mariowiki.com/api.php?action=parse&format=json&page="+encodeURI(query));
       var text = this.stripHTML(newj.parse.text["*"])
       text = text.substring(0, 2047);
       const newe = this.client.util.embed()
         .setTitle("Mario Wiki - " + newq)
+        .setURL(newl)
         .setDescription(text + (text.length == 2047 ? "…" : ""))
         .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
         .setThumbnail("https://www.mariowiki.com/images/mariowiki.png");
