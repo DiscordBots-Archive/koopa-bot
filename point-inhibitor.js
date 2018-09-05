@@ -1,47 +1,47 @@
 exports.inhibite = (client, msg) => {
   var chn = msg.channel;
   var name = chn.name;
-  return spamchannel(msg, name) || blockprefix(msg);
+  return msg.content.length == 1 || spamchannel(msg, name) || blockprefix(msg);
 }
 
 // Credit to NightYoshi
-	function blockprefix(message) {
-		var botprefix = [
-			// First block global methods
-			'!', // Block Mee6
-			'?', // Block Dyno & Starie
-			'-', // Block Apex
-			'.', // Block ErisBot, NotSoBot & Nadeko
-			't!', // Block Tatsumaki
-			'%', // Block Logger
-			'p!', // Block pokebot
-			'e!', // Block Endless
-			'#!', // Block Discord.RPG
-			';;', // Block FredBoat
-			'>>', // Block Vortex
-			'a!', // Block Alice
-			'a@', // Block Alice
+function blockprefix(message) {
+	var botprefix = [
+		// First block global methods
+		'!', // Block Mee6
+		'?', // Block Dyno & Starie
+		'-', // Block Apex
+		'.', // Block ErisBot, NotSoBot & Nadeko
+		't!', // Block Tatsumaki
+		'%', // Block Logger
+		'p!', // Block pokebot
+		'e!', // Block Endless
+		'#!', // Block Discord.RPG
+		';;', // Block FredBoat
+		'>>', // Block Vortex
+		'a!', // Block Alice
+		'a@', // Block Alice
 
-			// Now for user made bots
-			'k!', // Block Koopa (Samplasion)
-			'm:', // Block MoonlightBot (MoonlightCapital)
-			'o!', // Block le bot de odyssey (Tee)
-			'b!', // Block bepisBot (trainboy2019)
-			'r~', // Block reflect (superwhiskers)
-			'm~', // Block Markov-Bot (superwhiskers)
-
-			// Finally, guild specific cases
-			't@', // Block Tatsumaki (Super Mario Maker: Vanilla Revamped)
-			'd?', // Block Dyno (Super Mario Maker: Vanilla Revamped)
-			'n!' // Block Nadeko (Double Cherry Studios/Mushroom Universe/Super Star Studios)
-		];
-		for (var i in botprefix) {
-			if(message.content.indexOf(botprefix[i]) == 0)
-				return true;
-		}
-
-		return false;
+		// Now for user made bots
+		'k!', // Block Koopa (Samplasion)
+		'm:', // Block MoonlightBot (MoonlightCapital)
+		'o!', // Block le bot de odyssey (Tee)
+		'b!', // Block bepisBot (trainboy2019)
+		'r~', // Block reflect (superwhiskers)
+		'm~', // Block Markov-Bot (superwhiskers)
+    
+		// Finally, guild specific cases
+		't@', // Block Tatsumaki (Super Mario Maker: Vanilla Revamped)
+		'd?', // Block Dyno (Super Mario Maker: Vanilla Revamped)
+		'n!' // Block Nadeko (Double Cherry Studios/Mushroom Universe/Super Star Studios)
+	];
+	for (var i in botprefix) {
+		if(message.content.indexOf(botprefix[i]) == 0)
+			return true;
 	}
+
+	return false;
+}
 
 // Credit to NightYoshi (again)
 function spamchannel(message, name) {
