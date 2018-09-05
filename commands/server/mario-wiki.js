@@ -50,9 +50,10 @@ module.exports = class ReplyCommand extends Command {
       var newq = json[1][parseInt(collected.first().content)];
       var { body: newj } = await get("https://www.mariowiki.com/api.php?action=parse&format=json&page="+encodeURI(query));
       var text = this.stripHTML(newj.parse.text["*"])
+      text = text.substring(0, 2047);
       const newe = this.client.util.embed()
         .setTitle("Mario Wiki - " + newq)
-        .setDescription(text.toString())
+        .setDescription(text + (text.length == 2047 ? "…" : ""))
         .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
         .setThumbnail("https://www.mariowiki.com/images/mariowiki.png");
       message.channel.send(newe);
@@ -64,7 +65,7 @@ module.exports = class ReplyCommand extends Command {
   }
   
   // still Thanks NightYoshi
-  stripHTML(text) {/*1
+  stripHTML(text) {
     text = text.replace(/<style([\s\S]*?)<\/style>/gi, '');
     text = text.replace(/<script([\s\S]*?)<\/script>/gi, '');
     text = text.replace(/<\/div>/ig, '\n');
@@ -73,9 +74,10 @@ module.exports = class ReplyCommand extends Command {
     text = text.replace(/<\/ul>/ig, '\n');
     text = text.replace(/<\/p>/ig, '\n');
     text = text.replace(/<br\s*[\/]?>/gi, "\n");
-    text = text.replace(/<[^>]+>/ig, '');*/
+    text = text.replace(/<[^>]+>/ig, '');
     text = htmlToText.fromString(text, {
-      wordwrap: 1000
+      wordwrap: 500,
+      linkHrefBaseUrl: "https://www.mariowiki.com"
     });
     return text;
   }
