@@ -54,9 +54,9 @@ module.exports = class HelpCommand extends Command {
 				const messages = [];
 				try {
 					messages.push(await msg.direct(help));
-					if(msg.channel.type !== 'dm') messages.push(await msg.reply('Sent you a DM with information.'));
+					if(msg.channel.type !== 'dm') messages.push(await msg.reply('I\ve sent you a DM with information.'));
 				} catch(err) {
-					messages.push(await msg.reply('Unable to send you the help DM. You probably have DMs disabled.'));
+					messages.push(await msg.reply('I was unable to send you the help DM. You probably have DMs disabled.'));
 				}
 				return messages;
 			} else if(commands.length > 15) {
@@ -92,9 +92,9 @@ module.exports = class HelpCommand extends Command {
 						`).join('\n\n')
 					}
 				`, { split: true }));
-				if(msg.channel.type !== 'dm') messages.push(await msg.reply('Sent you a DM with information.'));
+				if(msg.channel.type !== 'dm') messages.push(await msg.reply('I\'ve sent you a DM with information.'));
 			} catch(err) {
-				messages.push(await msg.reply('Unable to send you the help DM. You probably have DMs disabled.'));
+				messages.push(await msg.reply('I was unable to send you the help DM. You probably have DMs disabled.'));
 			}
 			return messages;
 		}
