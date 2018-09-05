@@ -32,6 +32,7 @@ module.exports = class ReplyCommand extends Command {
     var desc = "Search Query for \""+query+'"\n\n';
     var { body: json } = await get("https://www.mariowiki.com/api.php?action=opensearch&format=json&search="+encodeURI(query));
     var len = json[1].length;
+    if (len == 0) return message.say();
     for (var i = 0; i < json[1].length; i++) {
       desc += `• [${i+1}] [${json[1][i]}](${json[3][i]})\n`
     }
