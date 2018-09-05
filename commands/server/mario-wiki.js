@@ -1,6 +1,9 @@
 const { Command } = require('discord.js-commando');
 const { post, get } = require("snekfetch");
 const htmlToText = require('html-to-text');
+var TurndownService = require('turndown')
+ 
+var turndownService = new TurndownService()
 
 module.exports = class ReplyCommand extends Command {
   constructor(client) {
@@ -77,10 +80,11 @@ module.exports = class ReplyCommand extends Command {
     text = text.replace(/<\/p>/ig, '\n');
     text = text.replace(/<br\s*[\/]?>/gi, "\n");
     text = text.replace(/<[^>]+>/ig, '');
-    text = htmlToText.fromString(text, {
+    /*text = htmlToText.fromString(text, {
       wordwrap: 500,
       linkHrefBaseUrl: "https://www.mariowiki.com"
-    });
+    });*/
+    text = turndownService.turndown(text)
     return text;
   }
 };
