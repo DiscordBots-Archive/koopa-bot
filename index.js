@@ -448,6 +448,11 @@ var automod = async message => {
 };
 client.on("message", message => automod(message));
 
+function catchAndSend(error, message) {
+  console.error(error)
+  message
+}
+
 function warn(member, reason, moderator, message) {
   var msg = message;
 	client.warns.set.run({
@@ -489,7 +494,7 @@ function ban(member, reason, moderator, message, days = null) {
 	if (days) {
     member.ban({days: days, reason: reason});
   } else {
-    member.ban(reason);
+    member.ban(reason).catch();
   }
   let logs, modlogs;
   if (msg.guild.id== "472214037430534167") {
