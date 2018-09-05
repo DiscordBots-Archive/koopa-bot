@@ -103,5 +103,9 @@ module.exports = (client) => {
     else if (member.roles.has("481492388020486171")) return 2
     else return 1
   }
+  client.util.getPerm = (lvl) => {
+    const lvls = ["N/A", "Normal user", "Server moderator", "Server admin", "Server owner",
+                  "5", "", "", "Bot moderator", "Bot admin", "Bot owner"]
+  }
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
 }
