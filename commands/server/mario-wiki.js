@@ -26,11 +26,9 @@ module.exports = class ReplyCommand extends Command {
 
   async run(msg, { query }) {
     var desc = "Search Query for \""+query+'"\n\n';
-    var { body: res } = await get("https://www.mariowiki.com/api.php?action=opensearch&format=json&search="+encodeURI(query));
-    console.log(res);
-    var json = JSON.parse(res);
+    var { body: json } = await get("https://www.mariowiki.com/api.php?action=opensearch&format=json&search="+encodeURI(query));
     for (var i = 0; i < json[1].length; i++) {
-      desc += `[${json[1][i]}](${json[3][i]})`
+      desc += `• [${json[1][i]}](${json[3][i]})\n`
     }
     const embed = this.client.util.embed()
       .setTitle("Mario Wiki")
