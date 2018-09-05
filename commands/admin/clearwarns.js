@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class CleasWarningsCommand extends Command {
     constructor(client) {

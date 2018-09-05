@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class WarningCommand extends Command {
     constructor(client) {
@@ -26,7 +26,7 @@ module.exports = class WarningCommand extends Command {
     }
 
     run(msg, { member, reason }) {
-      // if (member.user.bot) return msg.reply("you cannot warn a bot (unless someone stole its token, that is).");
+      if (member.user.bot) return msg.reply("you cannot warn a bot (unless someone stole its token, that is).");
       if (msg.member.highestRole.position <= member.highestRole.position) {
 				return msg.reply("you can't warn that user.");
 			}
