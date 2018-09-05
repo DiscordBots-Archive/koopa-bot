@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { post, get } = require("snekfetch");
 
 module.exports = class ReplyCommand extends Command {
   constructor(client) {
@@ -22,9 +23,16 @@ module.exports = class ReplyCommand extends Command {
     });
   }
 
-  run(msg, { query }) {
-    const emed = this.client.util.embed()
+  async run(msg, { query }) {
+    var desc = "Search Query for \""+query+'"\n\n';
+    var res = await get("https://www.mariowiki.com/w/api.php?action=opensearch&format=json&search="+encodeURI(query));
+    var json = JSON.parse(res);
+    for (var i = 0; i < json[1].length; i++) {
+      desc += `[${json[1][i]}](${json[3][i]})`
+    }
+    const embed = this.client.util.embed()
       .setTitle("Mario Wiki")
-      .setDescription("Search Query for \""+query+'"')
+      .setDescription(desc)
+      .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
   }
 };
