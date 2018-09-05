@@ -28,12 +28,13 @@ module.exports = class ReplyCommand extends Command {
     var desc = "Search Query for \""+query+'"\n\n';
     var { body: json } = await get("https://www.mariowiki.com/api.php?action=opensearch&format=json&search="+encodeURI(query));
     for (var i = 0; i < json[1].length; i++) {
-      desc += `• [${json[1][i]}](${json[3][i]})\n`
+      desc += `• [${i+1}] [${json[1][i]}](${json[3][i]})\n`
     }
     const embed = this.client.util.embed()
       .setTitle("Mario Wiki")
       .setDescription(desc)
       .setFooter("Powered by the Mario Wiki • https://www.mariowiki.com/")
+      .setThumbnail("https://www.mariowiki.com/images/mariowiki.png")
     msg.embed(embed);
   }
 };
