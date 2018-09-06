@@ -122,5 +122,15 @@ module.exports = (client) => {
                   "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
   client.util.getPerm = (lvl) => lvls[lvl];
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
-  client.util.changeNick = (guild, newName) => guild.members.get(client.user.id).setNickname(newName)
+  client.util.changeNick = (guild, newName) => guild.members.get(client.user.id).setNickname(newName);
+  client.awaitReply = async (msg, question, limit = 60000) => {
+    const filter = m => m.author.id === msg.author.id;
+    await msg.channel.send(question);
+    try {
+      const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ["time"] });
+      return collected.first().content;
+    } catch (e) {
+      return false;
+    }
+  };
 }

@@ -15,8 +15,9 @@ module.exports = class ConfigCommand extends Command {
             args: [
               {
                 key: "action",
+                label: "action flag",
                 prompt: "what action do you want to follow?",
-                type: "flag",
+                type: "string",
                 default: "view",
                 oneOf: ['view', 'set', "clear"],
               },
@@ -81,7 +82,7 @@ module.exports = class ConfigCommand extends Command {
           if (["y", "yes", "sure", "yep"].includes(response)) {
 
             // We delete the `key` here.
-            guildConf.delete();
+            // guildConf.delete();
             this.client.settings.set(message.guild.id, this.client.defaultSettings);
             message.reply(`The configs were successfully cleared.`);
           } else
@@ -89,6 +90,7 @@ module.exports = class ConfigCommand extends Command {
           if (["n", "no", "cancel"].includes(response)) {
             message.reply("Action cancelled.");
           }
+          break;
         default:
           return message.reply("unknown action")
       }
@@ -99,8 +101,8 @@ module.exports = class ConfigCommand extends Command {
         case "false":
           return false;
         case "true":
-        default:
           return true;
       }
+      return str;
     } 
 };
