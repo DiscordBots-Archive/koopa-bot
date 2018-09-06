@@ -90,6 +90,7 @@ client.on('guildMemberAdd', async member => {
   
   // Our welcome message has a bit of a placeholder, let's fix that:
   welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag)
+    .replace("{{guild}}", member.guild.name)
   
   // we'll send to the welcome channel.
   if (client.settings.get(member.guild.id, "welcomeEnabled")) member.guild.channels
