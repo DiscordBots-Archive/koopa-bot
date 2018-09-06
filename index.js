@@ -53,8 +53,9 @@ client.settings = new Enmap({
 const defaultSettings = {
   logChannel: "logs",
   modLogChannel: "modlogs",
-  modRole: "Moderator",
-  adminRole: "Administrator",
+  modRole: "<modroleid>",
+  adminRole: "<adminroleid>",
+  ownerRole: "<ownerroleid>",
   welcomeChannel: "welcome",
   welcomeEnabled: false,
   welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!"
