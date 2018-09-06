@@ -532,7 +532,7 @@ function ban(member, reason, moderator, message, days = null) {
 		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
   
 	if(modlogs) {
-		let embed = new RichEmbed()
+		let embed = client.util.embed()
         .setColor(0xe00b0b)
         .setTitle(`:skull_crossbones: ${member.user.tag} was banned`)
         .setThumbnail(member.user.displayAvatarURL)
@@ -565,8 +565,8 @@ async function mute(member, reason, moderator, message) {
 		logs.send(`${member.user.tag} **[${member.user.id}]** was muted by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
 
 	if(modlogs) {
-		var embed = client.util.embed()
-      .setTitle(`:warning: ${member.user.tag} was warned`)
+		var embed = client.util.embed(false)
+      .setTitle(`:warning: ${member.user.tag} was muted`)
       .setThumbnail(member.user.displayAvatarURL)
       .setTimestamp(Date.now())
       .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
@@ -575,7 +575,7 @@ async function mute(member, reason, moderator, message) {
 		modlogs.send(embed);
 	}
   
-  member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
+  // member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
