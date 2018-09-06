@@ -33,54 +33,52 @@ module.exports = class GiveCommand extends Command {
       if(this.client.isOwner(message.author) || message.author.id == message.guild.ownerID) {
         const user = membre;
 
-        // Get their current points.
-        let userscore = this.client.getScore.get(user.id, message.guild.id);
-        // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
-        if (!userscore) {
-          userscore = { id: `${message.guild.id}-${user.id}`, user: user.id, guild: message.guild.id, points: 0, level: 1 }
-        }
-        userscore.points += pointsToAdd;
+        // Ensure there is a points entry for this user.
+        this.client.points.ensure(`${message.guild.id}-${user.id}`, this.client.defaultPoints);
+        
+        let userPoints = this.client.points.get(`${message.guild.id}-${user.id}`, "points");
+        userPoints += pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor((userscore.points+100) / 100)
-        userscore.level = userLevel;
+        let userLevel = Math.floor((userPoints+100) / 100)
 
         // And we save it!
-        this.client.setScore.run(userscore);
+        this.client.points.set(`${message.guild.id}-${user.id}`, userPoints, "points");
+        this.client.points.set(`${message.guild.id}-${user.id}`, userLevel, "level");
 
-        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userscore.points} EXP points.`);
+        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userPoints} EXP points.`);
       } else {
         const user = membre;
         
         if (pointsToAdd < 0) return message.reply("you can't steal points!");
         
-        // Get their current points.
-        let givescore = this.client.getScore.get(message.author.id, message.guild.id);
-        // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
-        if (!givescore || givescore.points < pointsToAdd) {
-          return message.reply("you don't have enough points to be given to another person.");
-        }
-        givescore.points -= pointsToAdd;
+        // Ensure there is a points entry for this user.
+        this.client.points.ensure(`${message.guild.id}-${message.member.id}`, this.client.defaultPoints);
+        
+        let givePoints = this.client.points.get(`${message.guild.id}-${message.member.id}`, "points");
+        
+        if (givePoints < pointsToAdd) return message.reply("you don't have enough points!");
+        
+        givePoints -= pointsToAdd;
 
-        // Get their current points.
-        let userscore = this.client.getScore.get(user.id, message.guild.id);
-        // It's possible to give points to a user we haven't seen, so we need to initiate defaults here too!
-        if (!userscore) {
-          userscore = { id: `${message.guild.id}-${user.id}`, user: user.id, guild: message.guild.id, points: 0, level: 1 }
-        }
-        userscore.points += pointsToAdd;
+        
+        this.client.points.ensure(`${message.guild.id}-${user.id}`, this.client.defaultPoints);
+  
+        let userPoints = this.client.points.get(`${message.guild.id}-${user.id}`, "points");
+        userPoints += pointsToAdd;
 
         // We also want to update their level (but we won't notify them if it changes)
-        let userLevel = Math.floor((userscore.points+100) / 100)
-        userscore.level = userLevel;
-        let giveLevel = Math.floor((givescore.points+100) / 100)
-        givescore.level = giveLevel;
+        let userLevel = Math.floor((userPoints+100) / 100)
+        let giveLevel = Math.floor((givePoints+100) / 100)
 
         // And we save it!
-        this.client.setScore.run(userscore);
-        this.client.setScore.run(givescore);
+        this.client.points.set(`${message.guild.id}-${user.id}`, userPoints, "points");
+        this.client.points.set(`${message.guild.id}-${user.id}`, userLevel, "level");
+        this.client.points.set(`${message.guild.id}-${message.member.id}`, givePoints, "points");
+        this.client.points.set(`${message.guild.id}-${message.member.id}`, giveLevel, "level");
+        
 
-        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userscore.points} EXP points.\n${message.author.tag}, instead, is at ${givescore.points} EXP points`);
+        return message.channel.send(`${user.tag} has received ${pointsToAdd} EXP points and now stands at ${userPoints} EXP points.\n${message.author.tag}, instead, is at ${givePoints} EXP points`);
       }
     }
 };

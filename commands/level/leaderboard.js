@@ -22,23 +22,30 @@ module.exports = class LeaderboardCommand extends Command {
         });
     }
 
-    async run(msg, { num }) {
+    async run(message, { num }) {
       let key = `${message.guild.id}-${message.author.id}`
       this.client.points.ensure(key, this.client.defaultPoints);
+      
+      // Get a filtered list (for this guild only), and convert to an array while we're at it.
+      const filtered = this.client.points.array().filter( p => p.guild === message.guild.id );
+
+      // Sort it to get the top results... well... at the top. Y'know.
+      const sorted = filtered.sort((a, b) => a.points < b.points);
+
+      // Slice it, dice it, get the top 10 of it!
+      const top10 = sorted.splice(0, 10);
 
       // Now shake it and show it! (as a nice embed, too!)
-      const embed = new RichEmbed()
+      const embed = this.client.util.embed()
         .setTitle("Leaderboard")
         .setAuthor(this.client.user.username, this.client.user.avatarURL)
         .setDescription("Our top " + num + " of EXP point leaders!")
-        .setColor(0x00AE86);
-
-      for(const data of top10) {
-        embed.addField(msg.guild.members.get(data.user).user.tag, `${data.points} EXP points (level ${data.level})`);
-      }
-      return msg.embed(embed);
+        //.setColor(0x00AE86);
       
-      msg.embed(embed);
-      } catch (e) { console.error(e) }
+      for(const data of top10) {
+        embed.addField(this.client.users.get(data.user).tag, `${data.points} EXP points (level ${data.level})`);
+      }
+      
+      return message.embed(embed);
     }
 };
