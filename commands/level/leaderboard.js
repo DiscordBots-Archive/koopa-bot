@@ -33,7 +33,7 @@ module.exports = class LeaderboardCommand extends Command {
       const sorted = filtered.sort((a, b) => a.points < b.points);
 
       // Slice it, dice it, get the top 10 of it!
-      const top10 = sorted.splice(0, 10);
+      const top10 = sorted.splice(0, num);
 
       // Now shake it and show it! (as a nice embed, too!)
       const embed = this.client.util.embed()
