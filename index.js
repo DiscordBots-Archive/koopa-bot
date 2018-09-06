@@ -65,6 +65,7 @@ client.defaultSettings = defaultSettings;
 client.registry
     .registerDefaultTypes()
     .registerGroups([
+        ["server", "Server"],
         ["roles", "Selfroles (Mario Modding-only)"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
