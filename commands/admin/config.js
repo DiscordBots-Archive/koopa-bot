@@ -51,6 +51,7 @@ module.exports = class ConfigCommand extends Command {
           return message.channel.send(inspect(guildConf), {code: "js"});
           break;
         case "add":
+          if (!this.client.isOwner(message.author)) return message.reply("due to the nature of this action, it is restricted to the owner. Contact Samplasion#7901 if you **absolutely** need to add a key.");
           var key = prop;
           if (!key) return message.reply("Please specify a key to add");
           if (guildConf[key]) return message.reply("This key already exists in the settings");

@@ -57,7 +57,8 @@ const defaultSettings = {
   ownerRole: "<ownerroleid>",
   welcomeChannel: "welcome",
   welcomeEnabled: false,
-  welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!"
+  welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!",
+  staffLine: 'Staff, use `!conf set staffLine Text` to change this line!'
 }
 
 client.defaultSettings = defaultSettings;
