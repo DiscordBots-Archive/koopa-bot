@@ -138,38 +138,6 @@ client.on("guildDelete", guild => {
 client.on('ready', () => {
     console.log('Logged in!');
     client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
-  /* ========= TRANSFERRING TO ENMAP
-  
-  // Set up the SQL points database
-  // Check if the table "points" exists.
-  const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
-  if (!table['count(*)']) {
-    // If the table isn't there, create it and setup the database correctly.
-    sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run();
-    // Ensure that the "id" row is always unique and indexed.
-    sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
-    sql.pragma("synchronous = 1");
-    sql.pragma("journal_mode = wal");
-  }
-
-  // And then we have two prepared statements to get and set the score data.
-  client.getScore = sql.prepare("SELECT * FROM scores WHERE user = ? AND guild = ?");
-  client.setScore = sql.prepare("INSERT OR REPLACE INTO scores (id, user, guild, points, level) VALUES (@id, @user, @guild, @points, @level);");
-  client.cleanScore = sql.prepare("DELETE FROM scores WHERE user = ? AND guild = ?");
-  
-  const warnTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
-  if (!warnTable['count(*)']) {
-    // If the table isn't there, create it and setup the database correctly.
-    warns.prepare("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT, guild TEXT);").run();
-    // Ensure that the "id" row is always unique and indexed.
-    // warns.prepare("CREATE UNIQUE INDEX idx_warns_id ON warns (id);").run();
-    warns.pragma("synchronous = 1");
-    warns.pragma("journal_mode = wal");
-  }
-  client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?");
-  client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time, guild) VALUES (@uid, @reason, @moderator, @time, @guild)");
-  client.warns.delete = warns.prepare("DELETE FROM warns WHERE userId = ? AND guild = ?");
-  client.warns.drop = warns.prepare("DROP TABLE warns");*/
 });
 
 client.on('error', console.error);
@@ -184,66 +152,24 @@ client.on("message", message => {
   
   // client.on(string, function(...args)) refers to Discord.Client,
   // not Discord.js-Commando.CommandoClient
-  let score;
+  client.defaultPoints = {
+    user: message.author.id,
+    guild: message.guild.id,
+    points: 0,
+    level: 1
+  }
+  
   if (message.guild) {
     // if the channel is the guild's spam channel, return (we don't
     // want to let people level up by spamming in the spam channel)
     if (inhibitor.inhibite(client, message)) return;
-    /*
-    // get score
-      score = client.getScore.get(message.author.id, message.guild.id);
-      // if the user doesn't have a score, give him
-      if (!score) {
-        score = {
-          id: `${message.guild.id}-${message.author.id}`,
-          user: message.author.id,
-          guild: message.guild.id,
-          points: 0,
-          level: 1
-        }
-      }
     
-      // Increment the score
-      // score.points++;
-      score.points += getEXP();
-
-      // Calculate the current level through MATH OMG HALP.
-      // 1 level is 50 messages
-      // 20 mins later = nah changed mah mind
-      const curLevel = Math.floor((score.points+100) / 100)
-
-      // Check if the user has leveled up, and let them know if they have
-      if(score.level < curLevel) {
-        // Level up!
-        var embed = new RichEmbed()
-          .setAuthor(message.member.displayName, message.author.displayAvatarURL)
-          .setColor(message.member.highestRole.color)
-          .setTitle("Felicitations!")
-          .setDescription("*(sigh)*\n\nYou've leveled UP!")
-          .addField("New Level", curLevel)
-          .setFooter("Samplasion, why are you doing me this?")
-          .setThumbnail(message.author.displayAvatarURL);
-        // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
-        message.channel.send(embed)
-        score.level = curLevel;
-      }
-
-      // This looks super simple because it's calling upon the prepared statement!
-      client.setScore.run(score);
-
-      // return message.reply(`You currently have ${score.points} points and are level ${score.level}! (TEST to see if points work)`);
-    */
     let key = `${message.guild.id}-${message.author.id}`
-    client.points.ensure(key, {
-      user: message.author.id,
-      guild: message.guild.id,
-      points: 0,
-      level: 1
-    });
+    client.points.ensure(key, client.defaultPoints);
     
     client.points.math(key, "+", getEXP(), "points")
     
-    const curLevel = Math.floor((score.points+100) / 100)
+    const curLevel = Math.floor((client.points.get(key, "points")+100) / 100)
     
     if (client.points.get(key, "level") < curLevel) {
       // Level up!

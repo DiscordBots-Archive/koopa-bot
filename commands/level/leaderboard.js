@@ -23,10 +23,8 @@ module.exports = class LeaderboardCommand extends Command {
     }
 
     async run(msg, { num }) {
-      try {
-      let sql = this.client.scores.table;
-      
-      const top10 = sql.prepare("SELECT * FROM scores WHERE guild = ? ORDER BY points DESC LIMIT ?;").all(msg.guild.id, num);
+      let key = `${message.guild.id}-${message.author.id}`
+      this.client.points.ensure(key, this.client.defaultPoints);
 
       // Now shake it and show it! (as a nice embed, too!)
       const embed = new RichEmbed()

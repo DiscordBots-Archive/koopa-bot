@@ -33,6 +33,7 @@ module.exports = class ScoreCommand extends Command {
       const message = msg;
       
       let key = `${message.guild.id}-${message.author.id}`
+      this.client.points.ensure(key, this.client.defaultPoints);
       let points = this.client.points.get(key, "points")
       let level = this.client.points.get(key, "points")
       
