@@ -21,7 +21,7 @@ module.exports = class ReplyCommand extends Command {
     console.log(`[${owners.length}], [${admins.length}], [${mods.length}]`)
     let embed = this.client.util.embed()
       .setTitle(`${msg.guild.name} Staff`)
-      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")} or Samplasion#7901.`)
+      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")} ${!owners.isEmpty() ? "or" : ""} Samplasion#7901.`)
       .addField("Owner" + (owners.length > 1 ? "s" : ""), !owners.isEmpty() ? owners.join("\n") : "No owners.")
       .addField("Admin" + (admins.length > 1 ? "s" : ""), !admins.isEmpty() ? admins.join("\n") : "No admins.")
       .addField("Moderator" + (mods.length > 1 ? "s" : ""), !mods.isEmpty() ? mods.join("\n") : "No moderators.");
@@ -30,5 +30,5 @@ module.exports = class ReplyCommand extends Command {
 };
 
 Array.prototype.isEmpty = function() {
-  return this.length == 0
+  return this.length == 0 || this === undefined
 }

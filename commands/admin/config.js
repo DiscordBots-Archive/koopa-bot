@@ -19,7 +19,7 @@ module.exports = class ConfigCommand extends Command {
                 prompt: "what action do you want to follow?",
                 type: "string",
                 default: "view",
-                oneOf: ['view', 'set', "clear"],
+                oneOf: ['view', 'set', "clear", "reset", "add"],
               },
               {
                 key: "prop",
@@ -50,6 +50,19 @@ module.exports = class ConfigCommand extends Command {
           // \`\`\`js\n${configProps}\n\`\`\``);
           return message.channel.send(inspect(guildConf), {code: "js"});
           break;
+        case "add":
+          var key = prop;
+          if (!key) return message.reply("Please specify a key to add");
+          if (settings[key]) return message.reply("This key already exists in the settings");
+          if (value.length < 1) return message.reply("Please specify a value");
+
+          // `value` being an array, we need to join it first.
+          settings[key] = value.join(" ");
+
+          // One the settings is modified, we write it back to the collection
+          client.settings.set(message.guild.id, settings);
+          message.reply(`${key} successfully added with the value of ${value.join(" ")}`);
+          break;
         case "set":
           // We can check that the key exists to avoid having multiple useless, 
           // unused keys in the config:
@@ -75,8 +88,9 @@ module.exports = class ConfigCommand extends Command {
           message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
           break;
         case "clear":
+        case "reset":
           // Throw the 'are you sure?' text at them.
-          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear the configs? This **CANNOT** be undone.`);
+          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone.`);
 
           // If they respond with y or yes, continue.
           if (["y", "yes", "sure", "yep"].includes(response)) {
