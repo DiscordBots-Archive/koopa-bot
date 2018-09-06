@@ -53,15 +53,11 @@ module.exports = class ConfigCommand extends Command {
         case "add":
           var key = prop;
           if (!key) return message.reply("Please specify a key to add");
-          if (settings[key]) return message.reply("This key already exists in the settings");
-          if (value.length < 1) return message.reply("Please specify a value");
-
-          // `value` being an array, we need to join it first.
-          settings[key] = value.join(" ");
+          if (guildConf[key]) return message.reply("This key already exists in the settings");
 
           // One the settings is modified, we write it back to the collection
-          client.settings.set(message.guild.id, settings);
-          message.reply(`${key} successfully added with the value of ${value.join(" ")}`);
+          this.client.settings.set(message.guild.id, this.booleanize(value), prop);
+          message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
           break;
         case "set":
           // We can check that the key exists to avoid having multiple useless, 

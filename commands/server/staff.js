@@ -18,7 +18,7 @@ module.exports = class ReplyCommand extends Command {
     var owners = await msg.guild.members.filter(m => m.roles.has(guildConf.ownerRole)).map(m => m.user.tag);
     var admins = await msg.guild.members.filter(m => m.roles.has(guildConf.adminRole)).map(m => m.user.tag);
     var mods = await msg.guild.members.filter(m => m.roles.has(guildConf.modRole)).map(m => m.user.tag);
-    console.log(`[${owners.length}], [${admins.length}], [${mods.length}]`)
+    var staffLine = guildConf.staffLine ? `\n\n${guildConf.staffLine}` : "";
     let embed = this.client.util.embed()
       .setTitle(`${msg.guild.name} Staff`)
       .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")} ${!owners.isEmpty() ? "or" : ""} Samplasion#7901.`)
