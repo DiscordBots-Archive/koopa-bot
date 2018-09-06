@@ -549,12 +549,16 @@ function ban(member, reason, moderator, message, days = null) {
 }
 
 async function mute(member, reason, moderator, message) {
-  var mutedRole = await message.guild.roles.find('name', "Muted").catch(e=> catchAndSend(e, message));
-  if(message.member.roles.has()) {
-		message.member.removeRole(mutedRole);
-	} else {
-		message.member.addRole(mutedRole);
-	}
+  var pref = ""
+  var mutedRole = await message.guild.roles.find('name', "Muted");
+  if (mutedRole) {
+    if(message.member.roles.has()) {
+      message.member.removeRole(mutedRole);
+      pref = "un"
+    } else {
+      message.member.addRole(mutedRole);
+    }
+  } else throw "no muted role"
   let logs, modlogs;
   logs = message.guild.channels
     .find("name", client.settings.get(message.guild.id, "logChannel"))
@@ -562,11 +566,11 @@ async function mute(member, reason, moderator, message) {
     .find("name", client.settings.get(message.guild.id, "modLogChannel"))
 
 	if(logs)
-		logs.send(`${member.user.tag} **[${member.user.id}]** was muted by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
+		logs.send(`${member.user.tag} **[${member.user.id}]** was ${pref}muted by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
 
 	if(modlogs) {
 		var embed = client.util.embed(false)
-      .setTitle(`:warning: ${member.user.tag} was muted`)
+      .setTitle(`:warning: ${member.user.tag} was ${pref}muted`)
       .setThumbnail(member.user.displayAvatarURL)
       .setTimestamp(Date.now())
       .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
@@ -575,11 +579,14 @@ async function mute(member, reason, moderator, message) {
 		modlogs.send(embed);
 	}
   
+  message.channel.send(`:ok: User ${pref}muted`)
+  
   // member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
 client.ban = ban;
+client.mute = mute;
 
 const rawEvents = {
     MESSAGE_REACTION_ADD: 'messageReactionAdd',
