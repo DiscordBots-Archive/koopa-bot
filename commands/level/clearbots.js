@@ -15,7 +15,7 @@ module.exports = class ClearBotsCommand extends Command {
     }
   
     hasPermission(msg) {
-        if (!this.client.isOwner(msg.author)) return 'This is a table clearing utility. Honestly, I don\'t think you would benefit from running this.';
+        if (!this.client.isOwner(msg.author)) return 'This is a table clearing utility. Honestly, I don\'t know how you would benefit from running this.';
         return true;
     }
 
@@ -23,7 +23,7 @@ module.exports = class ClearBotsCommand extends Command {
       var nmsg = await message.say("Cleaning bots from table scores...");
       message.guild.members.forEach(m => {
         if (m.user.bot) {
-          this.client.cleanScore.run(m.user.id, m.guild.id);
+          this.client.points.delete(`${message.guild.id}-${m.id}`)
         }
       });
       nmsg.edit("Done!");
