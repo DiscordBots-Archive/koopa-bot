@@ -1,5 +1,6 @@
 const { Command } = require('./../../classes/Command.js');
 const { RichEmbed } = require("discord.js");
+const { inspect } = require("util");
 
 module.exports = class ConfigCommand extends Command {
     constructor(client) {
@@ -33,11 +34,12 @@ module.exports = class ConfigCommand extends Command {
     run(message, { prop, value }) {
       const guildConf = this.client.settings.ensure(message.guild.id, this.client.defaultSettings);
       if (!prop || prop == "" || !value || value == "") {
-        let configProps = Object.keys(guildConf).map(prop => {
-          return `${prop}  :  ${guildConf[prop]}\n`;
-        });
-        return message.channel.send(`The following are the server's current configuration:
-        \`\`\`js\n${configProps}\n\`\`\``);
+        //let configProps = Object.keys(guildConf).map(prop => {
+        //  return `${prop}  :  ${guildConf[prop]}\n`;
+        //});
+        // return message.channel.send(`The following are the server's current configuration:
+        // \`\`\`js\n${configProps}\n\`\`\``);
+        return message.channel.send(inspect(guildConf), {code: "js"});
       }
 
       // We can check that the key exists to avoid having multiple useless, 

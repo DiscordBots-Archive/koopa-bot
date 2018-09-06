@@ -27,7 +27,8 @@
     "yt-search": "^0.1.4",
     "ytdl-core": "^0.25.2",
     "html-to-text": "^4.0.0",
-    "turndown": "^5.0.1"
+    "turndown": "^5.0.1",
+    "util": "^0.11.0"
   },
   "engines": {
     "node": "8.x"

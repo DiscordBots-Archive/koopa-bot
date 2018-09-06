@@ -15,6 +15,7 @@ dependencies:
   snekfetch: 4.0.4
   sqlite: 3.0.0
   turndown: 5.0.1
+  util: 0.11.0
   yt-search: 0.1.4
   ytdl-core: 0.25.2
 packages:
@@ -2194,6 +2195,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
+  /util/0.11.0:
+    dependencies:
+      inherits: 2.0.3
+    dev: false
+    resolution:
+      integrity: sha512-5n12uMzKCjvB2HPFHnbQSjaqAa98L5iIXmHrZCLavuZVe0qe/SJGbDGWlpaHk5lnBkWRDO+dRu1/PgmUYKPPTw==
   /utils-merge/1.0.1:
     dev: false
     engines:
@@ -2354,5 +2361,6 @@ specifiers:
   snekfetch: ^4.0.4
   sqlite: ^3.0.0
   turndown: ^5.0.1
+  util: ^0.11.0
   yt-search: ^0.1.4
   ytdl-core: ^0.25.2
