@@ -122,4 +122,5 @@ module.exports = (client) => {
                   "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
   client.util.getPerm = (lvl) => lvls[lvl];
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
+  client.util.changeNick = (guild, newName) => guild.members.get(client.user.id).setNickname(newName)
 }
