@@ -5,7 +5,11 @@ module.exports = (client) => {
     "July", "August", "September", "October", "November", "December"
   ];
   client.util = {}
-  client.util.embed = () => new RichEmbed().setColor(0x4d86e2);
+  client.util.embed = (color = true) => {
+    let e = new RichEmbed()
+    if (color) e.setColor(0x4d86e2);
+    return e;
+  }
   client.util.memberTag = member => `${member.displayName}#${member.user.discriminator}`;
   client.util.weekDay = (wdn) => {
     wdn += 1;

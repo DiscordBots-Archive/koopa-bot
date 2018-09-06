@@ -7,7 +7,6 @@ const YTDL = require("ytdl-core");
 const inhibitor = require("./point-inhibitor");
 var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
-const sql = new SQLite('./scores.sqlite');
 const warns = new SQLite("./warns.sqlite");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
@@ -139,6 +138,20 @@ client.on("guildDelete", guild => {
 client.on('ready', () => {
     console.log('Logged in!');
     client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
+  
+  const warnTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
+  if (!warnTable['count(*)']) {
+    // If the table isn't there, create it and setup the database correctly.
+    warns.prepare("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT, guild TEXT);").run();
+    // Ensure that the "id" row is always unique and indexed.
+    // warns.prepare("CREATE UNIQUE INDEX idx_warns_id ON warns (id);").run();
+    warns.pragma("synchronous = 1");
+    warns.pragma("journal_mode = wal");
+  }
+  client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?");
+  client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time, guild) VALUES (@uid, @reason, @moderator, @time, @guild)");
+  client.warns.delete = warns.prepare("DELETE FROM warns WHERE userId = ? AND guild = ?");
+  client.warns.drop = warns.prepare("DROP TABLE warns");
 });
 
 client.on('error', console.error);
@@ -481,13 +494,10 @@ function warn(member, reason, moderator, message) {
     guild: msg.guild.id
   });
   let logs, modlogs;
-  if (msg.guild.id== "472214037430534167") {
-    modlogs = msg.guild.channels.find("name", "koopa-logs");
-    logs = msg.guild.channels.find("name", "samplasion-development");
-  } else {
-    logs = msg.guild.channels.find("name", "logs");
-    modlogs = msg.guild.channels.find("name", "modlogs");
-  }
+  logs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "logChannel"))
+  modlogs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "modLogChannel"))
 
 	if(logs)
 		logs.send(`${member.user.tag} **[${member.user.id}]** was warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
@@ -515,13 +525,10 @@ function ban(member, reason, moderator, message, days = null) {
     member.ban(reason).catch(e=> catchAndSend(e, message));
   }
   let logs, modlogs;
-  if (msg.guild.id== "472214037430534167") {
-    modlogs = msg.guild.channels.find("name", "koopa-logs");
-    logs = msg.guild.channels.find("name", "samplasion-development");
-  } else {
-    logs = msg.guild.channels.find("name", "logs");
-    modlogs = msg.guild.channels.find("name", "modlogs");
-  }
+  logs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "logChannel"))
+  modlogs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "modLogChannel"))
 
 	if(logs)
 		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
@@ -541,6 +548,36 @@ function ban(member, reason, moderator, message, days = null) {
 	}
   
   member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${msg.guild.name} by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: \`${reason}\``);
+}
+
+async function mute(member, reason, moderator, message) {
+  var mutedRole = await message.guild.roles.find('name', "Muted");
+  if(message.member.roles.has()) {
+		message.member.removeRole(mutedRole);
+	} else {
+		message.member.addRole(mutedRole);
+	}
+  let logs, modlogs;
+  logs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "logChannel"))
+  modlogs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "modLogChannel"))
+
+	if(logs)
+		logs.send(`${member.user.tag} **[${member.user.id}]** was muted by ${moderator.user.tag} **[${moderator.user.id}]** in ${message.channel} **[${message.channel.id}]**. Reason: \`${reason}\``);
+
+	if(modlogs) {
+		var embed = client.util.embed()
+      .setTitle(`:warning: ${member.user.tag} was warned`)
+      .setThumbnail(member.user.displayAvatarURL)
+      .setTimestamp(Date.now())
+      .addField(":pencil: Moderator", `<@${moderator.id}> (${moderator.user.tag})`)
+      .addField(":biohazard: Reason", reason)
+
+		modlogs.send(embed);
+	}
+  
+  member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
 }
 
 client.warn = warn;
