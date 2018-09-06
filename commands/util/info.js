@@ -13,11 +13,21 @@ module.exports = class ReplyCommand extends Command {
     
     this.funcs = {
       "Points": ":ok:",
-      "Logging": ""
+      "Logging": "<:wip:487304419361161218>",
+      "Administration": "<:wip:487304419361161218> 98%",
+      "Permissions System": ":ok:",
+      "Multi-guild flexibility\*": "<:wip:487304419361161218>"
     }
   }
 
   run(msg) {
-    return msg.say('Hi, I\'m awake!');
+    let e = this.client.util.embed()
+      .setTitle("Current functionality for Koopa")
+    let desc = "Here are listed the current functionalities, with their progress.\n"
+    for (var fun in this.funcs) {
+      desc += `\n**${fun}**: ${this.funcs[fun]}`
+    }
+    e.setDescription(desc)
+    msg.embed(e);
   }
 };
