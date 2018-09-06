@@ -326,13 +326,17 @@ client.warns.table = warns;
 client.on('messageDelete', async (message) => {
   var msg = message;
   let logs, modlogs;
-  if (msg.guild.id == "481369156554326023") {
+  /*if (msg.guild.id == "481369156554326023") {
     logs = msg.guild.channels.find("name", "logs");
     modlogs = msg.guild.channels.find("name", "modlogs");
   } else if (msg.guild.id== "472214037430534167") {
     modlogs = msg.guild.channels.find("name", "koopa-logs");
     logs = msg.guild.channels.find("name", "samplasion-development");
-  }
+  }*/
+  logs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "logChannel"))
+  modlogs = message.guild.channels
+    .find("name", client.settings.get(message.guild.id, "modLogChannel"))
   
   const entry = await message.guild.fetchAuditLogs({type: 'MESSAGE_DELETE'}).then(audit => audit.entries.first());
   let user = ""

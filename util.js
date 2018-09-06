@@ -112,7 +112,7 @@ module.exports = (client) => {
     
     if (member.user.bot) return 0;
     if (client.isOwner(member.user)) perm = 10
-    else if (member.guild.ownerId == member.id || member.roles.has(member.guild.owner.highestRole)) perm = 4
+    else if (member.guild.ownerId == member.id || member.roles.has(member.guild.owner.highestRole.id)) perm = 4
     else if (member.roles.has(admin)) perm = 3
     else if (member.roles.has(mod)) perm = 2
     else perm = 1;
