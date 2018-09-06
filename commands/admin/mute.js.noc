@@ -32,6 +32,8 @@ module.exports = class extends Command {
       if (msg.member.highestRole.position <= member.highestRole.position) {
 				return msg.reply("you (and I) can't mute that user.");
 			}
+      var mutedRole = await msg.guild.roles.find('name', "Muted");
+      if (!mutedRole) return msg.channel.send("Create a role called `Muted` with no permissions.");
       await this.client.mute(member, reason, msg.member, msg);
     }
 };

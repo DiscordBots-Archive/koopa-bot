@@ -551,14 +551,12 @@ function ban(member, reason, moderator, message, days = null) {
 async function mute(member, reason, moderator, message) {
   var pref = ""
   var mutedRole = await message.guild.roles.find('name', "Muted");
-  if (mutedRole) {
-    if(message.member.roles.has()) {
-      message.member.removeRole(mutedRole);
-      pref = "un"
-    } else {
-      message.member.addRole(mutedRole);
-    }
-  } else throw "no muted role"
+  if(message.member.roles.has()) {
+    message.member.removeRole(mutedRole);
+    pref = "un"
+  } else {
+    message.member.addRole(mutedRole);
+  }
   let logs, modlogs;
   logs = message.guild.channels
     .find("name", client.settings.get(message.guild.id, "logChannel"))
