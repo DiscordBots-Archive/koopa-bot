@@ -32,7 +32,6 @@ module.exports = class extends Command {
       if (msg.member.highestRole.position <= member.highestRole.position) {
 				return msg.reply("you (and I) can't mute that user.");
 			}
-      
       await this.client.mute(member, reason, msg.member, msg)
       msg.say(":ok: User muted!");
     }

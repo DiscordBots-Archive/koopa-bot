@@ -29,7 +29,7 @@ module.exports = class EvalCommand extends Command {
 		this.lastResult = null;
 	}
 
-	run(msg, args) {
+	async run(msg, args) {
 		// Make a bunch of helpers
 		/* eslint-disable no-unused-vars */
 		const message = msg;
@@ -51,12 +51,15 @@ module.exports = class EvalCommand extends Command {
 			}
 		};
 		/* eslint-enable no-unused-vars */
+    
+    var scr = args.script
+    if (scr instanceof Promise) scr = await scr
 
 		// Run the code and measure its execution time
 		let hrDiff;
 		try {
 			const hrStart = process.hrtime();
-			this.lastResult = eval(args.script);
+			this.lastResult = eval(scr);
 			hrDiff = process.hrtime(hrStart);
 		} catch(err) {
 			return msg.reply(`Error while evaluating: \`${err}\``);
@@ -64,7 +67,7 @@ module.exports = class EvalCommand extends Command {
 
 		// Prepare for callback time and respond
 		this.hrStart = process.hrtime();
-		const result = this.makeResultMessages(this.lastResult, hrDiff, args.script);
+		const result = this.makeResultMessages(this.lastResult, hrDiff, scr);
 		if(Array.isArray(result)) {
 			return result.map(item => msg.reply(item));
 		} else {

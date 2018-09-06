@@ -139,7 +139,7 @@ client.on('ready', () => {
     console.log('Logged in!');
     client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
   
-  const warnTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
+  const warnTable = warns.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
   if (!warnTable['count(*)']) {
     // If the table isn't there, create it and setup the database correctly.
     warns.prepare("CREATE TABLE IF NOT EXISTS warns (userId TEXT, reason TEXT, moderator TEXT, time TEXT, guild TEXT);").run();
@@ -333,8 +333,6 @@ function extension(reaction, attachment) {
   return attachment;
 }
 
-client.scores = {};
-client.scores.table = sql;
 client.warns = {};
 client.warns.table = warns;
 
@@ -551,7 +549,7 @@ function ban(member, reason, moderator, message, days = null) {
 }
 
 async function mute(member, reason, moderator, message) {
-  var mutedRole = await message.guild.roles.find('name', "Muted");
+  var mutedRole = await message.guild.roles.find('name', "Muted").catch(e=> catchAndSend(e, message));
   if(message.member.roles.has()) {
 		message.member.removeRole(mutedRole);
 	} else {
