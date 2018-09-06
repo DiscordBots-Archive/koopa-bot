@@ -27,7 +27,7 @@ module.exports = class LeaderboardCommand extends Command {
       this.client.points.ensure(key, this.client.defaultPoints);
       
       // Get a filtered list (for this guild only), and convert to an array while we're at it.
-      const filtered = this.client.points.array().filter( p => p.guild === message.guild.id );
+      const filtered = this.client.points.array().filter(p => p.guild === message.guild.id );
 
       // Sort it to get the top results... well... at the top. Y'know.
       const sorted = filtered.sort((a, b) => a.points < b.points);

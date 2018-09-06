@@ -39,7 +39,7 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
 
 const Enmap = require('enmap');
 
-client.points = new Enmap({name: "points"});
+client.points = new Enmap({name: "score"});
 
 client.settings = new Enmap({
   name: "settings",
@@ -176,19 +176,20 @@ client.on("message", message => {
       points: 0,
       level: 1
     }
-    // if the channel is the guild's spam channel, return (we don't
-    // want to let people level up by spamming in the spam channel)
-    if (inhibitor.inhibite(client, message)) return;
     
     let key = `${message.guild.id}-${message.author.id}`
     client.points.ensure(key, client.defaultPoints);
+    
+    // if the channel is the guild's spam channel, return (we don't
+    // want to let people level up by spamming in the spam channel)
+    if (inhibitor.inhibite(client, message)) return;
     
     client.points.math(key, "+", getEXP(), "points")
     
     const curLevel = Math.floor((client.points.get(key, "points")+100) / 100)
     
     if (client.points.get(key, "level") < curLevel) {
-      // Level up!
+      // Ding! Level up!
       var embed = client.util.embed()
         .setAuthor(message.member.displayName, message.author.displayAvatarURL)
         .setColor(message.member.highestRole.color)
