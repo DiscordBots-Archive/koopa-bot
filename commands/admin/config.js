@@ -46,19 +46,31 @@ module.exports = class ConfigCommand extends Command {
         return message.reply("This key is not in the configuration.");
       }
       
-      if (["true", "false", true, false].includes(guildConf.get(prop))) {
-        if (!["true", "false", true, false].includes(value)) return message.reply()
-      }
+      if (["true", "false", true, false].includes(guildConf[prop])) {
+        if (!["true", "false", true, false].includes(value)) return message.reply(`${prop} must be one of (true, false)`);
+        
+        // Now we can finally change the value. Here we only have strings for values 
+        // so we won't bother trying to make sure it's the right type and such.
+        this.client.settings.set(message.guild.id, this.booleanize(value), prop);
+      } else {
 
-      // Now we can finally change the value. Here we only have strings for values 
-      // so we won't bother trying to make sure it's the right type and such. 
-      this.client.settings.set(message.guild.id, value, prop);
+        // Now we can finally change the value. Here we only have strings for values 
+        // so we won't bother trying to make sure it's the right type and such. 
+        this.client.settings.set(message.guild.id, value, prop);
+        
+      }
 
       // We can confirm everything's done to the client.
       message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
     }
   
   booleanize(str) {
-    
+    switch (str) {
+      case "false":
+        return false;
+      case "true":
+      default:
+        return true;
+    }
   }
 };
