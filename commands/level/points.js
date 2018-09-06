@@ -32,23 +32,17 @@ module.exports = class ScoreCommand extends Command {
       if (member.user.bot) return msg.reply("bots don't have EXP points!");
       const message = msg;
       
-      let score = this.client.getScore.get(member.user.id, msg.guild.id);
-      if (!score) {
-        score = {
-          id: `${message.guild.id}-${message.author.id}`,
-          user: message.author.id,
-          guild: message.guild.id,
-          points: 0,
-          level: 1
-        }
-      }
+      let key = `${message.guild.id}-${message.author.id}`
+      let points = this.client.points.get(key, "points")
+      let level = this.client.points.get(key, "points")
+      
       var embed = this.client.util.embed()
           .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
           //.setColor(member.highestRole.color)
           .setTitle(membre ? membre.displayName + "'s stats" : "Your stats")
-          .setDescription(`${membre ? membre.displayName + " needs" : "You need"} ${100 - (score.points % 100)} EXP points to advance level.`)
-          .addField("EXP Points", `${score.points}`, true)
-          .addField("Level", score.level, true)
+          .setDescription(`${membre ? membre.displayName + " needs" : "You need"} ${100 - (points % 100)} EXP points to advance level.`)
+          .addField("EXP Points", `${points}`, true)
+          .addField("Level", level, true)
           .setThumbnail(member.user.displayAvatarURL);
       
       msg.embed(embed);

@@ -243,7 +243,22 @@ client.on("message", message => {
     
     client.points.math(key, "+", getEXP(), "points")
     
-    const curLevel = 
+    const curLevel = Math.floor((score.points+100) / 100)
+    
+    if (client.points.get(key, "level") < curLevel) {
+      // Level up!
+      var embed = client.util.embed()
+        .setAuthor(message.member.displayName, message.author.displayAvatarURL)
+        .setColor(message.member.highestRole.color)
+        .setTitle("Felicitations!")
+        .setDescription("*(sigh)*\n\nYou've leveled UP!")
+        .addField("New Level", curLevel)
+        .setFooter("Samplasion, why are you doing me this?")
+        .setThumbnail(message.author.displayAvatarURL);
+      // message.reply(`Felicitations *(sigh)*! You've leveled up to level **${curLevel}**!\nSamplasion, why are you doing me this?`);
+      message.channel.send(embed)
+      client.points.set(key, curLevel, "level");
+    }
   }
   /* Backup if /app/commands/level/points.js doesn't work
   if (message.content.startsWith("!points")) {
