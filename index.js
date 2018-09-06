@@ -121,10 +121,10 @@ client.on('guildMemberAdd', async member => {
   const loge = client.util.embed()
     .setTitle("<:mario:485883525594087454> User Joined")
     .addField("<:smwmario:486608176356261889> User", member.user.tag, true)
-    .addField
+    .addField(":clock: Joined at", member.joinedAt, true)
   member.guild.channels
     .find("name", client.settings.get(member.guild.id, "modLogChannel"))
-    .send()
+    .send(loge)
     .catch(console.error);
 });
 
