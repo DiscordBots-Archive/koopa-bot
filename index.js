@@ -40,6 +40,8 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
 
 const Enmap = require('enmap');
 
+client.points = new Enmap({name: "points"});
+
 client.settings = new Enmap({
   name: "settings",
   fetchAll: false,
@@ -136,6 +138,7 @@ client.on("guildDelete", guild => {
 client.on('ready', () => {
     console.log('Logged in!');
     client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
+  /* ========= TRANSFERRING TO ENMAP
   
   // Set up the SQL points database
   // Check if the table "points" exists.
@@ -166,7 +169,7 @@ client.on('ready', () => {
   client.warns.get = warns.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?");
   client.warns.set = warns.prepare("INSERT INTO warns (userId, reason, moderator, time, guild) VALUES (@uid, @reason, @moderator, @time, @guild)");
   client.warns.delete = warns.prepare("DELETE FROM warns WHERE userId = ? AND guild = ?");
-  client.warns.drop = warns.prepare("DROP TABLE warns");
+  client.warns.drop = warns.prepare("DROP TABLE warns");*/
 });
 
 client.on('error', console.error);
@@ -186,6 +189,7 @@ client.on("message", message => {
     // if the channel is the guild's spam channel, return (we don't
     // want to let people level up by spamming in the spam channel)
     if (inhibitor.inhibite(client, message)) return;
+    /*
     // get score
       score = client.getScore.get(message.author.id, message.guild.id);
       // if the user doesn't have a score, give him
@@ -228,7 +232,19 @@ client.on("message", message => {
       client.setScore.run(score);
 
       // return message.reply(`You currently have ${score.points} points and are level ${score.level}! (TEST to see if points work)`);
-    }
+    */
+    let key = `${message.guild.id}-${message.author.id}`
+    client.points.ensure(key, {
+      user: message.author.id,
+      guild: message.guild.id,
+      points: 0,
+      level: 1
+    });
+    
+    client.points.math(key, "+", getEXP(), "points")
+    
+    const curLevel = 
+  }
   /* Backup if /app/commands/level/points.js doesn't work
   if (message.content.startsWith("!points")) {
     var msg = message;
