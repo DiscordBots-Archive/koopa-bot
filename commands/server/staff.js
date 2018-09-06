@@ -13,12 +13,11 @@ module.exports = class ReplyCommand extends Command {
 
   run(msg) {
     const guildConf = this.client.settings.ensure(msg.guild.id, this.client.defaultSettings);
-    var owners = msg.guild.members.filter(m => m.roles.has(guildConf.ownerRole)).map(m => m.user.tag)
-    var pwners = owners.join(", ")
+    var owners = msg.guild.members.filter(m => m.roles.has(guildConf.ownerRole)).map(m => m.user.tag);
     let embed = this.client.util.embed()
       .setTitle(`${msg.guild.name} Staff`)
-      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${pwners} or Samplasion#7901.`)
-      .addField("Owner" + (owners.length > 1 ))
+      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")} or Samplasion#7901.`)
+      .addField("Owner" + (owners.length > 1 ? "s" : ""))
       .addField()
       .addField();
   }
