@@ -75,7 +75,8 @@ client.registry
     ])
     .registerDefaultGroups()
     .registerDefaultCommands({
-        help: false,
+        eval: false,
+        help: false
     })
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
