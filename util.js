@@ -109,17 +109,19 @@ module.exports = (client) => {
     // needed
     var mod = guildConf.modRole;
     var admin = guildConf.adminRole;
+    var owner = guildConf.ownerRole;
     
     if (member.user.bot) return 0;
     if (client.isOwner(member.user)) perm = 10
-    else if (member.guild.ownerId == member.id || member.roles.has(member.guild.owner.highestRole.id)) perm = 4
+    else if (member.guild.ownerId == member.id || member.roles.has(owner)) perm = 4
     else if (member.roles.has(admin)) perm = 3
     else if (member.roles.has(mod)) perm = 2
     else perm = 1;
     return perm;
   }
   const lvls = ["Bot", "Normal user", "Server moderator", "Server admin", "Server owner",
-                  "5", "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
+                "TellSamplasionForDetailsCauseIDontHaveAGoodUseForRole5 user",
+                "Bot helper", "Bot support", "Bot moderator", "Bot admin", "Bot owner"];
   client.util.getPerm = (lvl) => lvls[lvl];
   // return this.client.isOwner(msg.author) || msg.member.roles.has("481492274333876224") || msg.member.roles.has("481492388020486171")
   client.util.changeNick = (guild, newName) => guild.members.get(client.user.id).setNickname(newName);

@@ -79,10 +79,10 @@ module.exports = class HelpCommand extends Command {
 						use ${Command.usage('command', msg.guild ? msg.guild.commandPrefix : null, this.client.user)}.
 						For example, ${Command.usage('prefix', msg.guild ? msg.guild.commandPrefix : null, this.client.user)}.
 					`}
-					To run a command in this DM, simply use ${Command.usage('command', null, null)} with no prefix.
+					To run a command in this DM, simply use ${Command.usage('command', null, null)} with no prefix.\n
 					Use ${this.usage('<command>', null, null)} to view detailed information about a specific command.
-					Use ${this.usage('all', null, null)} to view a list of *all* commands, not just available ones.
-					__**${showAll ? 'All commands' : `Available commands in ${msg.guild || 'this DM'}`}**__
+					Use ${this.usage('all', null, null)} to view a list of *all* commands, not just available ones.\n
+					__**${showAll ? 'All commands' : `Available commands in ${msg.guild || 'this DM'}`}**__\n
 					${(showAll ? groups : groups.filter(grp => grp.commands.some(cmd => cmd.isUsable(msg))))
 						.map(grp => stripIndents`
 							__${grp.name}__
