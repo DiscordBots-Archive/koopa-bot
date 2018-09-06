@@ -42,7 +42,7 @@ module.exports = class ScoreCommand extends Command {
           level: 1
         }
       }
-      var embed = new RichEmbed()
+      var embed = this.client.util.embed()
           .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
           //.setColor(member.highestRole.color)
           .setTitle(membre ? membre.displayName + "'s stats" : "Your stats")

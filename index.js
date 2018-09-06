@@ -47,7 +47,7 @@ client.settings = new Enmap({
   cloneLevel: 'deep'
 });
 
-// Just setting up a default configuration object here, to have somethign to insert.
+// Just setting up a default configuration object here, to have something to insert.
 const defaultSettings = {
   logChannel: "logs",
   modLogChannel: "modlogs",
@@ -55,7 +55,7 @@ const defaultSettings = {
   adminRole: "Administrator",
   welcomeChannel: "welcome",
   welcomeEnabled: false,
-  welcomeMessage: "Say hello to {{user}}, everyone!"
+  welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!"
 }
 
 client.defaultSettings = defaultSettings;
@@ -117,6 +117,13 @@ client.on('guildMemberAdd', async member => {
 
     welcomechannel.send(embed);
   }
+  
+  const loge = client.util.embed()
+    .setTitle("User Joined")
+  member.guild.channels
+    .find("name", client.settings.get(member.guild.id, "modLogChannel"))
+    .send()
+    .catch(console.error);
 });
 
 client.on("guildDelete", guild => {
