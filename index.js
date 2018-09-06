@@ -58,7 +58,7 @@ const defaultSettings = {
   welcomeChannel: "welcome",
   welcomeEnabled: false,
   welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!",
-  staffLine: 'Staff, use `!conf set staffLine Text` to change this line!'
+  staffLine: 'Staff, use `!conf set staffLine Text` to change this line, or  `!conf set staffLine false` to disable it.'
 }
 
 client.defaultSettings = defaultSettings;
@@ -559,6 +559,7 @@ async function mute(member, reason, moderator, message) {
   } else {
     message.member.addRole(mutedRole);
   }
+  /*
   let logs, modlogs;
   logs = message.guild.channels
     .find("name", client.settings.get(message.guild.id, "logChannel"))
@@ -582,6 +583,7 @@ async function mute(member, reason, moderator, message) {
   message.channel.send(`:ok: User ${pref}muted`)
   
   // member.send(`You **[${member.id}]** were warned by ${moderator.user.tag} **[${moderator.user.id}]** in ${msg.guild.name}. Reason: \`${reason}\``);
+  */
 }
 
 client.warn = warn;

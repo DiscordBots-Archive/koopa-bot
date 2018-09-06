@@ -16,7 +16,8 @@ module.exports = class ReplyCommand extends Command {
       "Logging": "<:wip:487304419361161218>",
       "Administration": "<:wip:487304419361161218> 98%",
       "Permissions System": ":ok:",
-      "Multi-guild flexibility\*": "<:wip:487304419361161218>"
+      "Multi-guild flexibility\*": "<:wip:487304419361161218>",
+      "Dynamic \"!staff\" command": ":ok:"
     }
   }
 
