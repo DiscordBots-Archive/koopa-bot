@@ -10,6 +10,7 @@ module.exports = class SayCommand extends Command {
             examples: ['announce We Reached 1 Member!'],
             clientPermissions: ['MANAGE_MESSAGES'],
             guildOnly: true,
+            minPerms: 3,
             args: [
                 {
                     key: 'text',
@@ -25,7 +26,6 @@ module.exports = class SayCommand extends Command {
     }*/
 
     async run(msg, { text }) {
-        if (!this.client.isOwner(msg.author) && !msg.member.roles.has("481492274333876224")) return msg.reply("you don't have the permission to use this!");
         await msg.delete();
         return msg.guild.channels.find("name", "announcements").send(text);
     }
