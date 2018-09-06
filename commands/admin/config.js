@@ -37,13 +37,17 @@ module.exports = class ConfigCommand extends Command {
           return `${prop}  :  ${guildConf[prop]}\n`;
         });
         return message.channel.send(`The following are the server's current configuration:
-        \`\`\`${configProps}\`\`\``);
+        \`\`\`js\n${configProps}\n\`\`\``);
       }
 
       // We can check that the key exists to avoid having multiple useless, 
       // unused keys in the config:
       if(!this.client.settings.has(message.guild.id, prop)) {
         return message.reply("This key is not in the configuration.");
+      }
+      
+      if (["true", "false", true, false].includes(guildConf.get(prop))) {
+        if (!["true", "false", true, false].includes(value)) return message.reply()
       }
 
       // Now we can finally change the value. Here we only have strings for values 
@@ -53,4 +57,8 @@ module.exports = class ConfigCommand extends Command {
       // We can confirm everything's done to the client.
       message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
     }
+  
+  booleanize(str) {
+    
+  }
 };
