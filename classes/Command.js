@@ -17,7 +17,8 @@ class Command extends Commando.Command {
     }
     else super.hasPermission(msg, ownerOverride)
     */
-    var myPerm = this.client.util.getPermLevel(msg.member)
+    if (msg.guild) var myPerm = this.client.util.getPermLevel(msg.member)
+    else var myPerm = this.client.isOwner(msg.author) ? 10 : 1;
     if (msg.channel.type == "text") return (this.minPerm <= myPerm);
     else if (this.client.isOwner(msg.author)) return true
     else super.hasPermission(msg, ownerOverride)

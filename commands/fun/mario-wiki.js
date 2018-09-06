@@ -9,7 +9,7 @@ module.exports = class ReplyCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'mario-wiki',
-      group: 'server',
+      group: 'fun',
       aliases: ["m-w"],
       memberName: 'mario-wiki',
       description: 'Searches the Mario Wiki.',

@@ -65,8 +65,7 @@ client.defaultSettings = defaultSettings;
 client.registry
     .registerDefaultTypes()
     .registerGroups([
-        ['server', 'Mario Modding'],
-        ["roles", "Selfroles"],
+        ["roles", "Selfroles (Mario Modding-only)"],
         ["admin", "Administration"],
         ["owner", "Owner Only"],
         ["audio", "Audio & Music (HUGE thanks to NightYoshi370#5597 for his help)"],
@@ -152,14 +151,14 @@ client.on("message", message => {
   
   // client.on(string, function(...args)) refers to Discord.Client,
   // not Discord.js-Commando.CommandoClient
-  client.defaultPoints = {
-    user: message.author.id,
-    guild: message.guild.id,
-    points: 0,
-    level: 1
-  }
   
   if (message.guild) {
+    client.defaultPoints = {
+      user: message.author.id,
+      guild: message.guild.id,
+      points: 0,
+      level: 1
+    }
     // if the channel is the guild's spam channel, return (we don't
     // want to let people level up by spamming in the spam channel)
     if (inhibitor.inhibite(client, message)) return;

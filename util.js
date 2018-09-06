@@ -97,7 +97,12 @@ module.exports = (client) => {
     return a + "]";
   }
   client.util.getPermLevel = (member) => {
-    const guildConf = client.settings.ensure(member.guild.id, client.defaultSettings);
+    let guildConf;
+    if (member.guild) {
+      guildConf = client.settings.ensure(member.guild.id, client.defaultSettings);
+    } else {
+      guildConf = client.defaultSettings;
+    }
     
     var perm = 0
     
