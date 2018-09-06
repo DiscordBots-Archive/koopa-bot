@@ -19,10 +19,9 @@ module.exports = class ReplyCommand extends Command {
     var admins = await msg.guild.members.filter(m => m.roles.has(guildConf.adminRole)).map(m => m.user.tag);
     var mods = await msg.guild.members.filter(m => m.roles.has(guildConf.modRole)).map(m => m.user.tag);
     var staffLine = guildConf.staffLine ? `\n\n${guildConf.staffLine}` : "";
-    var orOwn = ""
     let embed = this.client.util.embed()
       .setTitle(`${msg.guild.name} Staff`)
-      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")} ${!owners.isEmpty() ? "or" : ""} Samplasion#7901.${staffLine}`)
+      .setDescription(`This is the staff for ${msg.guild.name}. If you think you should be here, tell ${owners.join(", ")}${!owners.isEmpty() && !owners.includes("Samplasion#7901") ? " or Samplasion#7901" : ""}.${staffLine}`)
       .addField("Owner" + (owners.length == 1 ? "" : "s"), !owners.isEmpty() ? owners.join("\n") : "No owners.")
       .addField("Admin" + (admins.length == 1 ? "" : "s"), !admins.isEmpty() ? admins.join("\n") : "No admins.")
       .addField("Moderator" + (mods.length == 1 ? "" : "s"), !mods.isEmpty() ? mods.join("\n") : "No moderators.");
