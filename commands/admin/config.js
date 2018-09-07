@@ -90,7 +90,7 @@ module.exports = class ConfigCommand extends Command {
                 break;
             }
             this.client.settings.set(message.guild.id, res, prop);
-            this.client.settings.set(message.guild.id, res, prop);
+            this.client.settings.set(message.guild.id, type, "types."+prop);
             message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
           } else return message.reply(`\`type\` must be one of (${types.join(", ")})`);
           break;
