@@ -34,12 +34,6 @@ module.exports = class ConfigCommand extends Command {
                 type: "string",
                 default: ""
               },
-              {
-                key: "value",
-                prompt: "what should the value be?",
-                type: "string",
-                default: ""
-              }
             ],
             minPerm: 3
         });
@@ -57,7 +51,7 @@ module.exports = class ConfigCommand extends Command {
       }
     }
 
-    async run(message, { action, prop, value }) {
+    async run(message, { action, prop, value, type }) {
       const guildConf = this.client.settings.ensure(message.guild.id, this.client.defaultSettings);
       switch (action) {
         case "view":
@@ -70,12 +64,29 @@ module.exports = class ConfigCommand extends Command {
           break;
         case "add":
           if (!this.client.isOwner(message.author)) return message.reply("due to the nature of this action, it is restricted to the owner. Contact Samplasion#7901 if you **absolutely** need to add a key.");
+          const types = ["bool", "string", "int", "nullablestring"];
+          if (!types.includes(type.toLowerCase())) return message.reply(`type must be one of (${types.join(", ")})`);
           var key = prop;
           if (!key) return message.reply("Please specify a key to add");
           if (guildConf[key]) return message.reply("This key already exists in the settings");
 
           // One the settings is modified, we write it back to the collection
-          this.client.settings.set(message.guild.id, this.booleanize(value), prop);
+          var res = value;
+          switch (type) {
+            case "bool":
+              res = this.booleanize(res)
+              break;
+            case "string":
+              res = this.booleanize(res)
+              break;
+            case "nullablestring":
+              res = this.nullify(res)
+              break;
+            case "int":
+              res = parseInt(res)
+              break;
+          }
+          this.client.settings.set(message.guild.id, res, prop);
           message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
           break;
         case "set":
