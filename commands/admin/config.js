@@ -53,6 +53,7 @@ module.exports = class ConfigCommand extends Command {
 
     async run(message, { action, prop, value }) {
       const guildConf = this.client.settings.ensure(message.guild.id, this.client.defaultSettings);
+      var key = prop;
       switch (action) {
         case "view":
           //let configProps = Object.keys(guildConf).map(prop => {
@@ -65,7 +66,6 @@ module.exports = class ConfigCommand extends Command {
         case "add":
           if (!this.client.isOwner(message.author)) return message.reply("due to the nature of this action, it is restricted to the owner. Contact Samplasion#7901 if you **absolutely** need to add a key.");
           const types = ["bool", "string", "int", "nullablestring"];
-          var key = prop;
           var response = await this.client.awaitReply(message, `What would the type be? [${types.join("/")}]`);
           
           if (types.includes(response.toLowerCase())) {
@@ -103,15 +103,10 @@ module.exports = class ConfigCommand extends Command {
 
           if (prop in this.types && this.types[prop] == "bool") {
             if (!["true", "false", true, false].includes(value)) return message.reply(`${prop} must be one of (true, false)`);
-
-            // Now we can finally change the value. Here we only have strings for values 
-            // so we won't bother trying to make sure it's the right type and such.
             this.client.settings.set(message.guild.id, this.booleanize(value), prop);
             
           } else if (prop in this.types && this.types[prop] == "nullablestring") {
-
-            // Now we can finally change the value. Here we only have strings for values 
-            // so we won't bother trying to make sure it's the right type and such. 
+            
             this.client.settings.set(message.guild.id, this.nullify(value), prop);
 
           } else {
@@ -140,6 +135,12 @@ module.exports = class ConfigCommand extends Command {
           if (["n", "no", "cancel"].includes(response)) {
             message.reply("Action cancelled.");
           }
+          break;
+        case "get":
+          if (!key) return message.reply("Please specify a key to view");
+          if (!guildConf[key]) return message.reply("This key does not exist in the settings");
+          var value = guildConf[key];
+          message.reply(`The value of ${key} is currently ${value}`);
           break;
         default:
           return message.reply("unknown action, must be one of (view, reset, clear, set, add")
