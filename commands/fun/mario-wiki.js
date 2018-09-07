@@ -50,7 +50,7 @@ module.exports = class ReplyCommand extends Command {
       time: 30000,
       errors: ['time'],
     })
-    .then(async (collected) => {
+    /*.then(async (collected) => {
       var newq = json[1][parseInt(collected.first().content)-1];
       var newl = json[3][parseInt(collected.first().content)-1];
       var { body: newj } = await get("https://www.mariowiki.com/api.php?action=parse&format=json&page="+encodeURI(query));
@@ -67,7 +67,7 @@ module.exports = class ReplyCommand extends Command {
     .catch((e) => {
       message.reply('command canceled!');
       console.log(e)
-    });
+    });*/
   }
   
   // still Thanks NightYoshi
