@@ -429,8 +429,6 @@ client.warns.log = (member, warner, reason) => {
         .addField(":biohazard: Reason", reason)
 }
 
-require("./util.js")(client);
-
 var spam = {}
 spam.stroke = []
 spam.repeat = []
@@ -660,5 +658,8 @@ client.on("raw", packet => {
     }).catch(console.error);
 });
 */
+
+require("./util/role.js")(client);
+require("./util/general.js")(client);
 
 client.login(process.env.TOKEN);
