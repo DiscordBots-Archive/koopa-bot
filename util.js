@@ -111,7 +111,7 @@ module.exports = (client) => {
     var perm = 0
     
     // needed
-    var mod = guildConf.modRole;
+    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter;
     var admin = guildConf.adminRole;
     var owner = guildConf.ownerRole;
     
@@ -152,4 +152,5 @@ module.exports = (client) => {
     
     return `${num} ${i}`
   }
+  client.isId = str => /[0-9]{17-20}/i.test(str)
 }
