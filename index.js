@@ -485,11 +485,7 @@ var swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
 				spam.repeat.shift();
 		}
   var found = false
-  for (var swear in swears) {
-    if (message.content.toLowerCase().includes(swear)) {
-      found = true
-    }
-  }
+  if (swears.some(e => message.content.contains(e))) found = true
   
   if (message.channel.name != "shitposting") {
     if (found) {
