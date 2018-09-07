@@ -8,7 +8,9 @@ class EnUserArgumentType extends ArgumentType {
 		super(client, 'enuser');
 	}
 
-	async validate(val, msg, arg) {
+	async validate(vari, msg, arg) {
+    var val = vari;
+    if (val == "me") val = msg.author.id;
 		const matches = val.match(/^(?:<@!?)?([0-9]+)>?$/);
 		if(matches) {
 			try {
@@ -41,7 +43,9 @@ class EnUserArgumentType extends ArgumentType {
 			'Multiple users found. Please be more specific.';
 	}
 
-	parse(val, msg) {
+	parse(vari, msg) {
+    var val = vari;
+    if (val == "me") val = msg.author.id;
 		const matches = val.match(/^(?:<@!?)?([0-9]+)>?$/);
 		if(matches) return msg.client.users.get(matches[1]) || null;
 		if(!msg.guild) return null;

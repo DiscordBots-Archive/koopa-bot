@@ -14,7 +14,7 @@ module.exports = class GiveCommand extends Command {
               {
                 key: "user",
                 prompt: "who do you want to give points to? :eyes:",
-                type: "user"
+                type: "enuser"
               },
               {
                 key: "pts",
