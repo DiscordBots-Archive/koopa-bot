@@ -12,9 +12,9 @@ module.exports = (client) => {
     var perm = 0
     
     // needed
-    var mod   = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
-    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : member.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
-    var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : member.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    var mod   = client.mod(client, member.guild)
+    var admin = client.admin(client, member.guild)
+    var owner = client.owner(client, member.guild)
     
     if (member.user.bot) return 0;
     if (client.isOwner(member.user)) return perm = 10

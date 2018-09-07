@@ -18,9 +18,12 @@ module.exports = class StaffCommand extends Command {
     var member = msg.member;
     
     const guildConf = this.client.settings.ensure(msg.guild.id, this.client.defaultSettings);
-    var mod   = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
-    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : member.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
-    var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : member.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    // var mod   = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
+    // var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : member.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
+    // var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : member.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    var mod  = client.mod(client, member.guild)
+    var admin = client.admin(client, member.guild)
+    var owner = client.owner(client, member.guild)
     
     var owners = await msg.guild.members.filter(m => m.roles.has(owner) || m.guild.ownerID === m.id).map(m => m.user.tag);
     var admins = await msg.guild.members.filter(m => m.roles.has(admin)).map(m => m.user.tag);

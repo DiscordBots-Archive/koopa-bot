@@ -659,7 +659,7 @@ client.on("raw", packet => {
 });
 */
 
-require("./util/role.js")(client);
 require("./util/general.js")(client);
+require("./util/role.js")(client);
 
 client.login(process.env.TOKEN);
