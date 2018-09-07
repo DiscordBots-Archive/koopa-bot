@@ -53,6 +53,9 @@ module.exports = class PlayAudioCommand extends Command {
 
               let videos = res.videos.slice(0, 10);
             
+              // console.log(res.videos)
+              // console.log(videos)
+            
               let nvembed = this.client.util.embed()
                 .setTitle("Music Search")
                 .setDescription(`No results for query \`${link}\``)
@@ -65,6 +68,7 @@ module.exports = class PlayAudioCommand extends Command {
 
               let resp = '';
               for (var i in videos) {
+                  if (isNaN(i)) continue;
                   resp += `**${parseInt(i)+1}.** ${videos[i].title} \`[${videos[i].timestamp}]\`\n`;
               }
 
