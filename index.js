@@ -58,7 +58,7 @@ const defaultSettings = {
   welcomeChannel: "welcome",
   welcomeEnabled: false,
   welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!",
-  staffLine: 'Staff, use `!conf set staffLine Text` to change this line, or  `!conf set staffLine false` to disable it.'
+  staffLine: 'Staff, use `!conf set staffLine Text` to change this line, or  `!conf set staffLine null` to disable it.'
 }
 
 client.defaultSettings = defaultSettings;

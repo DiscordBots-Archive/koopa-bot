@@ -38,7 +38,7 @@ module.exports = class ConfigCommand extends Command {
             minPerm: 3
         });
       this.types = {
-        logChannel: "string",
+        logChannel: "nullablestring",
         modLogChannel: "string",
         modRole: "string",
         adminRole: "string",
@@ -46,7 +46,7 @@ module.exports = class ConfigCommand extends Command {
         welcomeChannel: "string",
         welcomeEnabled: "bool",
         welcomeMessage: "string",
-        staffLine: 'string'
+        staffLine: 'nullablestring'
 }
     }
 
@@ -84,12 +84,17 @@ module.exports = class ConfigCommand extends Command {
             // Now we can finally change the value. Here we only have strings for values 
             // so we won't bother trying to make sure it's the right type and such.
             this.client.settings.set(message.guild.id, this.booleanize(value), prop);
-          } else {
+            
+          } else if (prop in this.types && this.types[prop] == "nullablestring") {
 
             // Now we can finally change the value. Here we only have strings for values 
             // so we won't bother trying to make sure it's the right type and such. 
             this.client.settings.set(message.guild.id, this.nullify(value), prop);
 
+          } else {
+            
+            this.client.settings.set(message.guild.id, value, prop);
+            
           }
 
           // We can confirm everything's done to the client.
@@ -98,7 +103,7 @@ module.exports = class ConfigCommand extends Command {
         case "clear":
         case "reset":
           // Throw the 'are you sure?' text at them.
-          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone. `);
+          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone. [yes/no]`);
 
           // If they respond with y or yes, continue.
           if (["y", "yes", "sure", "yep"].includes(response)) {
@@ -125,7 +130,7 @@ module.exports = class ConfigCommand extends Command {
         case "true":
           return true;
       }
-      return str;
+      return true;
     } 
   
   nullify(str) {
