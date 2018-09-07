@@ -34,6 +34,12 @@ module.exports = class ConfigCommand extends Command {
                 type: "string",
                 default: ""
               },
+              {
+                key: "value",
+                prompt: "what should the value be?",
+                type: "string",
+                default: ""
+              }
             ],
             minPerm: 3
         });
@@ -46,8 +52,9 @@ module.exports = class ConfigCommand extends Command {
         welcomeChannel: "string",
         welcomeEnabled: "bool",
         welcomeMessage: "string",
-        staffLine: 'nullablestring'
-}
+        staffLine: 'nullablestring',
+        automod: "bool"
+      }
     }
 
     async run(message, { action, prop, value }) {
