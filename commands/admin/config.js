@@ -51,7 +51,7 @@ module.exports = class ConfigCommand extends Command {
       }
     }
 
-    async run(message, { action, prop, value, type }) {
+    async run(message, { action, prop, value }) {
       const guildConf = this.client.settings.ensure(message.guild.id, this.client.defaultSettings);
       switch (action) {
         case "view":
@@ -65,32 +65,34 @@ module.exports = class ConfigCommand extends Command {
         case "add":
           if (!this.client.isOwner(message.author)) return message.reply("due to the nature of this action, it is restricted to the owner. Contact Samplasion#7901 if you **absolutely** need to add a key.");
           const types = ["bool", "string", "int", "nullablestring"];
-          if (!types.includes(type.toLowerCase())) return message.reply(`type must be one of (${types.join(", ")})`);
           var key = prop;
+          var response = await this.client.awaitReply(message, `What would the type be? [${types.join("/")}]`);
           
-          const response = await this.client.awaitReply(message, `[${types.join("/")}]`);
-          
-          if (!key) return message.reply("Please specify a key to add");
-          if (guildConf[key]) return message.reply("This key already exists in the settings");
+          if (types.includes(response.toLowerCase())) {
+            var type = response;
+            if (!key) return message.reply("Please specify a key to add");
+            if (guildConf[key]) return message.reply("This key already exists in the settings");
 
-          // One the settings is modified, we write it back to the collection
-          var res = value;
-          switch (type) {
-            case "bool":
-              res = this.booleanize(res)
-              break;
-            case "string":
-              res = this.booleanize(res)
-              break;
-            case "nullablestring":
-              res = this.nullify(res)
-              break;
-            case "int":
-              res = parseInt(res)
-              break;
-          }
-          this.client.settings.set(message.guild.id, res, prop);
-          message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
+            // One the settings is modified, we write it back to the collection
+            var res = value;
+            switch (type) {
+              case "bool":
+                res = this.booleanize(res)
+                break;
+              case "string":
+                res = this.booleanize(res)
+                break;
+              case "nullablestring":
+                res = this.nullify(res)
+                break;
+              case "int":
+                res = parseInt(res)
+                break;
+            }
+            this.client.settings.set(message.guild.id, res, prop);
+            this.client.settings.set(message.guild.id, res, prop);
+            message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
+          } else return message.reply(`\`type\` must be one of (${types.join(", ")})`);
           break;
         case "set":
           // We can check that the key exists to avoid having multiple useless, 
@@ -124,7 +126,7 @@ module.exports = class ConfigCommand extends Command {
         case "clear":
         case "reset":
           // Throw the 'are you sure?' text at them.
-          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone. [yes/no]`);
+          var response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone. [yes/no]`);
 
           // If they respond with y or yes, continue.
           if (["y", "yes", "sure", "yep"].includes(response)) {
