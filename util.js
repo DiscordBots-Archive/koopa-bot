@@ -139,4 +139,7 @@ module.exports = (client) => {
       return false;
     }
   };
+  client.plural = (num, item) => {
+    
+  }
 }

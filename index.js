@@ -202,6 +202,9 @@ client.on("message", message => {
       message.channel.send(embed)
       client.points.set(key, curLevel, "level");
     }
+    
+    // set the date as the last-seen date
+    client.points.setProp(key, "lastSeen", new Date());
   }
   /* Backup if /app/commands/level/points.js doesn't work
   if (message.content.startsWith("!points")) {
