@@ -14,10 +14,16 @@ module.exports = class ReplyCommand extends Command {
   }
 
   async run(msg) {
+    var client = this.client;
+    
+    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : msg.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
+    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : msg.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
+    var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : msg.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    
     const guildConf = this.client.settings.ensure(msg.guild.id, this.client.defaultSettings);
-    var owners = await msg.guild.members.filter(m => m.roles.has(guildConf.ownerRole)).map(m => m.user.tag);
-    var admins = await msg.guild.members.filter(m => m.roles.has(guildConf.adminRole)).map(m => m.user.tag);
-    var mods = await msg.guild.members.filter(m => m.roles.has(guildConf.modRole)).map(m => m.user.tag);
+    var owners = await msg.guild.members.filter(m => m.roles.has(mod)).map(m => m.user.tag);
+    var admins = await msg.guild.members.filter(m => m.roles.has(admin)).map(m => m.user.tag);
+    var mods = await msg.guild.members.filter(m => m.roles.has(owner)).map(m => m.user.tag);
     var staffLine = guildConf.staffLine ? `\n\n${guildConf.staffLine}` : "";
     let embed = this.client.util.embed()
       .setTitle(`${msg.guild.name} Staff`)

@@ -116,10 +116,10 @@ module.exports = (client) => {
     var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : member.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
     
     if (member.user.bot) return 0;
-    if (client.isOwner(member.user)) perm = 10
-    else if (member.guild.ownerId == member.id || member.roles.has(owner)) perm = 4
-    else if (member.roles.has(admin)) perm = 3
-    else if (member.roles.has(mod)) perm = 2
+    if (client.isOwner(member.user)) return perm = 10
+    else if (member.guild.ownerId == member.id || member.roles.has(owner)) return perm = 4
+    else if (member.roles.has(admin)) return perm = 3
+    else if (member.roles.has(mod)) return perm = 2
     else perm = 1;
     return perm;
   }
