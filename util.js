@@ -140,6 +140,16 @@ module.exports = (client) => {
     }
   };
   client.plural = (num, item) => {
+    if (num == 1) return `${num} ${item}`
     
+    var i = item;
+    
+    if (item.substr(-1) == "y")
+      i = item.substr(0, item.length - 1) + "ies"
+    else if (item.substr(-3) == "tch")
+      i += "es"
+    else i += "s"
+    
+    return `${num} ${i}`
   }
 }

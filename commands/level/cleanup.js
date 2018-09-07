@@ -35,6 +35,6 @@ module.exports = class ReplyCommand extends Command {
       this.client.points.delete(`${message.guild.id}-${data.user}`);
     });
 
-    message.channel.send(`I've cleaned up ${toRemove.size} old fart${toRemove.size == 1 ? "" : "s"}.`);
+    message.channel.send(`I've cleaned up ${this.client.plural(toRemove.size, "old fart")}.`);
   }
 };
