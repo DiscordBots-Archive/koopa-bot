@@ -58,20 +58,20 @@ const defaultSettings = {
   welcomeChannel: "welcome",
   welcomeEnabled: false,
   welcomeMessage: "Say hello to {{user}}, everyone in {{guild}}!",
-  staffLine: 'Staff, use `!conf set staffLine Text` to change this line, or  `!conf set staffLine null` to disable it.',types{
-        logChannel: "nullablestring",
-        modLogChannel: "string",
-        modRole: "string",
-        adminRole: "string",
-        ownerRole: "string",
-        welcomeChannel: "string",
-        welcomeEnabled: "bool",
-        welcomeMessage: "string",
-        staffLine: 'nullablestring',
-        automod: "bool"
-      }
+  staffLine: 'Staff, use `!conf set staffLine Text` to change this line, or  `!conf set staffLine null` to disable it.',
   automod: true,
-  
+  types: {
+    logChannel: "nullablestring",
+    modLogChannel: "string",
+    modRole: "string",
+    adminRole: "string",
+    ownerRole: "string",
+    welcomeChannel: "string",
+    welcomeEnabled: "bool",
+    welcomeMessage: "string",
+    staffLine: 'nullablestring',
+    automod: "bool"
+  }
 }
 
 client.defaultSettings = defaultSettings;
@@ -434,9 +434,12 @@ require("./util.js")(client);
 var spam = {}
 spam.stroke = []
 spam.repeat = []
-spam.swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
+spam.swears = []
 var automod = async message => {
+var swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
   if (message.author.bot) return;
+  var conf = client.settings.ensure(message.guild.id, client.defaultSettings);
+  if (!conf.automod) return;
     var now = Math.floor(Date.now());
 		spam.stroke.push({
 			"time": now,
@@ -481,18 +484,19 @@ var automod = async message => {
 			if (spam.repeat.length >= 200)
 				spam.repeat.shift();
 		}
-  var found = false, swea = ""
-  for (var swear in spam.swears) {
+  var found = false
+  for (var swear in swears) {
     if (message.content.toLowerCase().includes(swear)) {
       found = true
-      swea = swear
     }
   }
   
-  //if (found) {
-  //  warn(message.member, "Swearing (" + swea + ")", message.guild.members.get(client.user.id), message);
-  //  message.reply("no swearing here!");
-  //}
+  if (message.channel.name != "shitposting") {
+    if (found) {
+      warn(message.member, "Swearing", message.guild.members.get(client.user.id), message);
+      message.reply("no swearing here!");
+    }
+  }
 };
 client.on("message", message => automod(message));
 

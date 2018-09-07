@@ -88,6 +88,9 @@ module.exports = class ConfigCommand extends Command {
           if(!this.client.settings.has(message.guild.id, prop)) {
             return message.reply("this key is not in the configuration.");
           }
+          
+          if(key.includes("types"))
+            return message.reply("if you don't wanna mess with the configs and have to reset them, you better not touch the `types` key.");
 
           var type = guildConf.types[key];
           var res = value;
