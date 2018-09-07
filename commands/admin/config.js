@@ -37,6 +37,7 @@ module.exports = class ConfigCommand extends Command {
             ],
             minPerm: 3
         });
+      
     }
 
     async run(message, { action, prop, value }) {
