@@ -37,6 +37,7 @@ module.exports = class ConfigCommand extends Command {
             ],
             minPerm: 3
         });
+      this.actions = ['view', 'set', "clear", "reset", "add", "get"]
     }
 
     async run(message, { action, prop, value }) {
@@ -140,7 +141,7 @@ module.exports = class ConfigCommand extends Command {
           message.reply(`The value of ${key} is currently ${value}`);
           break;
         default:
-          return message.reply("unknown action, must be one of (view, reset, clear, set, add")
+          return message.reply("unknown action, must be one of ("+this.actions.join(", ")+")")
       }
     }
   
