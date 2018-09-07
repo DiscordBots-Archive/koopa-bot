@@ -1,4 +1,5 @@
 const { RichEmbed } = require("discord.js");
+const { mod, admin, owner } = require('./roleutil.js');
 
 module.exports = (client) => {
   const monthNames = ["", "January", "February", "March", "April", "May", "June",
@@ -111,9 +112,9 @@ module.exports = (client) => {
     var perm = 0
     
     // needed
-    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
-    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : member.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
-    var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : member.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    var mod   = client.mod(client, member.guild)
+    var admin = client.admin(client, member.guild)
+    var owner = client.owner(client, member.guild)
     
     if (member.user.bot) return 0;
     if (client.isOwner(member.user)) return perm = 10
@@ -153,4 +154,18 @@ module.exports = (client) => {
     return `${num} ${i}`
   }
   client.isId = str => /^[0-9]{17,20}$/i.test(str)
+  client.mod = (client, guild) => {
+    var guildConf = client.settings.ensure(guild.id, client.defaultSettings);
+    return client.isId(guildConf.modRole) ? guildConf.modRole : guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
+  }
+
+  client.admin = (client, guild) => {
+    var guildConf = client.settings.ensure(guild.id, client.defaultSettings);
+    return client.isId(guildConf.adminRole) ? guildConf.adminRole : guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
+  }
+
+  client.owner = (client, guild) => {
+    var guildConf = client.settings.ensure(guild.id, client.defaultSettings);
+    return client.isId(guildConf.ownerRole) ? guildConf.ownerRole : guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+  }
 }

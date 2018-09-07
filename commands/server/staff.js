@@ -1,7 +1,7 @@
 // const { Command } = require('discord.js-commando');
 const { Command } = require('./../../classes/Command.js');
 
-module.exports = class ReplyCommand extends Command {
+module.exports = class StaffCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'staff',
@@ -16,9 +16,9 @@ module.exports = class ReplyCommand extends Command {
   async run(msg) {
     var client = this.client;
     
-    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : msg.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
-    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : msg.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
-    var owner = client.isId(guildConf.ownerRole) ? guildConf.ownerRole : msg.guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
+    var mod   = client.mod(client, msg.guild)
+      , admin = client.admin(client, msg.guild)
+      , owner = clientowner(client, msg.guild)
     
     const guildConf = this.client.settings.ensure(msg.guild.id, this.client.defaultSettings);
     var owners = await msg.guild.members.filter(m => m.roles.has(mod)).map(m => m.user.tag);
