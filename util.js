@@ -111,8 +111,8 @@ module.exports = (client) => {
     var perm = 0
     
     // needed
-    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter;
-    var admin = guildConf.adminRole;
+    var mod = client.isId(guildConf.modRole) ? guildConf.modRole : member.guild.roles.filter(r => r.name == guildConf.modRole).map(r => r.id)[0];
+    var admin = client.isId(guildConf.adminRole) ? guildConf.adminRole : member.guild.roles.filter(r => r.name == guildConf.adminRole).map(r => r.id)[0];
     var owner = guildConf.ownerRole;
     
     if (member.user.bot) return 0;
@@ -152,5 +152,5 @@ module.exports = (client) => {
     
     return `${num} ${i}`
   }
-  client.isId = str => /[0-9]{17-20}/i.test(str)
+  client.isId = str => /^[0-9]{17,20}$/i.test(str)
 }
