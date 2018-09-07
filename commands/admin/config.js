@@ -10,7 +10,7 @@ module.exports = class ConfigCommand extends Command {
             group: 'admin',
             memberName: 'config',
             description: 'Changes the client configuration for the server',
-            examples: ["conf welcomeMessage Welcome, {{user}}, to this server!"],
+            examples: ["conf set welcomeMessage Welcome, {{user}}, to this server!"],
             guildOnly: true,
             args: [
               {
@@ -19,7 +19,7 @@ module.exports = class ConfigCommand extends Command {
                 prompt: "what action do you want to follow?",
                 type: "string",
                 default: "view",
-                oneOf: ['view', 'set', "clear", "reset", "add"],
+                // oneOf: ['view', 'set', "clear", "reset", "add"],
               },
               {
                 key: "prop",
@@ -119,7 +119,7 @@ module.exports = class ConfigCommand extends Command {
           }
           break;
         default:
-          return message.reply("unknown action")
+          return message.reply("unknown action, must be one of (view, reset, clear, set, add")
       }
     }
   
