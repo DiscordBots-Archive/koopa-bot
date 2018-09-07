@@ -37,18 +37,6 @@ module.exports = class ConfigCommand extends Command {
             ],
             minPerm: 3
         });
-      this.types = {
-        logChannel: "nullablestring",
-        modLogChannel: "string",
-        modRole: "string",
-        adminRole: "string",
-        ownerRole: "string",
-        welcomeChannel: "string",
-        welcomeEnabled: "bool",
-        welcomeMessage: "string",
-        staffLine: 'nullablestring',
-        automod: "bool"
-      }
     }
 
     async run(message, { action, prop, value }) {
@@ -80,7 +68,7 @@ module.exports = class ConfigCommand extends Command {
                 res = this.booleanize(res)
                 break;
               case "string":
-                res = this.booleanize(res)
+                res = res
                 break;
               case "nullablestring":
                 res = this.nullify(res)
@@ -91,32 +79,38 @@ module.exports = class ConfigCommand extends Command {
             }
             this.client.settings.set(message.guild.id, res, prop);
             this.client.settings.set(message.guild.id, type, "types."+prop);
-            message.reply(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
+            message.reply(`guild configuration item ${prop} has been added with value \`${value}\` and type ${type}`);
           } else return message.reply(`\`type\` must be one of (${types.join(", ")})`);
           break;
         case "set":
           // We can check that the key exists to avoid having multiple useless, 
           // unused keys in the config:
           if(!this.client.settings.has(message.guild.id, prop)) {
-            return message.reply("This key is not in the configuration.");
+            return message.reply("this key is not in the configuration.");
           }
 
-          if (prop in this.types && this.types[prop] == "bool") {
-            if (!["true", "false", true, false].includes(value)) return message.reply(`${prop} must be one of (true, false)`);
-            this.client.settings.set(message.guild.id, this.booleanize(value), prop);
-            
-          } else if (prop in this.types && this.types[prop] == "nullablestring") {
-            
-            this.client.settings.set(message.guild.id, this.nullify(value), prop);
-
-          } else {
-            
-            this.client.settings.set(message.guild.id, value, prop);
-            
+          var type = guildConf.types[key];
+          var res = value;
+          switch (type) {
+            case "bool":
+              if (!["true", "false", true, false].includes(value)) return message.reply(`${prop} must be one of (true, false)`);
+              res = this.booleanize(res)
+              break;
+            case "string":
+              res = res
+              break;
+            case "nullablestring":
+              res = this.nullify(res)
+              break;
+            case "int":
+              res = parseInt(res)
+              break;
           }
+            
+          this.client.settings.set(message.guild.id, res, prop);
 
           // We can confirm everything's done to the client.
-          message.channel.send(`Guild configuration item ${prop} has been changed to:\n\`${value}\``);
+          message.channel.send(`guild configuration item ${prop} has been changed to:\n\`${value}\``);
           break;
         case "clear":
         case "reset":
