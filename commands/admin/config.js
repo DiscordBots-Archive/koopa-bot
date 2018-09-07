@@ -37,7 +37,17 @@ module.exports = class ConfigCommand extends Command {
             ],
             minPerm: 3
         });
-      
+      this.types = {
+        logChannel: "string",
+        modLogChannel: "string",
+        modRole: "string",
+        adminRole: "string",
+        ownerRole: "string",
+        welcomeChannel: "string",
+        welcomeEnabled: "bool",
+        welcomeMessage: "string",
+        staffLine: 'string'
+}
     }
 
     async run(message, { action, prop, value }) {
@@ -68,7 +78,7 @@ module.exports = class ConfigCommand extends Command {
             return message.reply("This key is not in the configuration.");
           }
 
-          if (["true", "false", true, false].includes(guildConf[prop])) {
+          if (prop in this.types && this.types[prop] == "bool") {
             if (!["true", "false", true, false].includes(value)) return message.reply(`${prop} must be one of (true, false)`);
 
             // Now we can finally change the value. Here we only have strings for values 
@@ -78,7 +88,7 @@ module.exports = class ConfigCommand extends Command {
 
             // Now we can finally change the value. Here we only have strings for values 
             // so we won't bother trying to make sure it's the right type and such. 
-            this.client.settings.set(message.guild.id, value, prop);
+            this.client.settings.set(message.guild.id, this.nullify(value), prop);
 
           }
 
@@ -88,7 +98,7 @@ module.exports = class ConfigCommand extends Command {
         case "clear":
         case "reset":
           // Throw the 'are you sure?' text at them.
-          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone.`);
+          const response = await this.client.awaitReply(message, `Are you sure you want to permanently clear/reset the configs? This **CANNOT** be undone. `);
 
           // If they respond with y or yes, continue.
           if (["y", "yes", "sure", "yep"].includes(response)) {
@@ -117,4 +127,9 @@ module.exports = class ConfigCommand extends Command {
       }
       return str;
     } 
+  
+  nullify(str) {
+    if (str == "null") return null
+    return str
+  }
 };
