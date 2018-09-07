@@ -67,6 +67,9 @@ module.exports = class ConfigCommand extends Command {
           const types = ["bool", "string", "int", "nullablestring"];
           if (!types.includes(type.toLowerCase())) return message.reply(`type must be one of (${types.join(", ")})`);
           var key = prop;
+          
+          const response = await this.client.awaitReply(message, `[${types.join("/")}]`);
+          
           if (!key) return message.reply("Please specify a key to add");
           if (guildConf[key]) return message.reply("This key already exists in the settings");
 
