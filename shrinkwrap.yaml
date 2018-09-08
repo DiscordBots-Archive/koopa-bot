@@ -9,6 +9,7 @@ dependencies:
   ffmpeg: 0.0.4
   html-to-text: 4.0.0
   including-range-array: 1.0.0
+  long: 4.0.0
   moment: 2.22.2
   node-opus: 0.3.0
   path: 0.12.7
@@ -2355,6 +2356,7 @@ specifiers:
   ffmpeg: ^0.0.4
   html-to-text: ^4.0.0
   including-range-array: ^1.0.0
+  long: ^4.0.0
   moment: ^2.22.2
   node-opus: ^0.3.0
   path: ^0.12.7
