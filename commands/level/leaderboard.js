@@ -16,21 +16,21 @@ module.exports = class LeaderboardCommand extends Command {
                 key: "num",
                 prompt: "how many users should this leaderboard contemplate?",
                 type: "integer",
-                default: 5
+                default: 10
               }
             ]
         });
     }
 
     async run(message, { num }) {
-      let key = `${message.guild.id}-${message.author.id}`
-      this.client.points.ensure(key, this.client.defaultPoints);
+      // let key = `${message.guild.id}-${message.author.id}`
+      // this.client.points.ensure(key, this.client.defaultPoints);
       
       // Get a filtered list (for this guild only), and convert to an array while we're at it.
       const filtered = this.client.points.array().filter(p => p.guild === message.guild.id );
 
       // Sort it to get the top results... well... at the top. Y'know.
-      const sorted = filtered.sort((a, b) => a.points < b.points);
+      const sorted = filtered.sort((a, b) => a.points > b.points);
 
       // Slice it, dice it, get the top 10 of it!
       const top10 = sorted.splice(0, num);
