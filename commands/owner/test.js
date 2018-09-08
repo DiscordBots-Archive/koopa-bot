@@ -14,32 +14,19 @@ module.exports = class TestCommand extends Command {
   }
 
   run(msg) {
-    var guild = this.client.guilds.filter(g => g.name == "'「 Ｑｕｅｎｔｉｎ'ｓ Ｓｅｒｖｅｒ 」").first();
-    var options = {
-      maxAge: 1800,
-      maxUses: 1
-    };
-
-    var invite = guild.channels.get(this.getDefaultChannel(guild).id).createInvite(options).then(function(newInvite){
-      msg.author.send("https://discord.gg/" + newInvite.code)
-    });
-  }
-  
-  async getDefaultChannel(guild) {
-    // get "original" default channel
-    if(guild.channels.has(guild.id))
-      return guild.channels.get(guild.id)
-
-    // Check for a "general" channel, which is often default chat
-    if(guild.channels.exists("name", "general"))
-      return guild.channels.find("name", "general");
-    // Now we get into the heavy stuff: first channel in order where the bot can speak
-    // hold on to your hats!
-    return guild.channels
-     .filter(c => c.type === "text" &&
-       c.permissionsFor(guild.client.user).has("SEND_MESSAGES"))
-     .sort((a, b) => a.position - b.position ||
-       Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
-     .first();
+    let count = 0;
+    let ecount = 0;
+    for(let x = 0; x < 4000; x++) {
+      msg.channel.send(`this is message ${x} of 3999`)
+        .then(m => {
+          count++;
+          console.log('reached', count, ecount);
+        })
+        .catch(m => {
+          console.error(m);
+          ecount++;
+          console.log('reached', count, ecount);
+        });
+    }
   }
 };
