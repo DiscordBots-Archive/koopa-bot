@@ -457,10 +457,10 @@ var swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
 		}
 
 		// Check matched count
-		if (msgMatch == 10) {
+		if (msgMatch == 5) {
 			warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 			message.reply("spamming isn't allowed");
-		} else if (msgMatch == 13) {
+		} else if (msgMatch == 10) {
       var mod = await message.guild.members.get(client.user.id)
 		  ban(message.author, 'Sending spam in #'+message.channel.name, mod, message);
     }
@@ -470,10 +470,10 @@ var swears = ["shit", "fuck", "cunt", "turd", "kys", "kunt", "faggot"]
 		for (var i = 0; i < spam.stroke.length; i++) {
 			if (spam.stroke[i].time > now - 1000) {
 				matched++;
-				if (matched == 8) {
+				if (matched == 5) {
 					warn(message.member, 'Sending spam in #'+message.channel.name, message.guild.members.get(client.user.id), message);
 					message.reply("spamming isn't allowed");
-				} else if (matched == 11) {
+				} else if (matched == 8) {
           var mod = await message.guild.members.get(client.user.id)
 					ban(message.author, 'Sending spam in #'+message.channel.name, mod, message);
 				}
