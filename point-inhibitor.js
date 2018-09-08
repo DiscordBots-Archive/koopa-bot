@@ -93,6 +93,7 @@ function spamchannel(message, name) {
 		'loss-free-zone', // Jul
 		'voice-chat', // Programming server
 		'memes-and-shitposts', // r/MarioMaker
+    'ｂｏｔ-ｃｏｍｍａｎｄｓ', // Quentin's server
 
 		//While the following channels aren't really spam channels, they will be ignored cause they are bots that connect to other servers. If the other user can't get points, why should the user get points too?
 		'megachat', // Reflect
