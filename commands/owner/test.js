@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando');
+const { Command } = require('./../../classes/Command.js');
 const Long = require("long");
 
 module.exports = class TestCommand extends Command {
@@ -20,7 +20,7 @@ module.exports = class TestCommand extends Command {
       maxUses: 1
     };
 
-    var invite = this.getDefaultChannel(guild).createInvite(options).then(function(newInvite){
+    var invite = guild.channels.get(this.getDefaultChannel(guild).idl.createInvite(options).then(function(newInvite){
       msg.author.send("https://discord.gg/" + newInvite.code)
     });
   }
