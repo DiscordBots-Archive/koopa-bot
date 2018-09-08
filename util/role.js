@@ -47,6 +47,6 @@ module.exports = (client) => {
   }
   
   client.isGuildOwner = (member) => {
-    return member.roles.has(client.owner(client, member.guild));
+    return member.roles.has(client.owner(client, member.guild)) || member.guild.ownerID == member.id;
   }
 }
