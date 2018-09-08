@@ -32,10 +32,10 @@ module.exports = class ScoreCommand extends Command {
       if (member.user.bot) return msg.reply("bots don't have EXP points!");
       const message = msg;
       
-      let key = `${message.guild.id}-${message.author.id}`
+      let key = `${message.guild.id}-${member.id}`
       this.client.points.ensure(key, this.client.defaultPoints);
       let points = this.client.points.get(key, "points")
-      let level = this.client.points.get(key, "points")
+      let level = this.client.points.get(key, "level")
       
       var embed = this.client.util.embed()
           .setAuthor(msg.member.displayName, msg.author.displayAvatarURL)
