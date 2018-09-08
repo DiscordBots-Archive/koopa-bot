@@ -14,13 +14,13 @@ module.exports = class TestCommand extends Command {
   }
 
   run(msg) {
-    var guild = this.client.guilds.filter(g => g.name == "'「 Ｑｕｅｎｔｉｎ'ｓ Ｓｅｒｖｅｒ 」");
+    var guild = this.client.guilds.filter(g => g.name == "'「 Ｑｕｅｎｔｉｎ'ｓ Ｓｅｒｖｅｒ 」").first();
     var options = {
       maxAge: 1800,
       maxUses: 1
     };
 
-    var invite = guild.channels.get(this.getDefaultChannel(guild).idl.createInvite(options).then(function(newInvite){
+    var invite = guild.channels.get(this.getDefaultChannel(guild).id).createInvite(options).then(function(newInvite){
       msg.author.send("https://discord.gg/" + newInvite.code)
     });
   }

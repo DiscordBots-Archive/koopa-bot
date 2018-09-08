@@ -1,6 +1,7 @@
 const { RichEmbed } = require("discord.js");
 
 module.exports = (client) => {
+  client.role.role
   client.util.getPermLevel = (member) => {
     let guildConf;
     if (member.guild) {
@@ -45,4 +46,6 @@ module.exports = (client) => {
     var guildConf = client.settings.ensure(guild.id, client.defaultSettings);
     return client.isId(guildConf.ownerRole) ? guildConf.ownerRole : guild.roles.filter(r => r.name == guildConf.ownerRole).map(r => r.id)[0];
   }
+  
+  client
 }
