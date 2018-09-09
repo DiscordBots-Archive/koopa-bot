@@ -8,6 +8,7 @@ const inhibitor = require("./point-inhibitor");
 var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
 const warns = new SQLite("./warns.sqlite");
+const fs = require("fs");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
 
@@ -89,13 +90,29 @@ client.registry
         ["fun", "Fun"]
     ])
     .registerDefaultGroups()
-    .registerDefaultCommands({
-        eval: false,
-        help: false
-    })
+//  .registerDefaultCommands({ eval: false, help: false })
     .registerTypesIn(path.join(__dirname, 'types'))
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
+// This loop reads the /events/ folder and attaches each event file to the appropriate event.
+fs.readdir("./events/", (err, files) => {
+  if (err) return console.error(err);
+  files.forEach(file => {
+    // If the file is not a JS file, ignore it (thanks, Apple)
+    if (!file.endsWith(".js")) return;
+    // Load the event file itself
+    const event = require(`./events/${file}`);
+    // Get just the event name from the file name
+    let eventName = file.split(".")[0];
+    // super-secret recipe to call events with all their proper arguments *after* the `client` var.
+    // without going into too many details, this means each event will be called with the client argument,
+    // followed by its "normal" arguments, like message, member, etc etc.
+    // This line is awesome by the way. Just sayin'.
+    client.on(eventName, event.bind(null, client));
+    delete require.cache[require.resolve(`./events/${file}`)];
+  });
+});
+/*
 client.on('guildMemberAdd', async member => {
   if (member.user.bot) return;
   
@@ -109,11 +126,15 @@ client.on('guildMemberAdd', async member => {
   welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag)
     .replace("{{guild}}", member.guild.name)
   
-  // we'll send to the welcome channel.
-  if (client.settings.get(member.guild.id, "welcomeEnabled")) member.guild.channels
-    .find("name", client.settings.get(member.guild.id, "welcomeChannel"))
-    .send(welcomeMessage)
-    .catch(console.error);
+  // we'll send to the welcome channel
+  var chan = client.settings.get(member.guild.id, "welcomeChannel")
+  if (client.settings.get(member.guild.id, "welcomeEnabled")) {
+    chan = member.guild.channels
+      .find(c => client.isId(chan) ? c.id == chan : c.name.includes(chan))
+    console.log(chan)
+    chan.send(welcomeMessage)
+      .catch(console.error);
+  }
   
   // YAMMS-only stuff
   if (member.guild.id == "481369156554326023") {
@@ -142,9 +163,9 @@ client.on('guildMemberAdd', async member => {
   member.guild.channels
     .find("name", client.settings.get(member.guild.id, "modLogChannel"))
     .send(loge)
-    .catch(console.error);
+    .catch(console.log);
 });
-
+*/
 client.on("guildDelete", guild => {
   // When the bot leaves or is kicked, delete settings to prevent stale entries.
   client.settings.delete(guild.id);
@@ -395,7 +416,8 @@ client.on('messageDelete', async (message) => {
         .setAuthor(client.user.tag, client.user.displayAvatarURL)
         .setTimestamp(Date.now() - 5000)
         .setFooter(`What a waste!`)
-  modlogs.send(embed);
+  
+  if (modlogs) modlogs.send(embed);
 })
 
 client.on("log", (chn, type, member, executor, reason) => {
@@ -546,7 +568,7 @@ function ban(member, reason, moderator, message, days = null) {
     .find("name", client.settings.get(message.guild.id, "modLogChannel"))
 
 	if(logs)
-		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${msg.author.tag} **[${msg.author.id}]** for reason: \`${reason}\` in ${msg.channel}`);
+		logs.send(`${member.user.tag} **[${member.id}]** was ${days ? "banned for "+days+" days" : "permanently banned"} by ${moderator.user.tag} **[${moderator.user.id}]** for reason: \`${reason}\` in ${msg.channel}`);
   
 	if(modlogs) {
 		let embed = client.util.embed()
@@ -554,7 +576,7 @@ function ban(member, reason, moderator, message, days = null) {
         .setTitle(`:skull_crossbones: ${member.user.tag} was banned`)
         .setThumbnail(member.user.displayAvatarURL)
         .setTimestamp(Date.now())
-        .addField(":pencil: Moderator", `<@${msg.author.id}> [${msg.author.tag}]`)
+        .addField(":pencil: Moderator", `<@${moderator.user.id}> [${moderator.user.tag}]`)
         .addField(":biohazard: Reason", reason)
         .addField(":calendar_spiral: Ban duration", days ? days + " days" : "Forever")
         .setFooter("He really deserved it!")

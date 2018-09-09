@@ -1,5 +1,5 @@
 const { stripIndents, oneLine } = require('common-tags');
-const Command = require('../base');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class PrefixCommand extends Command {
 	constructor(client) {
@@ -16,7 +16,7 @@ module.exports = class PrefixCommand extends Command {
 				Only administrators may change the prefix.
 			`,
 			examples: ['prefix', 'prefix -', 'prefix omg!', 'prefix default', 'prefix none'],
-
+      minPerms: 3,
 			args: [
 				{
 					key: 'prefix',
@@ -34,7 +34,7 @@ module.exports = class PrefixCommand extends Command {
 		if(!args.prefix) {
 			const prefix = msg.guild ? msg.guild.commandPrefix : this.client.commandPrefix;
 			return msg.reply(stripIndents`
-				${prefix ? `The command prefix is \`\`${prefix}\`\`.` : 'There is no command prefix.'}
+				${prefix ? `the command prefix is \`\`${prefix}\`\`.` : 'there is no command prefix.'}
 				To run commands, use ${msg.anyUsage('command')}.
 			`);
 		}
