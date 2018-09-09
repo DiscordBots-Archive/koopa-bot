@@ -6,7 +6,8 @@ module.exports = async (client, member) => {
   
   let automod = client.settings.get(member.guild.id, "automod");
   if (automod) {
-    // client.ban(client, member, "", member.guild.members.get(member.guild.ownerID));
+    if (regs.invite.test(member.user.username)) ban(client, member, "Invite link in username", member.guild.members.get(member.guild.ownerID)); // ban discord.gg users
+    else if (regs.pls.test(member.user.username)) ban(client, member, "Asking for friends in username", member.guild.members.get(member.guild.ownerID)); // ban pls add users
   }
   
   // Then, get the welcome message using get: 
@@ -85,6 +86,6 @@ function ban(client, member, reason, moderator, days = null) {
 }
 
 const regs = { // I tried :D
-  invite: /http(s)?:\/\/discord.gg\/\w{1,15}/i,
-  pls: /pls\s+add\s+\w\(tag\)\s+\w\d{4}/i
+  invite: /http(s)?:\/\/discord\.gg\/[a-zA-Z0-9]{1,15}?/gmi,
+  pls: /(pls\s+add|add\s+me)\s+([\.\:\/\w]{0,32})?\s+(\(tag\))\s+([\w#]{0,32})?/gmi
 }

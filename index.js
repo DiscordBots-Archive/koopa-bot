@@ -7,7 +7,6 @@ const YTDL = require("ytdl-core");
 const inhibitor = require("./point-inhibitor");
 var ytdl = YTDL;
 const SQLite = require("better-sqlite3");
-const warns = new SQLite("./warns.sqlite");
 const fs = require("fs");
 
 //sqlite.open(path.join(__dirname, 'score.sqlite'));
@@ -40,7 +39,13 @@ sqlite.open(path.join(__dirname, "settings.sqlite3")).then((db) => {
 
 const Enmap = require('enmap');
 
-client.points = new Enmap({name: "score"});
+client.points = new Enmap({
+  name: "score"
+});
+
+client.warns = new Enmap({
+  name: "warns"
+});
 
 client.settings = new Enmap({
   name: "settings",
@@ -112,69 +117,18 @@ fs.readdir("./events/", (err, files) => {
     delete require.cache[require.resolve(`./events/${file}`)];
   });
 });
-/*
-client.on('guildMemberAdd', async member => {
-  if (member.user.bot) return;
-  
-  // First, ensure the settings exist
-  client.settings.ensure(member.guild.id, defaultSettings);
-  
-  // Then, get the welcome message using get: 
-  let welcomeMessage = client.settings.get(member.guild.id, "welcomeMessage");
-  
-  // Our welcome message has a bit of a placeholder, let's fix that:
-  welcomeMessage = welcomeMessage.replace("{{user}}", member.user.tag)
-    .replace("{{guild}}", member.guild.name)
-  
-  // we'll send to the welcome channel
-  var chan = client.settings.get(member.guild.id, "welcomeChannel")
-  if (client.settings.get(member.guild.id, "welcomeEnabled")) {
-    chan = member.guild.channels
-      .find(c => client.isId(chan) ? c.id == chan : c.name.includes(chan))
-    console.log(chan)
-    chan.send(welcomeMessage)
-      .catch(console.error);
-  }
-  
-  // YAMMS-only stuff
-  if (member.guild.id == "481369156554326023") {
-    var welcomechannel = member.guild.channels.find('name', 'general-talk');
-    if (!welcomechannel) return;
 
-    var role = await member.guild.roles.find(r => r.name == "Green Toad");
-    if (role) member.addRole(role).catch(e => console.error(e));
-
-    var embed = new RichEmbed()
-      .setThumbnail(member.guild.iconURL)
-      .setColor("#B30000")
-      .setTitle(`Welcome to Mario Modding, ${member.user.username}`)
-      .setDescription("Mario Modding is a board where you can talk about all sorts of Mario games modding, from the first apparition of Mario in Donkey Kong to the latest entry Super Mario Odyssey")
-      .addField("Website", "http://mario-modding.co.nf", true)
-      .setThumbnail("http://mario-modding.co.nf/img/favicon.ico")
-      .setFooter(`Read #rules before starting`);
-
-    welcomechannel.send(embed);
-  }
-  
-  const loge = client.util.embed()
-    .setTitle("<:mario:485883525594087454> User Joined")
-    .addField("<:smwmario:486608176356261889> User", member.user.tag, true)
-    .addField(":clock: Joined at", member.joinedAt, true)
-  member.guild.channels
-    .find("name", client.settings.get(member.guild.id, "modLogChannel"))
-    .send(loge)
-    .catch(console.log);
-});
-*/
 client.on("guildDelete", guild => {
   // When the bot leaves or is kicked, delete settings to prevent stale entries.
   client.settings.delete(guild.id);
 });
 
+/*
 client.on('ready', () => {
+  client.warns.table = new SQLite("./warns.sqlite");
     console.log('Logged in!');
     client.user.setActivity('http://mario-modding.co.nf', { type: "WATCHING" });
-  
+  let warns = client.warns.table;
   const warnTable = warns.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'warns';").get();
   if (!warnTable['count(*)']) {
     // If the table isn't there, create it and setup the database correctly.
@@ -189,6 +143,7 @@ client.on('ready', () => {
   client.warns.delete = warns.prepare("DELETE FROM warns WHERE userId = ? AND guild = ?");
   client.warns.drop = warns.prepare("DROP TABLE warns");
 });
+*/
 
 client.on('error', console.error);
 
@@ -373,9 +328,6 @@ function extension(reaction, attachment) {
   return attachment;
 }
 
-client.warns = {};
-client.warns.table = warns;
-
 client.on('messageDelete', async (message) => {
   var msg = message;
   let logs, modlogs;
@@ -523,8 +475,10 @@ function catchAndSend(error, message) {
 
 function warn(member, reason, moderator, message) {
   var msg = message;
-	client.warns.set.run({
-    uid: member.user.id,
+  let key = `${member.guild.id}-${member.id}`
+  client.warns.ensure(key, []);
+	client.warns.push(key, {
+    id: member.user.id,
     reason: reason,
     moderator: msg.author.id,
     time: client.util.getDateTime(),
