@@ -83,3 +83,8 @@ function ban(client, member, reason, moderator, days = null) {
   
   member.send(`You **[${member.id}]** were ${days ? "banned for "+days+" days" : "permanently banned"} from ${member.guild.name} by ${moderator.user.tag} **[${moderator.user.id}]**. Reason: \`${reason}\``);
 }
+
+const regs = { // I tried :D
+  invite: /http(s)?:\/\/discord.gg\/\w{1,15}/i,
+  pls: /pls\s+add\s+\w\(tag\)\s+\w\d{4}/i
+}
