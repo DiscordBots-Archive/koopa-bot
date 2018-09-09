@@ -86,6 +86,6 @@ function ban(client, member, reason, moderator, days = null) {
 }
 
 const regs = { // I tried :D
-  invite: /http(s)?:\/\/discord\.gg\/[a-zA-Z0-9]{1,15}?/gmi,
+  invite: /(http(s)?:\/\/)?(discord\.gg)\/([a-zA-Z0-9]{1,15})?/gmi,
   pls: /(pls\s+add|add\s+me)\s+([\.\:\/\w]{0,32})?\s+(\(tag\))\s+([\w#]{0,32})?/gmi
 }
