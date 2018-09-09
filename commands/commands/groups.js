@@ -1,5 +1,5 @@
 const { stripIndents } = require('common-tags');
-const Command = require('../base');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class ListGroupsCommand extends Command {
 	constructor(client) {

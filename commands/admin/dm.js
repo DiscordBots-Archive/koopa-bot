@@ -26,7 +26,7 @@ module.exports = class DmCommand extends Command {
     }
 
     run(message, { mem, text }) {
-      mem.send(`Staff reply: ${text}`)
+      mem.send(`Staff reply: ${text} (from ${message.guild.name})`)
         .then(msg => message.say("DM delivered"))
         .catch(e => {
           message.say("DM not delivered: `" + e + "`");

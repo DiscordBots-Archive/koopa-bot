@@ -7,6 +7,7 @@ dependencies:
   enmap-sqlite: 2.0.5
   express: 4.16.3
   ffmpeg: 0.0.4
+  fs: 0.0.2
   html-to-text: 4.0.0
   including-range-array: 1.0.0
   long: 4.0.0
@@ -879,6 +880,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
+  /fs/0.0.2:
+    dev: false
+    resolution:
+      integrity: sha1-4fJE7zkzwbKmS9R5kTYGDQ9ZFPg=
   /gauge/2.7.4:
     dependencies:
       aproba: 1.2.0
@@ -2354,6 +2359,7 @@ specifiers:
   enmap-sqlite: ^2.0.5
   express: ^4.16.3
   ffmpeg: ^0.0.4
+  fs: ^0.0.2
   html-to-text: ^4.0.0
   including-range-array: ^1.0.0
   long: ^4.0.0

@@ -1,5 +1,5 @@
 const { oneLine } = require('common-tags');
-const Command = require('../base');
+const { Command } = require('./../../classes/Command.js');
 
 module.exports = class PingCommand extends Command {
 	constructor(client) {

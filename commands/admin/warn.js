@@ -30,7 +30,7 @@ module.exports = class WarningCommand extends Command {
       if (msg.member.highestRole.position <= member.highestRole.position) {
 				return msg.reply("you can't warn that user.");
 			}
-      this.client.warn(member, reason, msg.member, msg)
+      try { this.client.warn(member, reason, msg.member, msg) } catch (e) { console.log(e) }
       msg.say(":ok: User warned!");
     }
 };

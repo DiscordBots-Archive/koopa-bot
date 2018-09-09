@@ -17,15 +17,16 @@ module.exports = class ListWarningsCommand extends Command {
                 prompt: "who do you want to see the warns of?",
                 type: "member"
               }
-            ]
+            ],
+          minPerms: 2
         });
     }
 
     run(msg, { member }) {
-      if (!this.client.isOwner(msg.author)
-          && !msg.member.roles.has("481492274333876224")
-          && !msg.member.roles.has("481492388020486171")) return msg.reply("you don't have the permission to use this!");
-      const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?").all(member.id, msg.guild.id);
+      // const warns = this.client.warns.table.prepare("SELECT * FROM warns WHERE userId = ? AND guild = ?").all(member.id, msg.guild.id);
+      let key = `${msg.guild.id}-${member.id}`
+      this.client.warns.ensure(key, []);
+      const warns = this.client.warns.get(key);
       // console.log(warns);
       // Now shake it and show it! (as a nice embed, too!)
       const embed = new RichEmbed()
@@ -35,7 +36,7 @@ module.exports = class ListWarningsCommand extends Command {
         .setDescription(`${warns.length == 0 ? "No" : warns.length} warnings for ${member.displayName}`)
         .setColor(15844367);
 
-      for(const data of warns) {
+      for(const data in warns) {
         embed.addField(`Warning given by ${msg.guild.members.get(data.moderator).displayName}`, `Reason: \`${data.reason}\`\nDate: ${data.time}`);
       }
       msg.embed(embed)
